@@ -4,7 +4,7 @@ on:
   # Trigger from rgb-lib repository via repository_dispatch
   repository_dispatch:
     types: [rgb-lib-release]
-  
+
   # Allow manual trigger
   workflow_dispatch:
     inputs:
@@ -64,7 +64,7 @@ jobs:
           DOWNLOAD_URL="https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}/rgb-lib-uniffi-${{ matrix.target }}.zip"
           echo "Downloading from: $DOWNLOAD_URL"
           curl -L -o rgb-lib-uniffi.zip "$DOWNLOAD_URL"
-          unzip rgb-lib-uniffi.zip -d lib/
+          unzip -o rgb-lib-uniffi.zip -d lib/
           ls -la lib/
         shell: bash
 
