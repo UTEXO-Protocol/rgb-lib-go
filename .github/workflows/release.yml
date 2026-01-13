@@ -1,0 +1,165 @@
+name: Build and Release
+
+on:
+  # Trigger from rgb-lib repository via repository_dispatch
+  repository_dispatch:
+    types: [rgb-lib-release]
+  
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      rgb_lib_version:
+        description: 'rgb-lib version to use (e.g., v0.3.0-beta.4)'
+        required: true
+        type: string
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    name: Build (${{ matrix.goos }}-${{ matrix.goarch }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux x64
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            goos: linux
+            goarch: amd64
+            lib_name: librgblibuniffi.so
+          # macOS ARM64 (Apple Silicon M1/M2/M3)
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            goos: darwin
+            goarch: arm64
+            lib_name: librgblibuniffi.dylib
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get rgb-lib version
+        id: rgb_lib_version
+        run: |
+          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+            echo "version=${{ github.event.client_payload.version }}" >> $GITHUB_OUTPUT
+            echo "Using rgb-lib version from dispatch: ${{ github.event.client_payload.version }}"
+          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "version=${{ inputs.rgb_lib_version }}" >> $GITHUB_OUTPUT
+            echo "Using rgb-lib version from input: ${{ inputs.rgb_lib_version }}"
+          fi
+        shell: bash
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Download rgb-lib uniffi library
+        run: |
+          mkdir -p lib
+          DOWNLOAD_URL="https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}/rgb-lib-uniffi-${{ matrix.target }}.zip"
+          echo "Downloading from: $DOWNLOAD_URL"
+          curl -L -o rgb-lib-uniffi.zip "$DOWNLOAD_URL"
+          unzip rgb-lib-uniffi.zip -d lib/
+          ls -la lib/
+        shell: bash
+
+      - name: Fix library path (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          install_name_tool -id @rpath/librgblibuniffi.dylib lib/librgblibuniffi.dylib
+
+      - name: Build and test Go package
+        run: |
+          export CGO_ENABLED=1
+          export CGO_LDFLAGS="-L$(pwd)/lib -lrgblibuniffi"
+          go mod tidy
+          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build ./...
+        shell: bash
+
+      - name: Package artifacts
+        run: |
+          mkdir -p dist/lib
+          cp lib/${{ matrix.lib_name }} dist/lib/
+          cp rgb_lib.go dist/
+          cp rgb_lib.h dist/
+          cp go.mod dist/
+          cp README.md dist/
+          cd dist && zip -r ../rgb-lib-go-${{ matrix.goos }}-${{ matrix.goarch }}.zip .
+        shell: bash
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rgb-lib-go-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: rgb-lib-go-${{ matrix.goos }}-${{ matrix.goarch }}.zip
+          retention-days: 5
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get version info
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+            RGB_LIB_VERSION="${{ github.event.client_payload.version }}"
+          else
+            RGB_LIB_VERSION="${{ inputs.rgb_lib_version }}"
+          fi
+          echo "rgb_lib_version=$RGB_LIB_VERSION" >> $GITHUB_OUTPUT
+          echo "go_version=$RGB_LIB_VERSION" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Prepare release assets
+        run: |
+          mkdir -p release-assets
+          find artifacts -name "*.zip" -exec cp {} release-assets/ \;
+          ls -la release-assets/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.go_version }}
+          name: Release ${{ steps.version.outputs.go_version }}
+          body: |
+            ## Go bindings for rgb-lib
+            
+            Based on rgb-lib ${{ steps.version.outputs.rgb_lib_version }}
+            
+            ### Installation
+            
+            ```go
+            go get github.com/UTEXO-Protocol/rgb-lib-go@${{ steps.version.outputs.go_version }}
+            ```
+            
+            ### Platforms
+            
+            - Linux x64 (`linux-amd64`)
+            - macOS ARM64 / Apple Silicon (`darwin-arm64`)
+            
+            ### Changes
+            
+            See [rgb-lib release notes](https://github.com/UTEXO-Protocol/rgb-lib/releases/tag/${{ steps.version.outputs.rgb_lib_version }})
+          draft: false
+          prerelease: ${{ contains(steps.version.outputs.go_version, 'alpha') || contains(steps.version.outputs.go_version, 'beta') || contains(steps.version.outputs.go_version, 'rc') }}
+          files: release-assets/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

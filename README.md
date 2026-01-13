@@ -1,14 +1,23 @@
-
 # RGB Go Bindings (UniFFI)
 
 This package provides Go bindings for the RGB Rust library via [UniFFI](https://mozilla.github.io/uniffi-rs/). It supports macOS and Linux.
 
-## Build Instructions
+## Installation
+
+```bash
+go get github.com/UTEXO-Protocol/rgb-lib-go@latest
+```
+
+## Automatic Releases
+
+This package is automatically rebuilt when a new version of [rgb-lib](https://github.com/UTEXO-Protocol/rgb-lib) is released. Pre-built binaries are available in the [Releases](https://github.com/UTEXO-Protocol/rgb-lib-go/releases) section.
+
+## Manual Build Instructions
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/RGB-Tools/rgb-lib.git
+git clone https://github.com/UTEXO-Protocol/rgb-lib.git
 cd rgb-lib/bindings/uniffi
 ```
 

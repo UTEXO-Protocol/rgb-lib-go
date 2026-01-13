@@ -33,10 +33,10 @@ mkdir -p ./lib
 
 # Locate Go module directory
 echo -e "${CYAN}[prepare.sh] Locating Go module path...${NC}"
-PKG_PATH=$(go list -f '{{.Dir}}' -m github.com/RGB-OS/rgb-lib-go 2>/dev/null)
+PKG_PATH=$(go list -f '{{.Dir}}' -m github.com/UTEXO-Protocol/rgb-lib-go 2>/dev/null)
 
 if [ -z "$PKG_PATH" ]; then
-    echo -e "${RED}[prepare.sh] Error: Could not find module github.com/RGB-OS/rgb-lib-go${NC}"
+    echo -e "${RED}[prepare.sh] Error: Could not find module github.com/UTEXO-Protocol/rgb-lib-go${NC}"
     exit 1
 fi
 
