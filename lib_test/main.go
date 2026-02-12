@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	rgb_lib "github.com/RGB-OS/rgb-lib-go"
+	rgb_lib "github.com/UTEXO-Protocol/rgb-lib-go"
 	"github.com/joho/godotenv"
 )
 

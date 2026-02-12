@@ -7,8 +7,9 @@ This script is set up for the current working binding version (see `go.mod`). To
 - **Another GitHub release**: change the `rgb-lib-go` version in `go.mod` (e.g. `v0.3.6` → your tag).
 - **Local binding**: add a `replace` directive in `go.mod`, e.g.:
   ```go
-  replace github.com/RGB-OS/rgb-lib-go => /path/to/your/local/rgb-lib-go
+  replace github.com/UTEXO-Protocol/rgb-lib-go => /path/to/your/local/rgb-lib-go
   ```
+  From this repo, use `replace ... => ../` to test the parent module.
 
 ## Setup
 
