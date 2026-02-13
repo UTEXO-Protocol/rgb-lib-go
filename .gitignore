@@ -1,2 +1,6 @@
+# IDE
+.idea/
+
+# Test data
 lib_test/.env
 lib_test/data
