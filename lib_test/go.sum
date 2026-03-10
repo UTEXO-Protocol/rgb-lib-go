@@ -1,0 +1,4 @@
+github.com/UTEXO-Protocol/rgb-lib-go v0.3.0-beta.10 h1:r+UXIW3h+T3loEDS2D3U1Whi9ub7X0TAyg/hkdWnLTM=
+github.com/UTEXO-Protocol/rgb-lib-go v0.3.0-beta.10/go.mod h1:c0I0rNHp5GYJrfct8jXVzxEuqEGV8naUBu21v4/wfHw=
+github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
+github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=

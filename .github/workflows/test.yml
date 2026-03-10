@@ -1,0 +1,107 @@
+name: Test Library
+
+on:
+  # Trigger from rgb-lib repository after release
+  repository_dispatch:
+    types: [rgb-lib-release]
+
+  # Trigger after release workflow completes
+  workflow_run:
+    workflows: ["Build and Release"]
+    types:
+      - completed
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      bitcoin_network:
+        description: 'Bitcoin network (signet, testnet, regtest)'
+        required: false
+        default: 'signet'
+        type: string
+
+  # Run on push to main branch
+  push:
+    branches:
+      - main
+    paths:
+      - 'lib/**'
+      - 'lib_test/**'
+      - 'rgb_lib.go'
+      - 'rgb_lib.h'
+
+  # Run on PR
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            lib_name: librgblibuniffi.so
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            lib_name: librgblibuniffi.dylib
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Get latest rgb-lib version
+        id: rgb_lib_version
+        run: |
+          VERSION=$(curl -s https://api.github.com/repos/UTEXO-Protocol/rgb-lib/releases/latest | jq -r .tag_name)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Using rgb-lib version: $VERSION"
+        shell: bash
+
+      - name: Download rgb-lib uniffi library
+        run: |
+          mkdir -p lib
+          DOWNLOAD_URL="https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}/rgb-lib-uniffi-${{ matrix.target }}.zip"
+          echo "Downloading from: $DOWNLOAD_URL"
+          curl -L -o rgb-lib-uniffi.zip "$DOWNLOAD_URL"
+          unzip -o rgb-lib-uniffi.zip -d lib/
+          ls -la lib/
+        shell: bash
+
+      - name: Fix library path (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          install_name_tool -id @rpath/librgblibuniffi.dylib lib/librgblibuniffi.dylib
+
+      - name: Build Go package
+        run: |
+          export CGO_ENABLED=1
+          export CGO_LDFLAGS="-L$(pwd)/lib -lrgblibuniffi"
+          go mod tidy
+          go build ./...
+        shell: bash
+
+      - name: Run lib_test
+        working-directory: lib_test
+        env:
+          BITCOIN_NETWORK: ${{ inputs.bitcoin_network || 'signet' }}
+          MNEMONIC: ${{ secrets.TEST_MNEMONIC }}
+          ACCOUNT_XPUB_VANILLA: ${{ secrets.TEST_ACCOUNT_XPUB_VANILLA }}
+          ACCOUNT_XPUB_COLORED: ${{ secrets.TEST_ACCOUNT_XPUB_COLORED }}
+          MASTER_FINGERPRINT: ${{ secrets.TEST_MASTER_FINGERPRINT }}
+          INDEXER_URL: ${{ secrets.TEST_INDEXER_URL }}
+          LD_LIBRARY_PATH: ${{ github.workspace }}/lib
+          DYLD_LIBRARY_PATH: ${{ github.workspace }}/lib
+          CGO_ENABLED: 1
+          CGO_LDFLAGS: -L${{ github.workspace }}/lib -lrgblibuniffi
+        run: make run
+
