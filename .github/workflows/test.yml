@@ -62,7 +62,7 @@ jobs:
       - name: Get latest rgb-lib version
         id: rgb_lib_version
         run: |
-          VERSION=$(curl -s https://api.github.com/repos/UTEXO-Protocol/rgb-lib/releases/latest | jq -r .tag_name)
+          VERSION=$(curl -s https://api.github.com/repos/UTEXO-Protocol/rgb-lib/releases | jq -r '.[0].tag_name')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Using rgb-lib version: $VERSION"
         shell: bash
