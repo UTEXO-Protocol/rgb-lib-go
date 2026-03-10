@@ -90,6 +90,13 @@ jobs:
           go build ./...
         shell: bash
 
+      - name: Update rgb-lib-go dependency to latest
+        working-directory: lib_test
+        run: |
+          go get github.com/UTEXO-Protocol/rgb-lib-go@latest
+          go mod tidy
+        shell: bash
+
       - name: Run lib_test
         working-directory: lib_test
         env:
