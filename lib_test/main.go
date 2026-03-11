@@ -25,15 +25,15 @@ func getEnv(key, fallback string) string {
 func parseBitcoinNetwork(s string) rgb_lib.BitcoinNetwork {
 	switch strings.ToLower(strings.TrimSpace(s)) {
 	case "mainnet":
-		return rgb_lib.BitcoinNetworkMainnet
+		return rgb_lib.BitcoinNetworkMainnet{}
 	case "testnet":
-		return rgb_lib.BitcoinNetworkTestnet
+		return rgb_lib.BitcoinNetworkTestnet{}
 	case "signet":
-		return rgb_lib.BitcoinNetworkSignet
+		return rgb_lib.BitcoinNetworkSignet{}
 	case "regtest":
-		return rgb_lib.BitcoinNetworkRegtest
+		return rgb_lib.BitcoinNetworkRegtest{}
 	default:
-		return rgb_lib.BitcoinNetworkSignet
+		return rgb_lib.BitcoinNetworkSignet{}
 	}
 }
 
@@ -58,7 +58,10 @@ func main() {
 		log.Printf("created data dir: %s", dataDir)
 	}
 
-	keys := rgb_lib.GenerateKeys(network)
+	keys, err := rgb_lib.GenerateKeys(network)
+	if err != nil {
+		log.Fatalf("generate keys: %v", err)
+	}
 	fmt.Println("generate_keys")
 	fmt.Printf("  network=%s\n", networkStr)
 	fmt.Printf("  mnemonic=%s\n", keys.Mnemonic)
