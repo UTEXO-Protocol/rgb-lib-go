@@ -1,8 +1,8 @@
-package rgb_lib
-
 /*
 #cgo LDFLAGS: -lrgblibuniffi -L${SRCDIR}/lib -Wl,-rpath,${SRCDIR}/lib
 */
+// #include <rgb_lib.h>
+package rgb_lib
 
 // #include <rgb_lib.h>
 import "C"
