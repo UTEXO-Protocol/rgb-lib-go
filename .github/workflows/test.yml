@@ -24,6 +24,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*'
     paths:
       - 'lib/**'
       - 'lib_test/**'
@@ -92,9 +94,19 @@ jobs:
         shell: bash
 
       - name: Use local rgb-lib-go for testing
+        if: github.ref_type != 'tag'
         working-directory: lib_test
         run: |
           go mod edit -replace github.com/UTEXO-Protocol/rgb-lib-go=../
+          go mod tidy
+        shell: bash
+
+      - name: Use tagged rgb-lib-go for testing
+        if: github.ref_type == 'tag'
+        working-directory: lib_test
+        run: |
+          go mod edit -dropreplace github.com/UTEXO-Protocol/rgb-lib-go || true
+          go get github.com/UTEXO-Protocol/rgb-lib-go@${{ github.ref_name }}
           go mod tidy
         shell: bash
 
