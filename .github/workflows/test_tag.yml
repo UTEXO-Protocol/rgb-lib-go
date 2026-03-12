@@ -1,0 +1,88 @@
+name: Test Library (tag)
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  test:
+    name: Test tag (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            lib_name: librgblibuniffi.so
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            lib_name: librgblibuniffi.dylib
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Get latest rgb-lib version
+        id: rgb_lib_version
+        run: |
+          VERSION=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/UTEXO-Protocol/rgb-lib/releases | jq -r '.[0].tag_name')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Using rgb-lib version: $VERSION"
+        shell: bash
+
+      - name: Download rgb-lib uniffi library
+        run: |
+          mkdir -p lib
+          DOWNLOAD_URL="https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}/rgb-lib-uniffi-${{ matrix.target }}.zip"
+          echo "Downloading from: $DOWNLOAD_URL"
+          curl -L -o rgb-lib-uniffi.zip "$DOWNLOAD_URL"
+          unzip -o rgb-lib-uniffi.zip -d lib/
+          ls -la lib/
+        shell: bash
+
+      - name: Fix library path (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          install_name_tool -id @rpath/librgblibuniffi.dylib lib/librgblibuniffi.dylib
+
+      - name: Build Go package (workspace)
+        run: |
+          export CGO_ENABLED=1
+          export CGO_LDFLAGS="-L$(pwd)/lib -lrgblibuniffi"
+          go mod tidy
+          go build ./...
+        shell: bash
+
+      - name: Use tagged rgb-lib-go for testing
+        working-directory: lib_test
+        env:
+          GOPROXY: direct
+        run: |
+          go mod edit -dropreplace github.com/UTEXO-Protocol/rgb-lib-go || true
+          go get github.com/UTEXO-Protocol/rgb-lib-go@${{ github.ref_name }}
+          go mod tidy
+        shell: bash
+
+      - name: Run lib_test
+        working-directory: lib_test
+        env:
+          BITCOIN_NETWORK: signet
+          MNEMONIC: ${{ secrets.TEST_MNEMONIC }}
+          ACCOUNT_XPUB_VANILLA: ${{ secrets.TEST_ACCOUNT_XPUB_VANILLA }}
+          ACCOUNT_XPUB_COLORED: ${{ secrets.TEST_ACCOUNT_XPUB_COLORED }}
+          MASTER_FINGERPRINT: ${{ secrets.TEST_MASTER_FINGERPRINT }}
+          INDEXER_URL: ${{ secrets.TEST_INDEXER_URL }}
+          LD_LIBRARY_PATH: ${{ github.workspace }}/lib
+          DYLD_LIBRARY_PATH: ${{ github.workspace }}/lib
+          CGO_ENABLED: 1
+          CGO_LDFLAGS: -L${{ github.workspace }}/lib -lrgblibuniffi
+        run: make run
+
