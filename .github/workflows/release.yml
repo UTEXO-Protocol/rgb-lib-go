@@ -53,13 +53,14 @@ jobs:
         shell: bash
 
       - name: Generate bindings
+        working-directory: /tmp/rgb-lib
         run: |
-          uniffi-bindgen-go /tmp/rgb-lib/bindings/uniffi/src/rgb-lib.udl \
+          uniffi-bindgen-go bindings/uniffi/src/rgb-lib.udl \
             --out-dir /tmp/go-bindings \
-            --config /tmp/rgb-lib/bindings/uniffi/uniffi.toml
+            --config bindings/uniffi/uniffi.toml
 
-          cp /tmp/go-bindings/rgblibuniffi/rgb_lib.go rgb_lib.go
-          cp /tmp/go-bindings/rgblibuniffi/rgb_lib.h rgb_lib.h
+          cp /tmp/go-bindings/rgblibuniffi/rgb_lib.go $GITHUB_WORKSPACE/rgb_lib.go
+          cp /tmp/go-bindings/rgblibuniffi/rgb_lib.h $GITHUB_WORKSPACE/rgb_lib.h
         shell: bash
 
       - name: Add CGo header
