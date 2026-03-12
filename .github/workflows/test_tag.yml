@@ -1,43 +1,13 @@
-name: Test Library
+name: Test Library (tag)
 
 on:
-  # Trigger from rgb-lib repository after release
-  repository_dispatch:
-    types: [rgb-lib-release]
-
-  # Trigger after release workflow completes
-  workflow_run:
-    workflows: ["Build and Release"]
-    types:
-      - completed
-
-  # Manual trigger
-  workflow_dispatch:
-    inputs:
-      bitcoin_network:
-        description: 'Bitcoin network (signet, testnet, regtest)'
-        required: false
-        default: 'signet'
-        type: string
-
-  # Run on push to main branch
   push:
-    branches:
-      - main
-    paths:
-      - 'lib/**'
-      - 'lib_test/**'
-      - 'rgb_lib.go'
-      - 'rgb_lib.h'
-
-  # Run on PR
-  pull_request:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 jobs:
   test:
-    name: Test (${{ matrix.os }})
+    name: Test tag (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -83,7 +53,7 @@ jobs:
         run: |
           install_name_tool -id @rpath/librgblibuniffi.dylib lib/librgblibuniffi.dylib
 
-      - name: Build Go package
+      - name: Build Go package (workspace)
         run: |
           export CGO_ENABLED=1
           export CGO_LDFLAGS="-L$(pwd)/lib -lrgblibuniffi"
@@ -91,17 +61,20 @@ jobs:
           go build ./...
         shell: bash
 
-      - name: Use local rgb-lib-go for testing
+      - name: Use tagged rgb-lib-go for testing
         working-directory: lib_test
+        env:
+          GOPROXY: direct
         run: |
-          go mod edit -replace github.com/UTEXO-Protocol/rgb-lib-go=../
+          go mod edit -dropreplace github.com/UTEXO-Protocol/rgb-lib-go || true
+          go get github.com/UTEXO-Protocol/rgb-lib-go@${{ github.ref_name }}
           go mod tidy
         shell: bash
 
       - name: Run lib_test
         working-directory: lib_test
         env:
-          BITCOIN_NETWORK: ${{ inputs.bitcoin_network || 'signet' }}
+          BITCOIN_NETWORK: signet
           MNEMONIC: ${{ secrets.TEST_MNEMONIC }}
           ACCOUNT_XPUB_VANILLA: ${{ secrets.TEST_ACCOUNT_XPUB_VANILLA }}
           ACCOUNT_XPUB_COLORED: ${{ secrets.TEST_ACCOUNT_XPUB_COLORED }}
