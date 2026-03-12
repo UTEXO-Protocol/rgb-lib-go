@@ -15,10 +15,82 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  UNIFFI_BINDGEN_GO_TAG: "v0.5.0+v0.29.5"
 
 jobs:
+  generate:
+    name: Generate Go bindings
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get rgb-lib version
+        id: rgb_lib_version
+        run: |
+          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+            echo "version=${{ github.event.client_payload.version }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "version=${{ inputs.rgb_lib_version }}" >> $GITHUB_OUTPUT
+          fi
+        shell: bash
+
+      - name: Clone rgb-lib at release tag
+        run: |
+          git clone --depth 1 --branch ${{ steps.rgb_lib_version.outputs.version }} \
+            https://github.com/UTEXO-Protocol/rgb-lib.git /tmp/rgb-lib
+        shell: bash
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install uniffi-bindgen-go
+        run: |
+          cargo install --git https://github.com/NordSecurity/uniffi-bindgen-go \
+            --tag "${{ env.UNIFFI_BINDGEN_GO_TAG }}" uniffi-bindgen-go
+        shell: bash
+
+      - name: Generate bindings
+        run: |
+          uniffi-bindgen-go /tmp/rgb-lib/bindings/uniffi/src/rgb-lib.udl \
+            --out-dir /tmp/go-bindings \
+            --config /tmp/rgb-lib/bindings/uniffi/uniffi.toml
+
+          cp /tmp/go-bindings/rgblibuniffi/rgb_lib.go rgb_lib.go
+          cp /tmp/go-bindings/rgblibuniffi/rgb_lib.h rgb_lib.h
+        shell: bash
+
+      - name: Add CGo header
+        run: |
+          HEADER='/*
+          #cgo LDFLAGS: -lrgblibuniffi -L${SRCDIR}/lib -Wl,-rpath,${SRCDIR}/lib
+          */
+          // #include <rgb_lib.h>'
+
+          TEMP=$(mktemp)
+          echo "$HEADER" > "$TEMP"
+          cat rgb_lib.go >> "$TEMP"
+          mv "$TEMP" rgb_lib.go
+        shell: bash
+
+      - name: Commit updated bindings
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add rgb_lib.go rgb_lib.h
+          if git diff --cached --quiet; then
+            echo "No changes to bindings, skipping commit"
+          else
+            git commit -m "Auto-generate Go bindings from rgb-lib ${{ steps.rgb_lib_version.outputs.version }}"
+            git push
+          fi
+        shell: bash
+
   build:
     name: Build (${{ matrix.goos }}-${{ matrix.goarch }})
+    needs: generate
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -40,16 +112,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Get rgb-lib version
         id: rgb_lib_version
         run: |
           if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
             echo "version=${{ github.event.client_payload.version }}" >> $GITHUB_OUTPUT
-            echo "Using rgb-lib version from dispatch: ${{ github.event.client_payload.version }}"
           elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "version=${{ inputs.rgb_lib_version }}" >> $GITHUB_OUTPUT
-            echo "Using rgb-lib version from input: ${{ inputs.rgb_lib_version }}"
           fi
         shell: bash
 
