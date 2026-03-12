@@ -59,8 +59,19 @@ jobs:
             --out-dir /tmp/go-bindings \
             --config bindings/uniffi/uniffi.toml
 
-          cp /tmp/go-bindings/rgblibuniffi/rgb_lib.go $GITHUB_WORKSPACE/rgb_lib.go
-          cp /tmp/go-bindings/rgblibuniffi/rgb_lib.h $GITHUB_WORKSPACE/rgb_lib.h
+          echo "Generated files:"
+          find /tmp/go-bindings -type f
+
+          GO_FILE=$(find /tmp/go-bindings -name "rgb_lib.go" | head -1)
+          H_FILE=$(find /tmp/go-bindings -name "rgb_lib.h" | head -1)
+
+          if [ -z "$GO_FILE" ] || [ -z "$H_FILE" ]; then
+            echo "ERROR: Generated files not found"
+            exit 1
+          fi
+
+          cp "$GO_FILE" $GITHUB_WORKSPACE/rgb_lib.go
+          cp "$H_FILE" $GITHUB_WORKSPACE/rgb_lib.h
         shell: bash
 
       - name: Add CGo header
