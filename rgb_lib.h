@@ -393,6 +393,36 @@ void uniffi_rgblibuniffi_fn_free_address(void* ptr, RustCallStatus *out_status
 void* uniffi_rgblibuniffi_fn_constructor_address_new(RustBuffer address_string, RustBuffer bitcoin_network, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_COSIGNER
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_COSIGNER
+void* uniffi_rgblibuniffi_fn_clone_cosigner(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_COSIGNER
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_COSIGNER
+void uniffi_rgblibuniffi_fn_free_cosigner(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_COSIGNER_FROM_DATA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_COSIGNER_FROM_DATA
+void* uniffi_rgblibuniffi_fn_constructor_cosigner_from_data(RustBuffer data, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_COSIGNER_NEW
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_COSIGNER_NEW
+void* uniffi_rgblibuniffi_fn_constructor_cosigner_new(RustBuffer cosigner_string, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_COSIGNER_COSIGNER_DATA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_COSIGNER_COSIGNER_DATA
+RustBuffer uniffi_rgblibuniffi_fn_method_cosigner_cosigner_data(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_COSIGNER_COSIGNER_STRING
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_COSIGNER_COSIGNER_STRING
+RustBuffer uniffi_rgblibuniffi_fn_method_cosigner_cosigner_string(void* ptr, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_INVOICE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_INVOICE
 void* uniffi_rgblibuniffi_fn_clone_invoice(void* ptr, RustCallStatus *out_status
@@ -416,6 +446,221 @@ RustBuffer uniffi_rgblibuniffi_fn_method_invoice_invoice_data(void* ptr, RustCal
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_INVOICE_INVOICE_STRING
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_INVOICE_INVOICE_STRING
 RustBuffer uniffi_rgblibuniffi_fn_method_invoice_invoice_string(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_MULTISIGWALLET
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_MULTISIGWALLET
+void* uniffi_rgblibuniffi_fn_clone_multisigwallet(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_MULTISIGWALLET
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_MULTISIGWALLET
+void uniffi_rgblibuniffi_fn_free_multisigwallet(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_MULTISIGWALLET_NEW
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_MULTISIGWALLET_NEW
+void* uniffi_rgblibuniffi_fn_constructor_multisigwallet_new(RustBuffer wallet_data, RustBuffer keys, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BACKUP
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BACKUP
+void uniffi_rgblibuniffi_fn_method_multisigwallet_backup(void* ptr, RustBuffer backup_path, RustBuffer password, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BACKUP_INFO
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BACKUP_INFO
+int8_t uniffi_rgblibuniffi_fn_method_multisigwallet_backup_info(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BLIND_RECEIVE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BLIND_RECEIVE
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_blind_receive(void* ptr, RustBuffer online, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_CONFIGURE_VSS_BACKUP
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_CONFIGURE_VSS_BACKUP
+void uniffi_rgblibuniffi_fn_method_multisigwallet_configure_vss_backup(void* ptr, RustBuffer config, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_CREATE_UTXOS_INIT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_CREATE_UTXOS_INIT
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_create_utxos_init(void* ptr, RustBuffer online, int8_t up_to, RustBuffer num, RustBuffer size, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_DELETE_TRANSFERS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_DELETE_TRANSFERS
+int8_t uniffi_rgblibuniffi_fn_method_multisigwallet_delete_transfers(void* ptr, RustBuffer batch_transfer_idx, int8_t no_asset_only, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_DISABLE_VSS_AUTO_BACKUP
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_DISABLE_VSS_AUTO_BACKUP
+void uniffi_rgblibuniffi_fn_method_multisigwallet_disable_vss_auto_backup(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_FINALIZE_PSBT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_FINALIZE_PSBT
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_finalize_psbt(void* ptr, RustBuffer signed_psbt, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_ADDRESS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_ADDRESS
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_address(void* ptr, RustBuffer online, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_ASSET_BALANCE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_ASSET_BALANCE
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_asset_balance(void* ptr, RustBuffer asset_id, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_ASSET_METADATA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_ASSET_METADATA
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_asset_metadata(void* ptr, RustBuffer asset_id, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_BTC_BALANCE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_BTC_BALANCE
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_btc_balance(void* ptr, RustBuffer online, int8_t skip_sync, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_DESCRIPTORS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_DESCRIPTORS
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_descriptors(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_FEE_ESTIMATION
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_FEE_ESTIMATION
+double uniffi_rgblibuniffi_fn_method_multisigwallet_get_fee_estimation(void* ptr, RustBuffer online, uint16_t blocks, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_KEYS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_KEYS
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_keys(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_MEDIA_DIR
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_MEDIA_DIR
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_media_dir(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_WALLET_DATA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_WALLET_DATA
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_wallet_data(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_WALLET_DIR
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_WALLET_DIR
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_wallet_dir(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GO_ONLINE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GO_ONLINE
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_go_online(void* ptr, int8_t skip_consistency_check, RustBuffer indexer_url, RustBuffer hub_url, RustBuffer hub_token, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_HUB_INFO
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_HUB_INFO
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_hub_info(void* ptr, RustBuffer online, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INFLATE_INIT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INFLATE_INIT
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_inflate_init(void* ptr, RustBuffer online, RustBuffer asset_id, RustBuffer inflation_amounts, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_PSBT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_PSBT
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_inspect_psbt(void* ptr, RustBuffer psbt, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_RGB_TRANSFER
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_RGB_TRANSFER
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_inspect_rgb_transfer(void* ptr, RustBuffer psbt, RustBuffer fascia_path, uint64_t entropy, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_CFA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_CFA
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_cfa(void* ptr, RustBuffer online, RustBuffer name, RustBuffer details, uint8_t precision, RustBuffer amounts, RustBuffer file_path, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_IFA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_IFA
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_ifa(void* ptr, RustBuffer online, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustBuffer inflation_amounts, RustBuffer reject_list_url, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_NIA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_NIA
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_nia(void* ptr, RustBuffer online, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_UDA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_UDA
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_uda(void* ptr, RustBuffer online, RustBuffer ticker, RustBuffer name, RustBuffer details, uint8_t precision, RustBuffer media_file_path, RustBuffer attachments_file_paths, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_ASSETS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_ASSETS
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_assets(void* ptr, RustBuffer filter_asset_schemas, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_TRANSACTIONS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_TRANSACTIONS
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_transactions(void* ptr, RustBuffer online, int8_t skip_sync, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_TRANSFERS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_TRANSFERS
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_transfers(void* ptr, RustBuffer asset_id, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_UNSPENTS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_UNSPENTS
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_unspents(void* ptr, RustBuffer online, int8_t settled_only, int8_t skip_sync, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_REFRESH
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_REFRESH
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_refresh(void* ptr, RustBuffer online, RustBuffer asset_id, RustBuffer filter, int8_t skip_sync, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_RESPOND_TO_OPERATION
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_RESPOND_TO_OPERATION
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_respond_to_operation(void* ptr, RustBuffer online, int32_t operation_idx, RustBuffer respond_to_operation, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SEND_BTC_INIT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SEND_BTC_INIT
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_send_btc_init(void* ptr, RustBuffer online, RustBuffer address, uint64_t amount, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SEND_INIT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SEND_INIT
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_send_init(void* ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, RustBuffer expiration_timestamp, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SYNC
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SYNC
+void uniffi_rgblibuniffi_fn_method_multisigwallet_sync(void* ptr, RustBuffer online, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SYNC_WITH_HUB
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SYNC_WITH_HUB
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_sync_with_hub(void* ptr, RustBuffer online, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_VSS_BACKUP
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_VSS_BACKUP
+int64_t uniffi_rgblibuniffi_fn_method_multisigwallet_vss_backup(void* ptr, void* client, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_VSS_BACKUP_INFO
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_VSS_BACKUP_INFO
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_vss_backup_info(void* ptr, void* client, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_WITNESS_RECEIVE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_WITNESS_RECEIVE
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_witness_receive(void* ptr, RustBuffer online, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_RECIPIENTINFO
@@ -500,7 +745,7 @@ void uniffi_rgblibuniffi_fn_free_wallet(void* ptr, RustCallStatus *out_status
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_WALLET_NEW
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_WALLET_NEW
-void* uniffi_rgblibuniffi_fn_constructor_wallet_new(RustBuffer wallet_data, RustCallStatus *out_status
+void* uniffi_rgblibuniffi_fn_constructor_wallet_new(RustBuffer wallet_data, RustBuffer keys, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BACKUP
@@ -515,7 +760,7 @@ int8_t uniffi_rgblibuniffi_fn_method_wallet_backup_info(void* ptr, RustCallStatu
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BLIND_RECEIVE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BLIND_RECEIVE
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_blind_receive(void* ptr, RustBuffer asset_id, RustBuffer assignment, RustBuffer duration_seconds, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_blind_receive(void* ptr, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CONFIGURE_VSS_BACKUP
@@ -593,9 +838,19 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_asset_metadata(void* ptr, Ru
 RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_btc_balance(void* ptr, RustBuffer online, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_DESCRIPTORS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_DESCRIPTORS
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_descriptors(void* ptr, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_FEE_ESTIMATION
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_FEE_ESTIMATION
 double uniffi_rgblibuniffi_fn_method_wallet_get_fee_estimation(void* ptr, RustBuffer online, uint16_t blocks, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_KEYS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_KEYS
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_keys(void* ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_MEDIA_DIR
@@ -625,12 +880,22 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inflate(void* ptr, RustBuffer on
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INFLATE_BEGIN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INFLATE_BEGIN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inflate_begin(void* ptr, RustBuffer online, RustBuffer asset_id, RustBuffer inflation_amounts, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inflate_begin(void* ptr, RustBuffer online, RustBuffer asset_id, RustBuffer inflation_amounts, uint64_t fee_rate, uint8_t min_confirmations, int8_t dry_run, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INFLATE_END
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INFLATE_END
 RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inflate_end(void* ptr, RustBuffer online, RustBuffer signed_psbt, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_PSBT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_PSBT
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inspect_psbt(void* ptr, RustBuffer psbt, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_RGB_TRANSFER
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_RGB_TRANSFER
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inspect_rgb_transfer(void* ptr, RustBuffer psbt, RustBuffer fascia_path, uint64_t entropy, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_CFA
@@ -640,7 +905,7 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_cfa(void* ptr, RustB
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_IFA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_IFA
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_ifa(void* ptr, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustBuffer inflation_amounts, uint8_t replace_rights_num, RustBuffer reject_list_url, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_ifa(void* ptr, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustBuffer inflation_amounts, RustBuffer reject_list_url, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_NIA
@@ -680,12 +945,12 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_refresh(void* ptr, RustBuffer on
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send(void* ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send(void* ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, RustBuffer expiration_timestamp, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BEGIN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BEGIN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_begin(void* ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_begin(void* ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, RustBuffer expiration_timestamp, int8_t dry_run, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BTC
@@ -730,7 +995,7 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_vss_backup_info(void* ptr, void*
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_WITNESS_RECEIVE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_WITNESS_RECEIVE
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_witness_receive(void* ptr, RustBuffer asset_id, RustBuffer assignment, RustBuffer duration_seconds, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_witness_receive(void* ptr, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_GENERATE_KEYS
@@ -1057,6 +1322,18 @@ uint16_t uniffi_rgblibuniffi_checksum_func_restore_keys(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_COSIGNER_COSIGNER_DATA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_COSIGNER_COSIGNER_DATA
+uint16_t uniffi_rgblibuniffi_checksum_method_cosigner_cosigner_data(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_COSIGNER_COSIGNER_STRING
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_COSIGNER_COSIGNER_STRING
+uint16_t uniffi_rgblibuniffi_checksum_method_cosigner_cosigner_string(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_INVOICE_INVOICE_DATA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_INVOICE_INVOICE_DATA
 uint16_t uniffi_rgblibuniffi_checksum_method_invoice_invoice_data(void
@@ -1066,6 +1343,246 @@ uint16_t uniffi_rgblibuniffi_checksum_method_invoice_invoice_data(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_INVOICE_INVOICE_STRING
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_INVOICE_INVOICE_STRING
 uint16_t uniffi_rgblibuniffi_checksum_method_invoice_invoice_string(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_BACKUP
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_BACKUP
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_backup(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_BACKUP_INFO
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_BACKUP_INFO
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_backup_info(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_BLIND_RECEIVE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_BLIND_RECEIVE
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_blind_receive(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_CONFIGURE_VSS_BACKUP
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_CONFIGURE_VSS_BACKUP
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_configure_vss_backup(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_CREATE_UTXOS_INIT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_CREATE_UTXOS_INIT
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_create_utxos_init(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_DELETE_TRANSFERS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_DELETE_TRANSFERS
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_delete_transfers(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_DISABLE_VSS_AUTO_BACKUP
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_DISABLE_VSS_AUTO_BACKUP
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_disable_vss_auto_backup(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_FINALIZE_PSBT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_FINALIZE_PSBT
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_finalize_psbt(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_ADDRESS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_ADDRESS
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_get_address(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_ASSET_BALANCE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_ASSET_BALANCE
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_get_asset_balance(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_ASSET_METADATA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_ASSET_METADATA
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_get_asset_metadata(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_BTC_BALANCE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_BTC_BALANCE
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_get_btc_balance(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_DESCRIPTORS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_DESCRIPTORS
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_get_descriptors(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_FEE_ESTIMATION
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_FEE_ESTIMATION
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_get_fee_estimation(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_KEYS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_KEYS
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_get_keys(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_MEDIA_DIR
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_MEDIA_DIR
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_get_media_dir(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_WALLET_DATA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_WALLET_DATA
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_get_wallet_data(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_WALLET_DIR
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GET_WALLET_DIR
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_get_wallet_dir(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GO_ONLINE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_GO_ONLINE
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_go_online(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_HUB_INFO
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_HUB_INFO
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_hub_info(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INFLATE_INIT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INFLATE_INIT
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_inflate_init(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INSPECT_PSBT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INSPECT_PSBT
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_inspect_psbt(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INSPECT_RGB_TRANSFER
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INSPECT_RGB_TRANSFER
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_inspect_rgb_transfer(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_ISSUE_ASSET_CFA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_ISSUE_ASSET_CFA
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_cfa(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_ISSUE_ASSET_IFA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_ISSUE_ASSET_IFA
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_ifa(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_ISSUE_ASSET_NIA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_ISSUE_ASSET_NIA
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_nia(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_ISSUE_ASSET_UDA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_ISSUE_ASSET_UDA
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_uda(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_LIST_ASSETS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_LIST_ASSETS
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_list_assets(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_LIST_TRANSACTIONS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_LIST_TRANSACTIONS
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transactions(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_LIST_TRANSFERS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_LIST_TRANSFERS
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transfers(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_LIST_UNSPENTS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_LIST_UNSPENTS
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_list_unspents(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_REFRESH
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_REFRESH
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_refresh(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_RESPOND_TO_OPERATION
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_RESPOND_TO_OPERATION
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_respond_to_operation(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_SEND_BTC_INIT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_SEND_BTC_INIT
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_send_btc_init(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_SEND_INIT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_SEND_INIT
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_send_init(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_SYNC
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_SYNC
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_sync(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_SYNC_WITH_HUB
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_SYNC_WITH_HUB
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_sync_with_hub(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_VSS_BACKUP
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_VSS_BACKUP
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_vss_backup(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_VSS_BACKUP_INFO
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_VSS_BACKUP_INFO
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_vss_backup_info(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_WITNESS_RECEIVE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_WITNESS_RECEIVE
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_witness_receive(void
     
 );
 #endif
@@ -1207,9 +1724,21 @@ uint16_t uniffi_rgblibuniffi_checksum_method_wallet_get_btc_balance(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_GET_DESCRIPTORS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_GET_DESCRIPTORS
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_get_descriptors(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_GET_FEE_ESTIMATION
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_GET_FEE_ESTIMATION
 uint16_t uniffi_rgblibuniffi_checksum_method_wallet_get_fee_estimation(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_GET_KEYS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_GET_KEYS
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_get_keys(void
     
 );
 #endif
@@ -1252,6 +1781,18 @@ uint16_t uniffi_rgblibuniffi_checksum_method_wallet_inflate_begin(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INFLATE_END
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INFLATE_END
 uint16_t uniffi_rgblibuniffi_checksum_method_wallet_inflate_end(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INSPECT_PSBT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INSPECT_PSBT
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_inspect_psbt(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INSPECT_RGB_TRANSFER
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INSPECT_RGB_TRANSFER
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_inspect_rgb_transfer(void
     
 );
 #endif
@@ -1381,9 +1922,27 @@ uint16_t uniffi_rgblibuniffi_checksum_constructor_address_new(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_CONSTRUCTOR_COSIGNER_FROM_DATA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_CONSTRUCTOR_COSIGNER_FROM_DATA
+uint16_t uniffi_rgblibuniffi_checksum_constructor_cosigner_from_data(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_CONSTRUCTOR_COSIGNER_NEW
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_CONSTRUCTOR_COSIGNER_NEW
+uint16_t uniffi_rgblibuniffi_checksum_constructor_cosigner_new(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_CONSTRUCTOR_INVOICE_NEW
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_CONSTRUCTOR_INVOICE_NEW
 uint16_t uniffi_rgblibuniffi_checksum_constructor_invoice_new(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_CONSTRUCTOR_MULTISIGWALLET_NEW
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_CONSTRUCTOR_MULTISIGWALLET_NEW
+uint16_t uniffi_rgblibuniffi_checksum_constructor_multisigwallet_new(void
     
 );
 #endif
