@@ -15,7 +15,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  UNIFFI_BINDGEN_GO_TAG: "v0.5.0+v0.29.5"
+  UNIFFI_BINDGEN_GO_TAG: "v0.7.0+v0.31.0"
 
 jobs:
   generate:
