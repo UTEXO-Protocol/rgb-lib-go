@@ -1,9 +1,12 @@
 name: Test Library (tag)
 
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_run:
+    workflows: ["Build and Release"]
+    types:
+      - completed
+
+  workflow_dispatch:
 
 jobs:
   test:
