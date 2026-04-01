@@ -25,15 +25,15 @@ func getEnv(key, fallback string) string {
 func parseBitcoinNetwork(s string) rgb_lib.BitcoinNetwork {
 	switch strings.ToLower(strings.TrimSpace(s)) {
 	case "mainnet":
-		return rgb_lib.BitcoinNetworkMainnet{}
+		return rgb_lib.BitcoinNetworkMainnet
 	case "testnet":
-		return rgb_lib.BitcoinNetworkTestnet{}
+		return rgb_lib.BitcoinNetworkTestnet
 	case "signet":
-		return rgb_lib.BitcoinNetworkSignet{}
+		return rgb_lib.BitcoinNetworkSignet
 	case "regtest":
-		return rgb_lib.BitcoinNetworkRegtest{}
+		return rgb_lib.BitcoinNetworkRegtest
 	default:
-		return rgb_lib.BitcoinNetworkSignet{}
+		return rgb_lib.BitcoinNetworkSignet
 	}
 }
 
@@ -58,10 +58,7 @@ func main() {
 		log.Printf("created data dir: %s", dataDir)
 	}
 
-	keys, err := rgb_lib.GenerateKeys(network)
-	if err != nil {
-		log.Fatalf("generate keys: %v", err)
-	}
+	keys := rgb_lib.GenerateKeys(network)
 	fmt.Println("generate_keys")
 	fmt.Printf("  network=%s\n", networkStr)
 	fmt.Printf("  mnemonic=%s\n", keys.Mnemonic)
@@ -76,11 +73,6 @@ func main() {
 		BitcoinNetwork:        network,
 		DatabaseType:          rgb_lib.DatabaseTypeSqlite,
 		MaxAllocationsPerUtxo: 1,
-		AccountXpubVanilla:    accountXpubVanilla,
-		AccountXpubColored:    accountXpubColored,
-		Mnemonic:              &mnemonic,
-		MasterFingerprint:     masterFingerprint,
-		VanillaKeychain:       &keychain,
 		SupportedSchemas: []rgb_lib.AssetSchema{
 			rgb_lib.AssetSchemaNia,
 			rgb_lib.AssetSchemaUda,
@@ -89,7 +81,15 @@ func main() {
 		},
 	}
 
-	wallet, err := rgb_lib.NewWallet(walletData)
+	walletKeys := rgb_lib.SinglesigKeys{
+		AccountXpubVanilla: accountXpubVanilla,
+		AccountXpubColored: accountXpubColored,
+		VanillaKeychain:    &keychain,
+		MasterFingerprint:  masterFingerprint,
+		Mnemonic:           &mnemonic,
+	}
+
+	wallet, err := rgb_lib.NewWallet(walletData, walletKeys)
 	if err != nil {
 		log.Fatalf("new wallet: %v", err)
 	}
