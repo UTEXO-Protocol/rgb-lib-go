@@ -57,14 +57,14 @@ static void call_UniffiRustFutureContinuationCallback(
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_FREE
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_FREE
-typedef void (*UniffiForeignFutureFree)(uint64_t handle);
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_DROPPED_CALLBACK
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_DROPPED_CALLBACK
+typedef void (*UniffiForeignFutureDroppedCallback)(uint64_t handle);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
-static void call_UniffiForeignFutureFree(
-				UniffiForeignFutureFree cb, uint64_t handle)
+static void call_UniffiForeignFutureDroppedCallback(
+				UniffiForeignFutureDroppedCallback cb, uint64_t handle)
 {
 	return cb(handle);
 }
@@ -85,293 +85,285 @@ static void call_UniffiCallbackInterfaceFree(
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE
-typedef struct UniffiForeignFuture {
-    uint64_t handle;
-    UniffiForeignFutureFree free;
-} UniffiForeignFuture;
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_CLONE
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_CLONE
+typedef uint64_t (*UniffiCallbackInterfaceClone)(uint64_t handle);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static uint64_t call_UniffiCallbackInterfaceClone(
+				UniffiCallbackInterfaceClone cb, uint64_t handle)
+{
+	return cb(handle);
+}
+
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U8
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U8
-typedef struct UniffiForeignFutureStructU8 {
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_DROPPED_CALLBACK_STRUCT
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_DROPPED_CALLBACK_STRUCT
+typedef struct UniffiForeignFutureDroppedCallbackStruct {
+    uint64_t handle;
+    UniffiForeignFutureDroppedCallback free;
+} UniffiForeignFutureDroppedCallbackStruct;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_U8
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_U8
+typedef struct UniffiForeignFutureResultU8 {
     uint8_t returnValue;
     RustCallStatus callStatus;
-} UniffiForeignFutureStructU8;
+} UniffiForeignFutureResultU8;
 
 #endif
 #ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U8
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U8
-typedef void (*UniffiForeignFutureCompleteU8)(uint64_t callback_data, UniffiForeignFutureStructU8 result);
+typedef void (*UniffiForeignFutureCompleteU8)(uint64_t callback_data, UniffiForeignFutureResultU8 result);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteU8(
-				UniffiForeignFutureCompleteU8 cb, uint64_t callback_data, UniffiForeignFutureStructU8 result)
+				UniffiForeignFutureCompleteU8 cb, uint64_t callback_data, UniffiForeignFutureResultU8 result)
 {
 	return cb(callback_data, result);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I8
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I8
-typedef struct UniffiForeignFutureStructI8 {
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_I8
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_I8
+typedef struct UniffiForeignFutureResultI8 {
     int8_t returnValue;
     RustCallStatus callStatus;
-} UniffiForeignFutureStructI8;
+} UniffiForeignFutureResultI8;
 
 #endif
 #ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I8
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I8
-typedef void (*UniffiForeignFutureCompleteI8)(uint64_t callback_data, UniffiForeignFutureStructI8 result);
+typedef void (*UniffiForeignFutureCompleteI8)(uint64_t callback_data, UniffiForeignFutureResultI8 result);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteI8(
-				UniffiForeignFutureCompleteI8 cb, uint64_t callback_data, UniffiForeignFutureStructI8 result)
+				UniffiForeignFutureCompleteI8 cb, uint64_t callback_data, UniffiForeignFutureResultI8 result)
 {
 	return cb(callback_data, result);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U16
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U16
-typedef struct UniffiForeignFutureStructU16 {
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_U16
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_U16
+typedef struct UniffiForeignFutureResultU16 {
     uint16_t returnValue;
     RustCallStatus callStatus;
-} UniffiForeignFutureStructU16;
+} UniffiForeignFutureResultU16;
 
 #endif
 #ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U16
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U16
-typedef void (*UniffiForeignFutureCompleteU16)(uint64_t callback_data, UniffiForeignFutureStructU16 result);
+typedef void (*UniffiForeignFutureCompleteU16)(uint64_t callback_data, UniffiForeignFutureResultU16 result);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteU16(
-				UniffiForeignFutureCompleteU16 cb, uint64_t callback_data, UniffiForeignFutureStructU16 result)
+				UniffiForeignFutureCompleteU16 cb, uint64_t callback_data, UniffiForeignFutureResultU16 result)
 {
 	return cb(callback_data, result);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I16
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I16
-typedef struct UniffiForeignFutureStructI16 {
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_I16
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_I16
+typedef struct UniffiForeignFutureResultI16 {
     int16_t returnValue;
     RustCallStatus callStatus;
-} UniffiForeignFutureStructI16;
+} UniffiForeignFutureResultI16;
 
 #endif
 #ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I16
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I16
-typedef void (*UniffiForeignFutureCompleteI16)(uint64_t callback_data, UniffiForeignFutureStructI16 result);
+typedef void (*UniffiForeignFutureCompleteI16)(uint64_t callback_data, UniffiForeignFutureResultI16 result);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteI16(
-				UniffiForeignFutureCompleteI16 cb, uint64_t callback_data, UniffiForeignFutureStructI16 result)
+				UniffiForeignFutureCompleteI16 cb, uint64_t callback_data, UniffiForeignFutureResultI16 result)
 {
 	return cb(callback_data, result);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U32
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U32
-typedef struct UniffiForeignFutureStructU32 {
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_U32
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_U32
+typedef struct UniffiForeignFutureResultU32 {
     uint32_t returnValue;
     RustCallStatus callStatus;
-} UniffiForeignFutureStructU32;
+} UniffiForeignFutureResultU32;
 
 #endif
 #ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U32
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U32
-typedef void (*UniffiForeignFutureCompleteU32)(uint64_t callback_data, UniffiForeignFutureStructU32 result);
+typedef void (*UniffiForeignFutureCompleteU32)(uint64_t callback_data, UniffiForeignFutureResultU32 result);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteU32(
-				UniffiForeignFutureCompleteU32 cb, uint64_t callback_data, UniffiForeignFutureStructU32 result)
+				UniffiForeignFutureCompleteU32 cb, uint64_t callback_data, UniffiForeignFutureResultU32 result)
 {
 	return cb(callback_data, result);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I32
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I32
-typedef struct UniffiForeignFutureStructI32 {
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_I32
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_I32
+typedef struct UniffiForeignFutureResultI32 {
     int32_t returnValue;
     RustCallStatus callStatus;
-} UniffiForeignFutureStructI32;
+} UniffiForeignFutureResultI32;
 
 #endif
 #ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I32
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I32
-typedef void (*UniffiForeignFutureCompleteI32)(uint64_t callback_data, UniffiForeignFutureStructI32 result);
+typedef void (*UniffiForeignFutureCompleteI32)(uint64_t callback_data, UniffiForeignFutureResultI32 result);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteI32(
-				UniffiForeignFutureCompleteI32 cb, uint64_t callback_data, UniffiForeignFutureStructI32 result)
+				UniffiForeignFutureCompleteI32 cb, uint64_t callback_data, UniffiForeignFutureResultI32 result)
 {
 	return cb(callback_data, result);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U64
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U64
-typedef struct UniffiForeignFutureStructU64 {
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_U64
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_U64
+typedef struct UniffiForeignFutureResultU64 {
     uint64_t returnValue;
     RustCallStatus callStatus;
-} UniffiForeignFutureStructU64;
+} UniffiForeignFutureResultU64;
 
 #endif
 #ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U64
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U64
-typedef void (*UniffiForeignFutureCompleteU64)(uint64_t callback_data, UniffiForeignFutureStructU64 result);
+typedef void (*UniffiForeignFutureCompleteU64)(uint64_t callback_data, UniffiForeignFutureResultU64 result);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteU64(
-				UniffiForeignFutureCompleteU64 cb, uint64_t callback_data, UniffiForeignFutureStructU64 result)
+				UniffiForeignFutureCompleteU64 cb, uint64_t callback_data, UniffiForeignFutureResultU64 result)
 {
 	return cb(callback_data, result);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I64
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I64
-typedef struct UniffiForeignFutureStructI64 {
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_I64
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_I64
+typedef struct UniffiForeignFutureResultI64 {
     int64_t returnValue;
     RustCallStatus callStatus;
-} UniffiForeignFutureStructI64;
+} UniffiForeignFutureResultI64;
 
 #endif
 #ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I64
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I64
-typedef void (*UniffiForeignFutureCompleteI64)(uint64_t callback_data, UniffiForeignFutureStructI64 result);
+typedef void (*UniffiForeignFutureCompleteI64)(uint64_t callback_data, UniffiForeignFutureResultI64 result);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteI64(
-				UniffiForeignFutureCompleteI64 cb, uint64_t callback_data, UniffiForeignFutureStructI64 result)
+				UniffiForeignFutureCompleteI64 cb, uint64_t callback_data, UniffiForeignFutureResultI64 result)
 {
 	return cb(callback_data, result);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_F32
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_F32
-typedef struct UniffiForeignFutureStructF32 {
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_F32
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_F32
+typedef struct UniffiForeignFutureResultF32 {
     float returnValue;
     RustCallStatus callStatus;
-} UniffiForeignFutureStructF32;
+} UniffiForeignFutureResultF32;
 
 #endif
 #ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_F32
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_F32
-typedef void (*UniffiForeignFutureCompleteF32)(uint64_t callback_data, UniffiForeignFutureStructF32 result);
+typedef void (*UniffiForeignFutureCompleteF32)(uint64_t callback_data, UniffiForeignFutureResultF32 result);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteF32(
-				UniffiForeignFutureCompleteF32 cb, uint64_t callback_data, UniffiForeignFutureStructF32 result)
+				UniffiForeignFutureCompleteF32 cb, uint64_t callback_data, UniffiForeignFutureResultF32 result)
 {
 	return cb(callback_data, result);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_F64
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_F64
-typedef struct UniffiForeignFutureStructF64 {
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_F64
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_F64
+typedef struct UniffiForeignFutureResultF64 {
     double returnValue;
     RustCallStatus callStatus;
-} UniffiForeignFutureStructF64;
+} UniffiForeignFutureResultF64;
 
 #endif
 #ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_F64
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_F64
-typedef void (*UniffiForeignFutureCompleteF64)(uint64_t callback_data, UniffiForeignFutureStructF64 result);
+typedef void (*UniffiForeignFutureCompleteF64)(uint64_t callback_data, UniffiForeignFutureResultF64 result);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteF64(
-				UniffiForeignFutureCompleteF64 cb, uint64_t callback_data, UniffiForeignFutureStructF64 result)
+				UniffiForeignFutureCompleteF64 cb, uint64_t callback_data, UniffiForeignFutureResultF64 result)
 {
 	return cb(callback_data, result);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_POINTER
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_POINTER
-typedef struct UniffiForeignFutureStructPointer {
-    void* returnValue;
-    RustCallStatus callStatus;
-} UniffiForeignFutureStructPointer;
-
-#endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_POINTER
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_POINTER
-typedef void (*UniffiForeignFutureCompletePointer)(uint64_t callback_data, UniffiForeignFutureStructPointer result);
-
-// Making function static works arround:
-// https://github.com/golang/go/issues/11263
-static void call_UniffiForeignFutureCompletePointer(
-				UniffiForeignFutureCompletePointer cb, uint64_t callback_data, UniffiForeignFutureStructPointer result)
-{
-	return cb(callback_data, result);
-}
-
-
-#endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_RUST_BUFFER
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_RUST_BUFFER
-typedef struct UniffiForeignFutureStructRustBuffer {
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_RUST_BUFFER
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_RUST_BUFFER
+typedef struct UniffiForeignFutureResultRustBuffer {
     RustBuffer returnValue;
     RustCallStatus callStatus;
-} UniffiForeignFutureStructRustBuffer;
+} UniffiForeignFutureResultRustBuffer;
 
 #endif
 #ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_RUST_BUFFER
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_RUST_BUFFER
-typedef void (*UniffiForeignFutureCompleteRustBuffer)(uint64_t callback_data, UniffiForeignFutureStructRustBuffer result);
+typedef void (*UniffiForeignFutureCompleteRustBuffer)(uint64_t callback_data, UniffiForeignFutureResultRustBuffer result);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteRustBuffer(
-				UniffiForeignFutureCompleteRustBuffer cb, uint64_t callback_data, UniffiForeignFutureStructRustBuffer result)
+				UniffiForeignFutureCompleteRustBuffer cb, uint64_t callback_data, UniffiForeignFutureResultRustBuffer result)
 {
 	return cb(callback_data, result);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_VOID
-#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_VOID
-typedef struct UniffiForeignFutureStructVoid {
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_VOID
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_RESULT_VOID
+typedef struct UniffiForeignFutureResultVoid {
     RustCallStatus callStatus;
-} UniffiForeignFutureStructVoid;
+} UniffiForeignFutureResultVoid;
 
 #endif
 #ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_VOID
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_VOID
-typedef void (*UniffiForeignFutureCompleteVoid)(uint64_t callback_data, UniffiForeignFutureStructVoid result);
+typedef void (*UniffiForeignFutureCompleteVoid)(uint64_t callback_data, UniffiForeignFutureResultVoid result);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteVoid(
-				UniffiForeignFutureCompleteVoid cb, uint64_t callback_data, UniffiForeignFutureStructVoid result)
+				UniffiForeignFutureCompleteVoid cb, uint64_t callback_data, UniffiForeignFutureResultVoid result)
 {
 	return cb(callback_data, result);
 }
@@ -380,622 +372,622 @@ static void call_UniffiForeignFutureCompleteVoid(
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_ADDRESS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_ADDRESS
-void* uniffi_rgblibuniffi_fn_clone_address(void* ptr, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_clone_address(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_ADDRESS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_ADDRESS
-void uniffi_rgblibuniffi_fn_free_address(void* ptr, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_free_address(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_ADDRESS_NEW
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_ADDRESS_NEW
-void* uniffi_rgblibuniffi_fn_constructor_address_new(RustBuffer address_string, RustBuffer bitcoin_network, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_constructor_address_new(RustBuffer address_string, RustBuffer bitcoin_network, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_COSIGNER
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_COSIGNER
-void* uniffi_rgblibuniffi_fn_clone_cosigner(void* ptr, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_clone_cosigner(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_COSIGNER
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_COSIGNER
-void uniffi_rgblibuniffi_fn_free_cosigner(void* ptr, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_free_cosigner(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_COSIGNER_FROM_DATA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_COSIGNER_FROM_DATA
-void* uniffi_rgblibuniffi_fn_constructor_cosigner_from_data(RustBuffer data, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_constructor_cosigner_from_data(RustBuffer data, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_COSIGNER_NEW
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_COSIGNER_NEW
-void* uniffi_rgblibuniffi_fn_constructor_cosigner_new(RustBuffer cosigner_string, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_constructor_cosigner_new(RustBuffer cosigner_string, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_COSIGNER_COSIGNER_DATA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_COSIGNER_COSIGNER_DATA
-RustBuffer uniffi_rgblibuniffi_fn_method_cosigner_cosigner_data(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_cosigner_cosigner_data(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_COSIGNER_COSIGNER_STRING
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_COSIGNER_COSIGNER_STRING
-RustBuffer uniffi_rgblibuniffi_fn_method_cosigner_cosigner_string(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_cosigner_cosigner_string(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_INVOICE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_INVOICE
-void* uniffi_rgblibuniffi_fn_clone_invoice(void* ptr, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_clone_invoice(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_INVOICE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_INVOICE
-void uniffi_rgblibuniffi_fn_free_invoice(void* ptr, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_free_invoice(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_INVOICE_NEW
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_INVOICE_NEW
-void* uniffi_rgblibuniffi_fn_constructor_invoice_new(RustBuffer invoice_string, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_constructor_invoice_new(RustBuffer invoice_string, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_INVOICE_INVOICE_DATA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_INVOICE_INVOICE_DATA
-RustBuffer uniffi_rgblibuniffi_fn_method_invoice_invoice_data(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_invoice_invoice_data(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_INVOICE_INVOICE_STRING
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_INVOICE_INVOICE_STRING
-RustBuffer uniffi_rgblibuniffi_fn_method_invoice_invoice_string(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_invoice_invoice_string(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_MULTISIGWALLET
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_MULTISIGWALLET
-void* uniffi_rgblibuniffi_fn_clone_multisigwallet(void* ptr, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_clone_multisigwallet(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_MULTISIGWALLET
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_MULTISIGWALLET
-void uniffi_rgblibuniffi_fn_free_multisigwallet(void* ptr, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_free_multisigwallet(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_MULTISIGWALLET_NEW
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_MULTISIGWALLET_NEW
-void* uniffi_rgblibuniffi_fn_constructor_multisigwallet_new(RustBuffer wallet_data, RustBuffer keys, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_constructor_multisigwallet_new(RustBuffer wallet_data, RustBuffer keys, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BACKUP
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BACKUP
-void uniffi_rgblibuniffi_fn_method_multisigwallet_backup(void* ptr, RustBuffer backup_path, RustBuffer password, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_method_multisigwallet_backup(uint64_t ptr, RustBuffer backup_path, RustBuffer password, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BACKUP_INFO
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BACKUP_INFO
-int8_t uniffi_rgblibuniffi_fn_method_multisigwallet_backup_info(void* ptr, RustCallStatus *out_status
+int8_t uniffi_rgblibuniffi_fn_method_multisigwallet_backup_info(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BLIND_RECEIVE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BLIND_RECEIVE
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_blind_receive(void* ptr, RustBuffer online, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_blind_receive(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_CONFIGURE_VSS_BACKUP
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_CONFIGURE_VSS_BACKUP
-void uniffi_rgblibuniffi_fn_method_multisigwallet_configure_vss_backup(void* ptr, RustBuffer config, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_method_multisigwallet_configure_vss_backup(uint64_t ptr, RustBuffer config, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_CREATE_UTXOS_INIT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_CREATE_UTXOS_INIT
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_create_utxos_init(void* ptr, RustBuffer online, int8_t up_to, RustBuffer num, RustBuffer size, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_create_utxos_init(uint64_t ptr, RustBuffer online, int8_t up_to, RustBuffer num, RustBuffer size, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_DELETE_TRANSFERS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_DELETE_TRANSFERS
-int8_t uniffi_rgblibuniffi_fn_method_multisigwallet_delete_transfers(void* ptr, RustBuffer batch_transfer_idx, int8_t no_asset_only, RustCallStatus *out_status
+int8_t uniffi_rgblibuniffi_fn_method_multisigwallet_delete_transfers(uint64_t ptr, RustBuffer batch_transfer_idx, int8_t no_asset_only, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_DISABLE_VSS_AUTO_BACKUP
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_DISABLE_VSS_AUTO_BACKUP
-void uniffi_rgblibuniffi_fn_method_multisigwallet_disable_vss_auto_backup(void* ptr, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_method_multisigwallet_disable_vss_auto_backup(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_FINALIZE_PSBT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_FINALIZE_PSBT
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_finalize_psbt(void* ptr, RustBuffer signed_psbt, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_finalize_psbt(uint64_t ptr, RustBuffer signed_psbt, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_ADDRESS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_ADDRESS
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_address(void* ptr, RustBuffer online, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_address(uint64_t ptr, RustBuffer online, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_ASSET_BALANCE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_ASSET_BALANCE
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_asset_balance(void* ptr, RustBuffer asset_id, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_asset_balance(uint64_t ptr, RustBuffer asset_id, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_ASSET_METADATA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_ASSET_METADATA
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_asset_metadata(void* ptr, RustBuffer asset_id, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_asset_metadata(uint64_t ptr, RustBuffer asset_id, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_BTC_BALANCE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_BTC_BALANCE
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_btc_balance(void* ptr, RustBuffer online, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_btc_balance(uint64_t ptr, RustBuffer online, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_DESCRIPTORS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_DESCRIPTORS
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_descriptors(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_descriptors(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_FEE_ESTIMATION
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_FEE_ESTIMATION
-double uniffi_rgblibuniffi_fn_method_multisigwallet_get_fee_estimation(void* ptr, RustBuffer online, uint16_t blocks, RustCallStatus *out_status
+double uniffi_rgblibuniffi_fn_method_multisigwallet_get_fee_estimation(uint64_t ptr, RustBuffer online, uint16_t blocks, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_KEYS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_KEYS
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_keys(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_keys(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_MEDIA_DIR
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_MEDIA_DIR
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_media_dir(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_media_dir(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_WALLET_DATA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_WALLET_DATA
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_wallet_data(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_wallet_data(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_WALLET_DIR
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GET_WALLET_DIR
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_wallet_dir(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_get_wallet_dir(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GO_ONLINE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_GO_ONLINE
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_go_online(void* ptr, int8_t skip_consistency_check, RustBuffer indexer_url, RustBuffer hub_url, RustBuffer hub_token, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_go_online(uint64_t ptr, int8_t skip_consistency_check, RustBuffer indexer_url, RustBuffer hub_url, RustBuffer hub_token, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_HUB_INFO
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_HUB_INFO
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_hub_info(void* ptr, RustBuffer online, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_hub_info(uint64_t ptr, RustBuffer online, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INFLATE_INIT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INFLATE_INIT
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_inflate_init(void* ptr, RustBuffer online, RustBuffer asset_id, RustBuffer inflation_amounts, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_inflate_init(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer inflation_amounts, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_PSBT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_PSBT
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_inspect_psbt(void* ptr, RustBuffer psbt, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_inspect_psbt(uint64_t ptr, RustBuffer psbt, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_RGB_TRANSFER
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_RGB_TRANSFER
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_inspect_rgb_transfer(void* ptr, RustBuffer psbt, RustBuffer fascia_path, uint64_t entropy, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_inspect_rgb_transfer(uint64_t ptr, RustBuffer psbt, RustBuffer fascia_path, uint64_t entropy, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_CFA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_CFA
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_cfa(void* ptr, RustBuffer online, RustBuffer name, RustBuffer details, uint8_t precision, RustBuffer amounts, RustBuffer file_path, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_cfa(uint64_t ptr, RustBuffer online, RustBuffer name, RustBuffer details, uint8_t precision, RustBuffer amounts, RustBuffer file_path, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_IFA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_IFA
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_ifa(void* ptr, RustBuffer online, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustBuffer inflation_amounts, RustBuffer reject_list_url, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_ifa(uint64_t ptr, RustBuffer online, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustBuffer inflation_amounts, RustBuffer reject_list_url, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_NIA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_NIA
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_nia(void* ptr, RustBuffer online, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_nia(uint64_t ptr, RustBuffer online, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_UDA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_UDA
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_uda(void* ptr, RustBuffer online, RustBuffer ticker, RustBuffer name, RustBuffer details, uint8_t precision, RustBuffer media_file_path, RustBuffer attachments_file_paths, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_uda(uint64_t ptr, RustBuffer online, RustBuffer ticker, RustBuffer name, RustBuffer details, uint8_t precision, RustBuffer media_file_path, RustBuffer attachments_file_paths, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_ASSETS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_ASSETS
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_assets(void* ptr, RustBuffer filter_asset_schemas, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_assets(uint64_t ptr, RustBuffer filter_asset_schemas, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_TRANSACTIONS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_TRANSACTIONS
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_transactions(void* ptr, RustBuffer online, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_transactions(uint64_t ptr, RustBuffer online, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_TRANSFERS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_TRANSFERS
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_transfers(void* ptr, RustBuffer asset_id, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_transfers(uint64_t ptr, RustBuffer asset_id, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_UNSPENTS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_UNSPENTS
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_unspents(void* ptr, RustBuffer online, int8_t settled_only, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_unspents(uint64_t ptr, RustBuffer online, int8_t settled_only, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_REFRESH
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_REFRESH
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_refresh(void* ptr, RustBuffer online, RustBuffer asset_id, RustBuffer filter, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_refresh(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer filter, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_RESPOND_TO_OPERATION
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_RESPOND_TO_OPERATION
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_respond_to_operation(void* ptr, RustBuffer online, int32_t operation_idx, RustBuffer respond_to_operation, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_respond_to_operation(uint64_t ptr, RustBuffer online, int32_t operation_idx, RustBuffer respond_to_operation, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SEND_BTC_INIT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SEND_BTC_INIT
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_send_btc_init(void* ptr, RustBuffer online, RustBuffer address, uint64_t amount, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_send_btc_init(uint64_t ptr, RustBuffer online, RustBuffer address, uint64_t amount, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SEND_INIT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SEND_INIT
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_send_init(void* ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, RustBuffer expiration_timestamp, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_send_init(uint64_t ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, RustBuffer expiration_timestamp, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SYNC
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SYNC
-void uniffi_rgblibuniffi_fn_method_multisigwallet_sync(void* ptr, RustBuffer online, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_method_multisigwallet_sync(uint64_t ptr, RustBuffer online, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SYNC_WITH_HUB
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SYNC_WITH_HUB
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_sync_with_hub(void* ptr, RustBuffer online, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_sync_with_hub(uint64_t ptr, RustBuffer online, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_VSS_BACKUP
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_VSS_BACKUP
-int64_t uniffi_rgblibuniffi_fn_method_multisigwallet_vss_backup(void* ptr, void* client, RustCallStatus *out_status
+int64_t uniffi_rgblibuniffi_fn_method_multisigwallet_vss_backup(uint64_t ptr, uint64_t client, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_VSS_BACKUP_INFO
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_VSS_BACKUP_INFO
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_vss_backup_info(void* ptr, void* client, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_vss_backup_info(uint64_t ptr, uint64_t client, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_WITNESS_RECEIVE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_WITNESS_RECEIVE
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_witness_receive(void* ptr, RustBuffer online, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_witness_receive(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_RECIPIENTINFO
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_RECIPIENTINFO
-void* uniffi_rgblibuniffi_fn_clone_recipientinfo(void* ptr, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_clone_recipientinfo(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_RECIPIENTINFO
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_RECIPIENTINFO
-void uniffi_rgblibuniffi_fn_free_recipientinfo(void* ptr, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_free_recipientinfo(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_RECIPIENTINFO_NEW
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_RECIPIENTINFO_NEW
-void* uniffi_rgblibuniffi_fn_constructor_recipientinfo_new(RustBuffer recipient_id, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_constructor_recipientinfo_new(RustBuffer recipient_id, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_RECIPIENTINFO_NETWORK
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_RECIPIENTINFO_NETWORK
-RustBuffer uniffi_rgblibuniffi_fn_method_recipientinfo_network(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_recipientinfo_network(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_RECIPIENTINFO_RECIPIENT_TYPE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_RECIPIENTINFO_RECIPIENT_TYPE
-RustBuffer uniffi_rgblibuniffi_fn_method_recipientinfo_recipient_type(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_recipientinfo_recipient_type(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_TRANSPORTENDPOINT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_TRANSPORTENDPOINT
-void* uniffi_rgblibuniffi_fn_clone_transportendpoint(void* ptr, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_clone_transportendpoint(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_TRANSPORTENDPOINT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_TRANSPORTENDPOINT
-void uniffi_rgblibuniffi_fn_free_transportendpoint(void* ptr, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_free_transportendpoint(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_TRANSPORTENDPOINT_NEW
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_TRANSPORTENDPOINT_NEW
-void* uniffi_rgblibuniffi_fn_constructor_transportendpoint_new(RustBuffer transport_endpoint, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_constructor_transportendpoint_new(RustBuffer transport_endpoint, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_TRANSPORTENDPOINT_TRANSPORT_TYPE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_TRANSPORTENDPOINT_TRANSPORT_TYPE
-RustBuffer uniffi_rgblibuniffi_fn_method_transportendpoint_transport_type(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_transportendpoint_transport_type(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_VSSBACKUPCLIENT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_VSSBACKUPCLIENT
-void* uniffi_rgblibuniffi_fn_clone_vssbackupclient(void* ptr, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_clone_vssbackupclient(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_VSSBACKUPCLIENT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_VSSBACKUPCLIENT
-void uniffi_rgblibuniffi_fn_free_vssbackupclient(void* ptr, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_free_vssbackupclient(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_VSSBACKUPCLIENT_NEW
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_VSSBACKUPCLIENT_NEW
-void* uniffi_rgblibuniffi_fn_constructor_vssbackupclient_new(RustBuffer config, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_constructor_vssbackupclient_new(RustBuffer config, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_VSSBACKUPCLIENT_DELETE_BACKUP
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_VSSBACKUPCLIENT_DELETE_BACKUP
-void uniffi_rgblibuniffi_fn_method_vssbackupclient_delete_backup(void* ptr, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_method_vssbackupclient_delete_backup(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_VSSBACKUPCLIENT_ENCRYPTION_ENABLED
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_VSSBACKUPCLIENT_ENCRYPTION_ENABLED
-int8_t uniffi_rgblibuniffi_fn_method_vssbackupclient_encryption_enabled(void* ptr, RustCallStatus *out_status
+int8_t uniffi_rgblibuniffi_fn_method_vssbackupclient_encryption_enabled(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_WALLET
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_WALLET
-void* uniffi_rgblibuniffi_fn_clone_wallet(void* ptr, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_clone_wallet(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_WALLET
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FREE_WALLET
-void uniffi_rgblibuniffi_fn_free_wallet(void* ptr, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_free_wallet(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_WALLET_NEW
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_WALLET_NEW
-void* uniffi_rgblibuniffi_fn_constructor_wallet_new(RustBuffer wallet_data, RustBuffer keys, RustCallStatus *out_status
+uint64_t uniffi_rgblibuniffi_fn_constructor_wallet_new(RustBuffer wallet_data, RustBuffer keys, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BACKUP
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BACKUP
-void uniffi_rgblibuniffi_fn_method_wallet_backup(void* ptr, RustBuffer backup_path, RustBuffer password, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_method_wallet_backup(uint64_t ptr, RustBuffer backup_path, RustBuffer password, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BACKUP_INFO
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BACKUP_INFO
-int8_t uniffi_rgblibuniffi_fn_method_wallet_backup_info(void* ptr, RustCallStatus *out_status
+int8_t uniffi_rgblibuniffi_fn_method_wallet_backup_info(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BLIND_RECEIVE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BLIND_RECEIVE
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_blind_receive(void* ptr, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_blind_receive(uint64_t ptr, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CONFIGURE_VSS_BACKUP
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CONFIGURE_VSS_BACKUP
-void uniffi_rgblibuniffi_fn_method_wallet_configure_vss_backup(void* ptr, RustBuffer config, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_method_wallet_configure_vss_backup(uint64_t ptr, RustBuffer config, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CREATE_UTXOS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CREATE_UTXOS
-uint8_t uniffi_rgblibuniffi_fn_method_wallet_create_utxos(void* ptr, RustBuffer online, int8_t up_to, RustBuffer num, RustBuffer size, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
+uint8_t uniffi_rgblibuniffi_fn_method_wallet_create_utxos(uint64_t ptr, RustBuffer online, int8_t up_to, RustBuffer num, RustBuffer size, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CREATE_UTXOS_BEGIN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CREATE_UTXOS_BEGIN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_create_utxos_begin(void* ptr, RustBuffer online, int8_t up_to, RustBuffer num, RustBuffer size, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_create_utxos_begin(uint64_t ptr, RustBuffer online, int8_t up_to, RustBuffer num, RustBuffer size, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CREATE_UTXOS_END
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CREATE_UTXOS_END
-uint8_t uniffi_rgblibuniffi_fn_method_wallet_create_utxos_end(void* ptr, RustBuffer online, RustBuffer signed_psbt, int8_t skip_sync, RustCallStatus *out_status
+uint8_t uniffi_rgblibuniffi_fn_method_wallet_create_utxos_end(uint64_t ptr, RustBuffer online, RustBuffer signed_psbt, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DELETE_TRANSFERS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DELETE_TRANSFERS
-int8_t uniffi_rgblibuniffi_fn_method_wallet_delete_transfers(void* ptr, RustBuffer batch_transfer_idx, int8_t no_asset_only, RustCallStatus *out_status
+int8_t uniffi_rgblibuniffi_fn_method_wallet_delete_transfers(uint64_t ptr, RustBuffer batch_transfer_idx, int8_t no_asset_only, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DISABLE_VSS_AUTO_BACKUP
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DISABLE_VSS_AUTO_BACKUP
-void uniffi_rgblibuniffi_fn_method_wallet_disable_vss_auto_backup(void* ptr, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_method_wallet_disable_vss_auto_backup(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DRAIN_TO
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DRAIN_TO
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_drain_to(void* ptr, RustBuffer online, RustBuffer address, int8_t destroy_assets, uint64_t fee_rate, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_drain_to(uint64_t ptr, RustBuffer online, RustBuffer address, int8_t destroy_assets, uint64_t fee_rate, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DRAIN_TO_BEGIN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DRAIN_TO_BEGIN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_drain_to_begin(void* ptr, RustBuffer online, RustBuffer address, int8_t destroy_assets, uint64_t fee_rate, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_drain_to_begin(uint64_t ptr, RustBuffer online, RustBuffer address, int8_t destroy_assets, uint64_t fee_rate, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DRAIN_TO_END
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DRAIN_TO_END
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_drain_to_end(void* ptr, RustBuffer online, RustBuffer signed_psbt, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_drain_to_end(uint64_t ptr, RustBuffer online, RustBuffer signed_psbt, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_FAIL_TRANSFERS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_FAIL_TRANSFERS
-int8_t uniffi_rgblibuniffi_fn_method_wallet_fail_transfers(void* ptr, RustBuffer online, RustBuffer batch_transfer_idx, int8_t no_asset_only, int8_t skip_sync, RustCallStatus *out_status
+int8_t uniffi_rgblibuniffi_fn_method_wallet_fail_transfers(uint64_t ptr, RustBuffer online, RustBuffer batch_transfer_idx, int8_t no_asset_only, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_FINALIZE_PSBT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_FINALIZE_PSBT
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_finalize_psbt(void* ptr, RustBuffer signed_psbt, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_finalize_psbt(uint64_t ptr, RustBuffer signed_psbt, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_ADDRESS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_ADDRESS
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_address(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_address(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_ASSET_BALANCE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_ASSET_BALANCE
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_asset_balance(void* ptr, RustBuffer asset_id, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_asset_balance(uint64_t ptr, RustBuffer asset_id, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_ASSET_METADATA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_ASSET_METADATA
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_asset_metadata(void* ptr, RustBuffer asset_id, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_asset_metadata(uint64_t ptr, RustBuffer asset_id, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_BTC_BALANCE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_BTC_BALANCE
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_btc_balance(void* ptr, RustBuffer online, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_btc_balance(uint64_t ptr, RustBuffer online, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_DESCRIPTORS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_DESCRIPTORS
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_descriptors(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_descriptors(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_FEE_ESTIMATION
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_FEE_ESTIMATION
-double uniffi_rgblibuniffi_fn_method_wallet_get_fee_estimation(void* ptr, RustBuffer online, uint16_t blocks, RustCallStatus *out_status
+double uniffi_rgblibuniffi_fn_method_wallet_get_fee_estimation(uint64_t ptr, RustBuffer online, uint16_t blocks, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_KEYS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_KEYS
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_keys(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_keys(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_MEDIA_DIR
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_MEDIA_DIR
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_media_dir(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_media_dir(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_WALLET_DATA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_WALLET_DATA
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_wallet_data(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_wallet_data(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_WALLET_DIR
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_WALLET_DIR
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_wallet_dir(void* ptr, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_wallet_dir(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GO_ONLINE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GO_ONLINE
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_go_online(void* ptr, int8_t skip_consistency_check, RustBuffer indexer_url, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_go_online(uint64_t ptr, int8_t skip_consistency_check, RustBuffer indexer_url, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INFLATE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INFLATE
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inflate(void* ptr, RustBuffer online, RustBuffer asset_id, RustBuffer inflation_amounts, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inflate(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer inflation_amounts, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INFLATE_BEGIN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INFLATE_BEGIN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inflate_begin(void* ptr, RustBuffer online, RustBuffer asset_id, RustBuffer inflation_amounts, uint64_t fee_rate, uint8_t min_confirmations, int8_t dry_run, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inflate_begin(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer inflation_amounts, uint64_t fee_rate, uint8_t min_confirmations, int8_t dry_run, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INFLATE_END
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INFLATE_END
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inflate_end(void* ptr, RustBuffer online, RustBuffer signed_psbt, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inflate_end(uint64_t ptr, RustBuffer online, RustBuffer signed_psbt, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_PSBT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_PSBT
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inspect_psbt(void* ptr, RustBuffer psbt, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inspect_psbt(uint64_t ptr, RustBuffer psbt, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_RGB_TRANSFER
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_RGB_TRANSFER
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inspect_rgb_transfer(void* ptr, RustBuffer psbt, RustBuffer fascia_path, uint64_t entropy, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inspect_rgb_transfer(uint64_t ptr, RustBuffer psbt, RustBuffer fascia_path, uint64_t entropy, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_CFA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_CFA
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_cfa(void* ptr, RustBuffer name, RustBuffer details, uint8_t precision, RustBuffer amounts, RustBuffer file_path, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_cfa(uint64_t ptr, RustBuffer name, RustBuffer details, uint8_t precision, RustBuffer amounts, RustBuffer file_path, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_IFA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_IFA
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_ifa(void* ptr, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustBuffer inflation_amounts, RustBuffer reject_list_url, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_ifa(uint64_t ptr, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustBuffer inflation_amounts, RustBuffer reject_list_url, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_NIA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_NIA
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_nia(void* ptr, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_nia(uint64_t ptr, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_UDA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_UDA
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_uda(void* ptr, RustBuffer ticker, RustBuffer name, RustBuffer details, uint8_t precision, RustBuffer media_file_path, RustBuffer attachments_file_paths, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_uda(uint64_t ptr, RustBuffer ticker, RustBuffer name, RustBuffer details, uint8_t precision, RustBuffer media_file_path, RustBuffer attachments_file_paths, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_ASSETS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_ASSETS
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_assets(void* ptr, RustBuffer filter_asset_schemas, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_assets(uint64_t ptr, RustBuffer filter_asset_schemas, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_TRANSACTIONS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_TRANSACTIONS
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_transactions(void* ptr, RustBuffer online, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_transactions(uint64_t ptr, RustBuffer online, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_TRANSFERS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_TRANSFERS
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_transfers(void* ptr, RustBuffer asset_id, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_transfers(uint64_t ptr, RustBuffer asset_id, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_UNSPENTS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_UNSPENTS
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_unspents(void* ptr, RustBuffer online, int8_t settled_only, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_unspents(uint64_t ptr, RustBuffer online, int8_t settled_only, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_REFRESH
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_REFRESH
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_refresh(void* ptr, RustBuffer online, RustBuffer asset_id, RustBuffer filter, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_refresh(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer filter, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send(void* ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, RustBuffer expiration_timestamp, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send(uint64_t ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, RustBuffer expiration_timestamp, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BEGIN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BEGIN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_begin(void* ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, RustBuffer expiration_timestamp, int8_t dry_run, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_begin(uint64_t ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, RustBuffer expiration_timestamp, int8_t dry_run, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BTC
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BTC
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_btc(void* ptr, RustBuffer online, RustBuffer address, uint64_t amount, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_btc(uint64_t ptr, RustBuffer online, RustBuffer address, uint64_t amount, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BTC_BEGIN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BTC_BEGIN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_btc_begin(void* ptr, RustBuffer online, RustBuffer address, uint64_t amount, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_btc_begin(uint64_t ptr, RustBuffer online, RustBuffer address, uint64_t amount, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BTC_END
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BTC_END
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_btc_end(void* ptr, RustBuffer online, RustBuffer signed_psbt, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_btc_end(uint64_t ptr, RustBuffer online, RustBuffer signed_psbt, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_END
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_END
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_end(void* ptr, RustBuffer online, RustBuffer signed_psbt, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_end(uint64_t ptr, RustBuffer online, RustBuffer signed_psbt, int8_t skip_sync, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SIGN_PSBT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SIGN_PSBT
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_sign_psbt(void* ptr, RustBuffer unsigned_psbt, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_sign_psbt(uint64_t ptr, RustBuffer unsigned_psbt, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SYNC
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SYNC
-void uniffi_rgblibuniffi_fn_method_wallet_sync(void* ptr, RustBuffer online, RustCallStatus *out_status
+void uniffi_rgblibuniffi_fn_method_wallet_sync(uint64_t ptr, RustBuffer online, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_VSS_BACKUP
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_VSS_BACKUP
-int64_t uniffi_rgblibuniffi_fn_method_wallet_vss_backup(void* ptr, void* client, RustCallStatus *out_status
+int64_t uniffi_rgblibuniffi_fn_method_wallet_vss_backup(uint64_t ptr, uint64_t client, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_VSS_BACKUP_INFO
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_VSS_BACKUP_INFO
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_vss_backup_info(void* ptr, void* client, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_vss_backup_info(uint64_t ptr, uint64_t client, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_WITNESS_RECEIVE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_WITNESS_RECEIVE
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_witness_receive(void* ptr, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_witness_receive(uint64_t ptr, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_GENERATE_KEYS
@@ -1236,26 +1228,6 @@ void ffi_rgblibuniffi_rust_future_free_f64(uint64_t handle
 #ifndef UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUST_FUTURE_COMPLETE_F64
 #define UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUST_FUTURE_COMPLETE_F64
 double ffi_rgblibuniffi_rust_future_complete_f64(uint64_t handle, RustCallStatus *out_status
-);
-#endif
-#ifndef UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUST_FUTURE_POLL_POINTER
-#define UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUST_FUTURE_POLL_POINTER
-void ffi_rgblibuniffi_rust_future_poll_pointer(uint64_t handle, UniffiRustFutureContinuationCallback callback, uint64_t callback_data
-);
-#endif
-#ifndef UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUST_FUTURE_CANCEL_POINTER
-#define UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUST_FUTURE_CANCEL_POINTER
-void ffi_rgblibuniffi_rust_future_cancel_pointer(uint64_t handle
-);
-#endif
-#ifndef UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUST_FUTURE_FREE_POINTER
-#define UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUST_FUTURE_FREE_POINTER
-void ffi_rgblibuniffi_rust_future_free_pointer(uint64_t handle
-);
-#endif
-#ifndef UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUST_FUTURE_COMPLETE_POINTER
-#define UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUST_FUTURE_COMPLETE_POINTER
-void* ffi_rgblibuniffi_rust_future_complete_pointer(uint64_t handle, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUST_FUTURE_POLL_RUST_BUFFER

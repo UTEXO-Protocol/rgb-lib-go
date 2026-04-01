@@ -155,17 +155,18 @@ func LiftFromRustBuffer[GoType any](bufReader BufReader[GoType], rbuf RustBuffer
 	return item
 }
 
-func rustCallWithError[E any, U any](converter BufReader[*E], callback func(*C.RustCallStatus) U) (U, *E) {
+func rustCallWithError[E any, U any](converter BufReader[E], callback func(*C.RustCallStatus) U) (U, E) {
 	var status C.RustCallStatus
 	returnValue := callback(&status)
 	err := checkCallStatus(converter, status)
 	return returnValue, err
 }
 
-func checkCallStatus[E any](converter BufReader[*E], status C.RustCallStatus) *E {
+func checkCallStatus[E any](converter BufReader[E], status C.RustCallStatus) E {
 	switch status.code {
 	case 0:
-		return nil
+		var zero E
+		return zero
 	case 1:
 		return LiftFromRustBuffer(converter, GoRustBuffer{inner: status.errorBuf})
 	case 2:
@@ -363,7 +364,7 @@ func init() {
 
 func uniffiCheckChecksums() {
 	// Get the bindings contract version from our ComponentInterface
-	bindingsContractVersion := 29
+	bindingsContractVersion := 30
 	// Get the scaffolding contract version by calling the into the dylib
 	scaffoldingContractVersion := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint32_t {
 		return C.ffi_rgblibuniffi_uniffi_contract_version()
@@ -412,7 +413,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_cosigner_cosigner_data()
 		})
-		if checksum != 56695 {
+		if checksum != 1643 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_cosigner_cosigner_data: UniFFI API checksum mismatch")
 		}
@@ -421,7 +422,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_cosigner_cosigner_string()
 		})
-		if checksum != 48420 {
+		if checksum != 41862 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_cosigner_cosigner_string: UniFFI API checksum mismatch")
 		}
@@ -430,7 +431,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_invoice_invoice_data()
 		})
-		if checksum != 31294 {
+		if checksum != 9066 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_invoice_invoice_data: UniFFI API checksum mismatch")
 		}
@@ -439,7 +440,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_invoice_invoice_string()
 		})
-		if checksum != 25144 {
+		if checksum != 26609 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_invoice_invoice_string: UniFFI API checksum mismatch")
 		}
@@ -448,7 +449,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_backup()
 		})
-		if checksum != 47143 {
+		if checksum != 42548 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_backup: UniFFI API checksum mismatch")
 		}
@@ -457,7 +458,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_backup_info()
 		})
-		if checksum != 63138 {
+		if checksum != 2266 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_backup_info: UniFFI API checksum mismatch")
 		}
@@ -466,7 +467,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_blind_receive()
 		})
-		if checksum != 52084 {
+		if checksum != 36277 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_blind_receive: UniFFI API checksum mismatch")
 		}
@@ -475,7 +476,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_configure_vss_backup()
 		})
-		if checksum != 19731 {
+		if checksum != 22727 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_configure_vss_backup: UniFFI API checksum mismatch")
 		}
@@ -484,7 +485,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_create_utxos_init()
 		})
-		if checksum != 63636 {
+		if checksum != 30968 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_create_utxos_init: UniFFI API checksum mismatch")
 		}
@@ -493,7 +494,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_delete_transfers()
 		})
-		if checksum != 48227 {
+		if checksum != 40748 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_delete_transfers: UniFFI API checksum mismatch")
 		}
@@ -502,7 +503,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_disable_vss_auto_backup()
 		})
-		if checksum != 64013 {
+		if checksum != 17112 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_disable_vss_auto_backup: UniFFI API checksum mismatch")
 		}
@@ -511,7 +512,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_finalize_psbt()
 		})
-		if checksum != 41417 {
+		if checksum != 5884 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_finalize_psbt: UniFFI API checksum mismatch")
 		}
@@ -520,7 +521,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_address()
 		})
-		if checksum != 16927 {
+		if checksum != 56936 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_get_address: UniFFI API checksum mismatch")
 		}
@@ -529,7 +530,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_asset_balance()
 		})
-		if checksum != 31174 {
+		if checksum != 14712 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_get_asset_balance: UniFFI API checksum mismatch")
 		}
@@ -538,7 +539,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_asset_metadata()
 		})
-		if checksum != 51559 {
+		if checksum != 50236 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_get_asset_metadata: UniFFI API checksum mismatch")
 		}
@@ -547,7 +548,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_btc_balance()
 		})
-		if checksum != 35284 {
+		if checksum != 49406 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_get_btc_balance: UniFFI API checksum mismatch")
 		}
@@ -556,7 +557,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_descriptors()
 		})
-		if checksum != 28901 {
+		if checksum != 20698 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_get_descriptors: UniFFI API checksum mismatch")
 		}
@@ -565,7 +566,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_fee_estimation()
 		})
-		if checksum != 63167 {
+		if checksum != 65015 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_get_fee_estimation: UniFFI API checksum mismatch")
 		}
@@ -574,7 +575,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_keys()
 		})
-		if checksum != 34025 {
+		if checksum != 42699 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_get_keys: UniFFI API checksum mismatch")
 		}
@@ -583,7 +584,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_media_dir()
 		})
-		if checksum != 26729 {
+		if checksum != 54414 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_get_media_dir: UniFFI API checksum mismatch")
 		}
@@ -592,7 +593,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_wallet_data()
 		})
-		if checksum != 55193 {
+		if checksum != 22080 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_get_wallet_data: UniFFI API checksum mismatch")
 		}
@@ -601,7 +602,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_wallet_dir()
 		})
-		if checksum != 32674 {
+		if checksum != 50443 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_get_wallet_dir: UniFFI API checksum mismatch")
 		}
@@ -610,7 +611,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_go_online()
 		})
-		if checksum != 16288 {
+		if checksum != 64004 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_go_online: UniFFI API checksum mismatch")
 		}
@@ -619,7 +620,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_hub_info()
 		})
-		if checksum != 36562 {
+		if checksum != 13471 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_hub_info: UniFFI API checksum mismatch")
 		}
@@ -628,7 +629,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_inflate_init()
 		})
-		if checksum != 62441 {
+		if checksum != 46509 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_inflate_init: UniFFI API checksum mismatch")
 		}
@@ -637,7 +638,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_inspect_psbt()
 		})
-		if checksum != 18688 {
+		if checksum != 4385 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_inspect_psbt: UniFFI API checksum mismatch")
 		}
@@ -646,7 +647,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_inspect_rgb_transfer()
 		})
-		if checksum != 28302 {
+		if checksum != 34229 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_inspect_rgb_transfer: UniFFI API checksum mismatch")
 		}
@@ -655,7 +656,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_cfa()
 		})
-		if checksum != 36020 {
+		if checksum != 44678 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_cfa: UniFFI API checksum mismatch")
 		}
@@ -664,7 +665,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_ifa()
 		})
-		if checksum != 21088 {
+		if checksum != 14808 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_ifa: UniFFI API checksum mismatch")
 		}
@@ -673,7 +674,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_nia()
 		})
-		if checksum != 38404 {
+		if checksum != 24678 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_nia: UniFFI API checksum mismatch")
 		}
@@ -682,7 +683,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_uda()
 		})
-		if checksum != 43646 {
+		if checksum != 48866 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_uda: UniFFI API checksum mismatch")
 		}
@@ -691,7 +692,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_list_assets()
 		})
-		if checksum != 27958 {
+		if checksum != 323 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_list_assets: UniFFI API checksum mismatch")
 		}
@@ -700,7 +701,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transactions()
 		})
-		if checksum != 28998 {
+		if checksum != 65474 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transactions: UniFFI API checksum mismatch")
 		}
@@ -709,7 +710,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transfers()
 		})
-		if checksum != 39314 {
+		if checksum != 12717 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transfers: UniFFI API checksum mismatch")
 		}
@@ -718,7 +719,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_list_unspents()
 		})
-		if checksum != 59110 {
+		if checksum != 12847 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_list_unspents: UniFFI API checksum mismatch")
 		}
@@ -727,7 +728,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_refresh()
 		})
-		if checksum != 17582 {
+		if checksum != 55834 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_refresh: UniFFI API checksum mismatch")
 		}
@@ -736,7 +737,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_respond_to_operation()
 		})
-		if checksum != 22660 {
+		if checksum != 62160 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_respond_to_operation: UniFFI API checksum mismatch")
 		}
@@ -745,7 +746,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_send_btc_init()
 		})
-		if checksum != 26171 {
+		if checksum != 36072 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_send_btc_init: UniFFI API checksum mismatch")
 		}
@@ -754,7 +755,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_send_init()
 		})
-		if checksum != 28352 {
+		if checksum != 62562 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_send_init: UniFFI API checksum mismatch")
 		}
@@ -763,7 +764,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_sync()
 		})
-		if checksum != 23845 {
+		if checksum != 33821 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_sync: UniFFI API checksum mismatch")
 		}
@@ -772,7 +773,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_sync_with_hub()
 		})
-		if checksum != 58091 {
+		if checksum != 51547 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_sync_with_hub: UniFFI API checksum mismatch")
 		}
@@ -781,7 +782,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_vss_backup()
 		})
-		if checksum != 16658 {
+		if checksum != 4593 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_vss_backup: UniFFI API checksum mismatch")
 		}
@@ -790,7 +791,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_vss_backup_info()
 		})
-		if checksum != 9440 {
+		if checksum != 42573 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_vss_backup_info: UniFFI API checksum mismatch")
 		}
@@ -799,7 +800,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_witness_receive()
 		})
-		if checksum != 62776 {
+		if checksum != 5941 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_witness_receive: UniFFI API checksum mismatch")
 		}
@@ -808,7 +809,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_recipientinfo_network()
 		})
-		if checksum != 22005 {
+		if checksum != 1417 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_recipientinfo_network: UniFFI API checksum mismatch")
 		}
@@ -817,7 +818,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_recipientinfo_recipient_type()
 		})
-		if checksum != 3457 {
+		if checksum != 32592 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_recipientinfo_recipient_type: UniFFI API checksum mismatch")
 		}
@@ -826,7 +827,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_transportendpoint_transport_type()
 		})
-		if checksum != 33510 {
+		if checksum != 38302 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_transportendpoint_transport_type: UniFFI API checksum mismatch")
 		}
@@ -835,7 +836,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_vssbackupclient_delete_backup()
 		})
-		if checksum != 15731 {
+		if checksum != 31430 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_vssbackupclient_delete_backup: UniFFI API checksum mismatch")
 		}
@@ -844,7 +845,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_vssbackupclient_encryption_enabled()
 		})
-		if checksum != 52929 {
+		if checksum != 58799 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_vssbackupclient_encryption_enabled: UniFFI API checksum mismatch")
 		}
@@ -853,7 +854,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_backup()
 		})
-		if checksum != 41851 {
+		if checksum != 30471 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_backup: UniFFI API checksum mismatch")
 		}
@@ -862,7 +863,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_backup_info()
 		})
-		if checksum != 7253 {
+		if checksum != 41657 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_backup_info: UniFFI API checksum mismatch")
 		}
@@ -871,7 +872,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_blind_receive()
 		})
-		if checksum != 208 {
+		if checksum != 893 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_blind_receive: UniFFI API checksum mismatch")
 		}
@@ -880,7 +881,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_configure_vss_backup()
 		})
-		if checksum != 2930 {
+		if checksum != 25515 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_configure_vss_backup: UniFFI API checksum mismatch")
 		}
@@ -889,7 +890,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_create_utxos()
 		})
-		if checksum != 42058 {
+		if checksum != 17853 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_create_utxos: UniFFI API checksum mismatch")
 		}
@@ -898,7 +899,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_create_utxos_begin()
 		})
-		if checksum != 30727 {
+		if checksum != 30832 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_create_utxos_begin: UniFFI API checksum mismatch")
 		}
@@ -907,7 +908,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_create_utxos_end()
 		})
-		if checksum != 50137 {
+		if checksum != 28096 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_create_utxos_end: UniFFI API checksum mismatch")
 		}
@@ -916,7 +917,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_delete_transfers()
 		})
-		if checksum != 43847 {
+		if checksum != 10688 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_delete_transfers: UniFFI API checksum mismatch")
 		}
@@ -925,7 +926,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_disable_vss_auto_backup()
 		})
-		if checksum != 47001 {
+		if checksum != 51650 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_disable_vss_auto_backup: UniFFI API checksum mismatch")
 		}
@@ -934,7 +935,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_drain_to()
 		})
-		if checksum != 60164 {
+		if checksum != 1860 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_drain_to: UniFFI API checksum mismatch")
 		}
@@ -943,7 +944,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_drain_to_begin()
 		})
-		if checksum != 57452 {
+		if checksum != 58352 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_drain_to_begin: UniFFI API checksum mismatch")
 		}
@@ -952,7 +953,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_drain_to_end()
 		})
-		if checksum != 62328 {
+		if checksum != 57158 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_drain_to_end: UniFFI API checksum mismatch")
 		}
@@ -961,7 +962,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_fail_transfers()
 		})
-		if checksum != 7914 {
+		if checksum != 51416 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_fail_transfers: UniFFI API checksum mismatch")
 		}
@@ -970,7 +971,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_finalize_psbt()
 		})
-		if checksum != 39319 {
+		if checksum != 20458 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_finalize_psbt: UniFFI API checksum mismatch")
 		}
@@ -979,7 +980,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_address()
 		})
-		if checksum != 23668 {
+		if checksum != 12087 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_address: UniFFI API checksum mismatch")
 		}
@@ -988,7 +989,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_asset_balance()
 		})
-		if checksum != 19662 {
+		if checksum != 55514 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_asset_balance: UniFFI API checksum mismatch")
 		}
@@ -997,7 +998,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_asset_metadata()
 		})
-		if checksum != 58573 {
+		if checksum != 20601 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_asset_metadata: UniFFI API checksum mismatch")
 		}
@@ -1006,7 +1007,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_btc_balance()
 		})
-		if checksum != 40762 {
+		if checksum != 40234 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_btc_balance: UniFFI API checksum mismatch")
 		}
@@ -1015,7 +1016,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_descriptors()
 		})
-		if checksum != 63486 {
+		if checksum != 12098 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_descriptors: UniFFI API checksum mismatch")
 		}
@@ -1024,7 +1025,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_fee_estimation()
 		})
-		if checksum != 64220 {
+		if checksum != 11189 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_fee_estimation: UniFFI API checksum mismatch")
 		}
@@ -1033,7 +1034,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_keys()
 		})
-		if checksum != 21973 {
+		if checksum != 2773 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_keys: UniFFI API checksum mismatch")
 		}
@@ -1042,7 +1043,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_media_dir()
 		})
-		if checksum != 64429 {
+		if checksum != 44399 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_media_dir: UniFFI API checksum mismatch")
 		}
@@ -1051,7 +1052,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_wallet_data()
 		})
-		if checksum != 18071 {
+		if checksum != 6456 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_wallet_data: UniFFI API checksum mismatch")
 		}
@@ -1060,7 +1061,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_wallet_dir()
 		})
-		if checksum != 8726 {
+		if checksum != 29077 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_wallet_dir: UniFFI API checksum mismatch")
 		}
@@ -1069,7 +1070,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_go_online()
 		})
-		if checksum != 46399 {
+		if checksum != 6720 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_go_online: UniFFI API checksum mismatch")
 		}
@@ -1078,7 +1079,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_inflate()
 		})
-		if checksum != 58410 {
+		if checksum != 1580 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_inflate: UniFFI API checksum mismatch")
 		}
@@ -1087,7 +1088,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_inflate_begin()
 		})
-		if checksum != 59700 {
+		if checksum != 14627 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_inflate_begin: UniFFI API checksum mismatch")
 		}
@@ -1096,7 +1097,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_inflate_end()
 		})
-		if checksum != 54817 {
+		if checksum != 38888 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_inflate_end: UniFFI API checksum mismatch")
 		}
@@ -1105,7 +1106,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_inspect_psbt()
 		})
-		if checksum != 8140 {
+		if checksum != 58723 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_inspect_psbt: UniFFI API checksum mismatch")
 		}
@@ -1114,7 +1115,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_inspect_rgb_transfer()
 		})
-		if checksum != 59557 {
+		if checksum != 6432 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_inspect_rgb_transfer: UniFFI API checksum mismatch")
 		}
@@ -1123,7 +1124,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_cfa()
 		})
-		if checksum != 32847 {
+		if checksum != 22119 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_cfa: UniFFI API checksum mismatch")
 		}
@@ -1132,7 +1133,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_ifa()
 		})
-		if checksum != 3135 {
+		if checksum != 50733 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_ifa: UniFFI API checksum mismatch")
 		}
@@ -1141,7 +1142,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_nia()
 		})
-		if checksum != 54511 {
+		if checksum != 36451 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_nia: UniFFI API checksum mismatch")
 		}
@@ -1150,7 +1151,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_uda()
 		})
-		if checksum != 63508 {
+		if checksum != 30524 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_uda: UniFFI API checksum mismatch")
 		}
@@ -1159,7 +1160,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_list_assets()
 		})
-		if checksum != 18027 {
+		if checksum != 51413 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_list_assets: UniFFI API checksum mismatch")
 		}
@@ -1168,7 +1169,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_list_transactions()
 		})
-		if checksum != 40825 {
+		if checksum != 41427 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_list_transactions: UniFFI API checksum mismatch")
 		}
@@ -1177,7 +1178,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_list_transfers()
 		})
-		if checksum != 36530 {
+		if checksum != 56936 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_list_transfers: UniFFI API checksum mismatch")
 		}
@@ -1186,7 +1187,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_list_unspents()
 		})
-		if checksum != 62734 {
+		if checksum != 51361 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_list_unspents: UniFFI API checksum mismatch")
 		}
@@ -1195,7 +1196,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_refresh()
 		})
-		if checksum != 45223 {
+		if checksum != 61884 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_refresh: UniFFI API checksum mismatch")
 		}
@@ -1204,7 +1205,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_send()
 		})
-		if checksum != 64411 {
+		if checksum != 59365 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_send: UniFFI API checksum mismatch")
 		}
@@ -1213,7 +1214,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_send_begin()
 		})
-		if checksum != 52494 {
+		if checksum != 16093 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_send_begin: UniFFI API checksum mismatch")
 		}
@@ -1222,7 +1223,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_send_btc()
 		})
-		if checksum != 15823 {
+		if checksum != 62052 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_send_btc: UniFFI API checksum mismatch")
 		}
@@ -1231,7 +1232,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_send_btc_begin()
 		})
-		if checksum != 59961 {
+		if checksum != 6047 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_send_btc_begin: UniFFI API checksum mismatch")
 		}
@@ -1240,7 +1241,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_send_btc_end()
 		})
-		if checksum != 60404 {
+		if checksum != 62877 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_send_btc_end: UniFFI API checksum mismatch")
 		}
@@ -1249,7 +1250,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_send_end()
 		})
-		if checksum != 41388 {
+		if checksum != 8654 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_send_end: UniFFI API checksum mismatch")
 		}
@@ -1258,7 +1259,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_sign_psbt()
 		})
-		if checksum != 10485 {
+		if checksum != 30879 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_sign_psbt: UniFFI API checksum mismatch")
 		}
@@ -1267,7 +1268,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_sync()
 		})
-		if checksum != 22767 {
+		if checksum != 26259 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_sync: UniFFI API checksum mismatch")
 		}
@@ -1276,7 +1277,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_vss_backup()
 		})
-		if checksum != 20454 {
+		if checksum != 11257 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_vss_backup: UniFFI API checksum mismatch")
 		}
@@ -1285,7 +1286,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_vss_backup_info()
 		})
-		if checksum != 29204 {
+		if checksum != 27393 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_vss_backup_info: UniFFI API checksum mismatch")
 		}
@@ -1294,7 +1295,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_witness_receive()
 		})
-		if checksum != 50795 {
+		if checksum != 40343 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_witness_receive: UniFFI API checksum mismatch")
 		}
@@ -1639,26 +1640,26 @@ func (FfiDestroyerString) Destroy(_ string) {}
 // https://github.com/mozilla/uniffi-rs/blob/0dc031132d9493ca812c3af6e7dd60ad2ea95bf0/uniffi_bindgen/src/bindings/kotlin/templates/ObjectRuntime.kt#L31
 
 type FfiObject struct {
-	pointer       unsafe.Pointer
+	handle        C.uint64_t
 	callCounter   atomic.Int64
-	cloneFunction func(unsafe.Pointer, *C.RustCallStatus) unsafe.Pointer
-	freeFunction  func(unsafe.Pointer, *C.RustCallStatus)
+	cloneFunction func(C.uint64_t, *C.RustCallStatus) C.uint64_t
+	freeFunction  func(C.uint64_t, *C.RustCallStatus)
 	destroyed     atomic.Bool
 }
 
 func newFfiObject(
-	pointer unsafe.Pointer,
-	cloneFunction func(unsafe.Pointer, *C.RustCallStatus) unsafe.Pointer,
-	freeFunction func(unsafe.Pointer, *C.RustCallStatus),
+	handle C.uint64_t,
+	cloneFunction func(C.uint64_t, *C.RustCallStatus) C.uint64_t,
+	freeFunction func(C.uint64_t, *C.RustCallStatus),
 ) FfiObject {
 	return FfiObject{
-		pointer:       pointer,
+		handle:        handle,
 		cloneFunction: cloneFunction,
 		freeFunction:  freeFunction,
 	}
 }
 
-func (ffiObject *FfiObject) incrementPointer(debugName string) unsafe.Pointer {
+func (ffiObject *FfiObject) incrementPointer(debugName string) C.uint64_t {
 	for {
 		counter := ffiObject.callCounter.Load()
 		if counter <= -1 {
@@ -1672,8 +1673,8 @@ func (ffiObject *FfiObject) incrementPointer(debugName string) unsafe.Pointer {
 		}
 	}
 
-	return rustCall(func(status *C.RustCallStatus) unsafe.Pointer {
-		return ffiObject.cloneFunction(ffiObject.pointer, status)
+	return rustCall(func(status *C.RustCallStatus) C.uint64_t {
+		return ffiObject.cloneFunction(ffiObject.handle, status)
 	})
 }
 
@@ -1692,8 +1693,11 @@ func (ffiObject *FfiObject) destroy() {
 }
 
 func (ffiObject *FfiObject) freeRustArcPtr() {
+	if ffiObject.handle == 0 {
+		return
+	}
 	rustCall(func(status *C.RustCallStatus) int32 {
-		ffiObject.freeFunction(ffiObject.pointer, status)
+		ffiObject.freeFunction(ffiObject.handle, status)
 		return 0
 	})
 }
@@ -1705,7 +1709,7 @@ type Address struct {
 }
 
 func NewAddress(addressString string, bitcoinNetwork BitcoinNetwork) (*Address, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
 		return C.uniffi_rgblibuniffi_fn_constructor_address_new(FfiConverterStringINSTANCE.Lower(addressString), FfiConverterBitcoinNetworkINSTANCE.Lower(bitcoinNetwork), _uniffiStatus)
 	})
 	if _uniffiErr != nil {
@@ -1725,15 +1729,15 @@ type FfiConverterAddress struct{}
 
 var FfiConverterAddressINSTANCE = FfiConverterAddress{}
 
-func (c FfiConverterAddress) Lift(pointer unsafe.Pointer) *Address {
+func (c FfiConverterAddress) Lift(handle C.uint64_t) *Address {
 	result := &Address{
 		newFfiObject(
-			pointer,
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_rgblibuniffi_fn_clone_address(pointer, status)
+			handle,
+			func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+				return C.uniffi_rgblibuniffi_fn_clone_address(handle, status)
 			},
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_rgblibuniffi_fn_free_address(pointer, status)
+			func(handle C.uint64_t, status *C.RustCallStatus) {
+				C.uniffi_rgblibuniffi_fn_free_address(handle, status)
 			},
 		),
 	}
@@ -1742,21 +1746,28 @@ func (c FfiConverterAddress) Lift(pointer unsafe.Pointer) *Address {
 }
 
 func (c FfiConverterAddress) Read(reader io.Reader) *Address {
-	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+	return c.Lift(C.uint64_t(readUint64(reader)))
 }
 
-func (c FfiConverterAddress) Lower(value *Address) unsafe.Pointer {
+func (c FfiConverterAddress) Lower(value *Address) C.uint64_t {
 	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
-	// because the pointer will be decremented immediately after this function returns,
-	// and someone will be left holding onto a non-locked pointer.
-	pointer := value.ffiObject.incrementPointer("*Address")
+	// because the handle will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked handle.
+	handle := value.ffiObject.incrementPointer("*Address")
 	defer value.ffiObject.decrementPointer()
-	return pointer
-
+	return handle
 }
 
 func (c FfiConverterAddress) Write(writer io.Writer, value *Address) {
-	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+	writeUint64(writer, uint64(c.Lower(value)))
+}
+
+func LiftFromExternalAddress(handle uint64) *Address {
+	return FfiConverterAddressINSTANCE.Lift(C.uint64_t(handle))
+}
+
+func LowerToExternalAddress(value *Address) uint64 {
+	return uint64(FfiConverterAddressINSTANCE.Lower(value))
 }
 
 type FfiDestroyerAddress struct{}
@@ -1774,7 +1785,7 @@ type Cosigner struct {
 }
 
 func NewCosigner(cosignerString string) (*Cosigner, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
 		return C.uniffi_rgblibuniffi_fn_constructor_cosigner_new(FfiConverterStringINSTANCE.Lower(cosignerString), _uniffiStatus)
 	})
 	if _uniffiErr != nil {
@@ -1786,7 +1797,7 @@ func NewCosigner(cosignerString string) (*Cosigner, error) {
 }
 
 func CosignerFromData(data CosignerData) (*Cosigner, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
 		return C.uniffi_rgblibuniffi_fn_constructor_cosigner_from_data(FfiConverterCosignerDataINSTANCE.Lower(data), _uniffiStatus)
 	})
 	if _uniffiErr != nil {
@@ -1827,15 +1838,15 @@ type FfiConverterCosigner struct{}
 
 var FfiConverterCosignerINSTANCE = FfiConverterCosigner{}
 
-func (c FfiConverterCosigner) Lift(pointer unsafe.Pointer) *Cosigner {
+func (c FfiConverterCosigner) Lift(handle C.uint64_t) *Cosigner {
 	result := &Cosigner{
 		newFfiObject(
-			pointer,
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_rgblibuniffi_fn_clone_cosigner(pointer, status)
+			handle,
+			func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+				return C.uniffi_rgblibuniffi_fn_clone_cosigner(handle, status)
 			},
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_rgblibuniffi_fn_free_cosigner(pointer, status)
+			func(handle C.uint64_t, status *C.RustCallStatus) {
+				C.uniffi_rgblibuniffi_fn_free_cosigner(handle, status)
 			},
 		),
 	}
@@ -1844,21 +1855,28 @@ func (c FfiConverterCosigner) Lift(pointer unsafe.Pointer) *Cosigner {
 }
 
 func (c FfiConverterCosigner) Read(reader io.Reader) *Cosigner {
-	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+	return c.Lift(C.uint64_t(readUint64(reader)))
 }
 
-func (c FfiConverterCosigner) Lower(value *Cosigner) unsafe.Pointer {
+func (c FfiConverterCosigner) Lower(value *Cosigner) C.uint64_t {
 	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
-	// because the pointer will be decremented immediately after this function returns,
-	// and someone will be left holding onto a non-locked pointer.
-	pointer := value.ffiObject.incrementPointer("*Cosigner")
+	// because the handle will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked handle.
+	handle := value.ffiObject.incrementPointer("*Cosigner")
 	defer value.ffiObject.decrementPointer()
-	return pointer
-
+	return handle
 }
 
 func (c FfiConverterCosigner) Write(writer io.Writer, value *Cosigner) {
-	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+	writeUint64(writer, uint64(c.Lower(value)))
+}
+
+func LiftFromExternalCosigner(handle uint64) *Cosigner {
+	return FfiConverterCosignerINSTANCE.Lift(C.uint64_t(handle))
+}
+
+func LowerToExternalCosigner(value *Cosigner) uint64 {
+	return uint64(FfiConverterCosignerINSTANCE.Lower(value))
 }
 
 type FfiDestroyerCosigner struct{}
@@ -1876,7 +1894,7 @@ type Invoice struct {
 }
 
 func NewInvoice(invoiceString string) (*Invoice, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
 		return C.uniffi_rgblibuniffi_fn_constructor_invoice_new(FfiConverterStringINSTANCE.Lower(invoiceString), _uniffiStatus)
 	})
 	if _uniffiErr != nil {
@@ -1917,15 +1935,15 @@ type FfiConverterInvoice struct{}
 
 var FfiConverterInvoiceINSTANCE = FfiConverterInvoice{}
 
-func (c FfiConverterInvoice) Lift(pointer unsafe.Pointer) *Invoice {
+func (c FfiConverterInvoice) Lift(handle C.uint64_t) *Invoice {
 	result := &Invoice{
 		newFfiObject(
-			pointer,
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_rgblibuniffi_fn_clone_invoice(pointer, status)
+			handle,
+			func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+				return C.uniffi_rgblibuniffi_fn_clone_invoice(handle, status)
 			},
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_rgblibuniffi_fn_free_invoice(pointer, status)
+			func(handle C.uint64_t, status *C.RustCallStatus) {
+				C.uniffi_rgblibuniffi_fn_free_invoice(handle, status)
 			},
 		),
 	}
@@ -1934,21 +1952,28 @@ func (c FfiConverterInvoice) Lift(pointer unsafe.Pointer) *Invoice {
 }
 
 func (c FfiConverterInvoice) Read(reader io.Reader) *Invoice {
-	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+	return c.Lift(C.uint64_t(readUint64(reader)))
 }
 
-func (c FfiConverterInvoice) Lower(value *Invoice) unsafe.Pointer {
+func (c FfiConverterInvoice) Lower(value *Invoice) C.uint64_t {
 	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
-	// because the pointer will be decremented immediately after this function returns,
-	// and someone will be left holding onto a non-locked pointer.
-	pointer := value.ffiObject.incrementPointer("*Invoice")
+	// because the handle will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked handle.
+	handle := value.ffiObject.incrementPointer("*Invoice")
 	defer value.ffiObject.decrementPointer()
-	return pointer
-
+	return handle
 }
 
 func (c FfiConverterInvoice) Write(writer io.Writer, value *Invoice) {
-	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+	writeUint64(writer, uint64(c.Lower(value)))
+}
+
+func LiftFromExternalInvoice(handle uint64) *Invoice {
+	return FfiConverterInvoiceINSTANCE.Lift(C.uint64_t(handle))
+}
+
+func LowerToExternalInvoice(value *Invoice) uint64 {
+	return uint64(FfiConverterInvoiceINSTANCE.Lower(value))
 }
 
 type FfiDestroyerInvoice struct{}
@@ -2004,7 +2029,7 @@ type MultisigWallet struct {
 }
 
 func NewMultisigWallet(walletData WalletData, keys MultisigKeys) (*MultisigWallet, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
 		return C.uniffi_rgblibuniffi_fn_constructor_multisigwallet_new(FfiConverterWalletDataINSTANCE.Lower(walletData), FfiConverterMultisigKeysINSTANCE.Lower(keys), _uniffiStatus)
 	})
 	if _uniffiErr != nil {
@@ -2018,7 +2043,7 @@ func NewMultisigWallet(walletData WalletData, keys MultisigKeys) (*MultisigWalle
 func (_self *MultisigWallet) Backup(backupPath string, password string) error {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+	_, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
 		C.uniffi_rgblibuniffi_fn_method_multisigwallet_backup(
 			_pointer, FfiConverterStringINSTANCE.Lower(backupPath), FfiConverterStringINSTANCE.Lower(password), _uniffiStatus)
 		return false
@@ -2029,7 +2054,7 @@ func (_self *MultisigWallet) Backup(backupPath string, password string) error {
 func (_self *MultisigWallet) BackupInfo() (bool, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int8_t {
 		return C.uniffi_rgblibuniffi_fn_method_multisigwallet_backup_info(
 			_pointer, _uniffiStatus)
 	})
@@ -2044,7 +2069,7 @@ func (_self *MultisigWallet) BackupInfo() (bool, error) {
 func (_self *MultisigWallet) BlindReceive(online Online, assetId *string, assignment Assignment, expirationTimestamp *uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_blind_receive(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterAssignmentINSTANCE.Lower(assignment), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), FfiConverterSequenceStringINSTANCE.Lower(transportEndpoints), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
@@ -2061,7 +2086,7 @@ func (_self *MultisigWallet) BlindReceive(online Online, assetId *string, assign
 func (_self *MultisigWallet) ConfigureVssBackup(config VssBackupConfig) error {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+	_, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
 		C.uniffi_rgblibuniffi_fn_method_multisigwallet_configure_vss_backup(
 			_pointer, FfiConverterVssBackupConfigINSTANCE.Lower(config), _uniffiStatus)
 		return false
@@ -2072,7 +2097,7 @@ func (_self *MultisigWallet) ConfigureVssBackup(config VssBackupConfig) error {
 func (_self *MultisigWallet) CreateUtxosInit(online Online, upTo bool, num *uint8, size *uint32, feeRate uint64, skipSync bool) (InitOperationResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_create_utxos_init(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterBoolINSTANCE.Lower(upTo), FfiConverterOptionalUint8INSTANCE.Lower(num), FfiConverterOptionalUint32INSTANCE.Lower(size), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -2089,7 +2114,7 @@ func (_self *MultisigWallet) CreateUtxosInit(online Online, upTo bool, num *uint
 func (_self *MultisigWallet) DeleteTransfers(batchTransferIdx *int32, noAssetOnly bool) (bool, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int8_t {
 		return C.uniffi_rgblibuniffi_fn_method_multisigwallet_delete_transfers(
 			_pointer, FfiConverterOptionalInt32INSTANCE.Lower(batchTransferIdx), FfiConverterBoolINSTANCE.Lower(noAssetOnly), _uniffiStatus)
 	})
@@ -2114,7 +2139,7 @@ func (_self *MultisigWallet) DisableVssAutoBackup() {
 func (_self *MultisigWallet) FinalizePsbt(signedPsbt string) (string, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_finalize_psbt(
 				_pointer, FfiConverterStringINSTANCE.Lower(signedPsbt), _uniffiStatus),
@@ -2131,7 +2156,7 @@ func (_self *MultisigWallet) FinalizePsbt(signedPsbt string) (string, error) {
 func (_self *MultisigWallet) GetAddress(online Online) (string, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_get_address(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), _uniffiStatus),
@@ -2148,7 +2173,7 @@ func (_self *MultisigWallet) GetAddress(online Online) (string, error) {
 func (_self *MultisigWallet) GetAssetBalance(assetId string) (Balance, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_get_asset_balance(
 				_pointer, FfiConverterStringINSTANCE.Lower(assetId), _uniffiStatus),
@@ -2165,7 +2190,7 @@ func (_self *MultisigWallet) GetAssetBalance(assetId string) (Balance, error) {
 func (_self *MultisigWallet) GetAssetMetadata(assetId string) (Metadata, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_get_asset_metadata(
 				_pointer, FfiConverterStringINSTANCE.Lower(assetId), _uniffiStatus),
@@ -2182,7 +2207,7 @@ func (_self *MultisigWallet) GetAssetMetadata(assetId string) (Metadata, error) 
 func (_self *MultisigWallet) GetBtcBalance(online *Online, skipSync bool) (BtcBalance, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_get_btc_balance(
 				_pointer, FfiConverterOptionalOnlineINSTANCE.Lower(online), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -2210,7 +2235,7 @@ func (_self *MultisigWallet) GetDescriptors() WalletDescriptors {
 func (_self *MultisigWallet) GetFeeEstimation(online Online, blocks uint16) (float64, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.double {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.double {
 		return C.uniffi_rgblibuniffi_fn_method_multisigwallet_get_fee_estimation(
 			_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterUint16INSTANCE.Lower(blocks), _uniffiStatus)
 	})
@@ -2269,7 +2294,7 @@ func (_self *MultisigWallet) GetWalletDir() string {
 func (_self *MultisigWallet) GoOnline(skipConsistencyCheck bool, indexerUrl string, hubUrl string, hubToken string) (Online, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_go_online(
 				_pointer, FfiConverterBoolINSTANCE.Lower(skipConsistencyCheck), FfiConverterStringINSTANCE.Lower(indexerUrl), FfiConverterStringINSTANCE.Lower(hubUrl), FfiConverterStringINSTANCE.Lower(hubToken), _uniffiStatus),
@@ -2286,7 +2311,7 @@ func (_self *MultisigWallet) GoOnline(skipConsistencyCheck bool, indexerUrl stri
 func (_self *MultisigWallet) HubInfo(online Online) (HubInfo, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_hub_info(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), _uniffiStatus),
@@ -2303,7 +2328,7 @@ func (_self *MultisigWallet) HubInfo(online Online) (HubInfo, error) {
 func (_self *MultisigWallet) InflateInit(online Online, assetId string, inflationAmounts []uint64, feeRate uint64, minConfirmations uint8) (InitOperationResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_inflate_init(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(assetId), FfiConverterSequenceUint64INSTANCE.Lower(inflationAmounts), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
@@ -2320,7 +2345,7 @@ func (_self *MultisigWallet) InflateInit(online Online, assetId string, inflatio
 func (_self *MultisigWallet) InspectPsbt(psbt string) (PsbtInspection, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_inspect_psbt(
 				_pointer, FfiConverterStringINSTANCE.Lower(psbt), _uniffiStatus),
@@ -2337,7 +2362,7 @@ func (_self *MultisigWallet) InspectPsbt(psbt string) (PsbtInspection, error) {
 func (_self *MultisigWallet) InspectRgbTransfer(psbt string, fasciaPath string, entropy uint64) (RgbInspection, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_inspect_rgb_transfer(
 				_pointer, FfiConverterStringINSTANCE.Lower(psbt), FfiConverterStringINSTANCE.Lower(fasciaPath), FfiConverterUint64INSTANCE.Lower(entropy), _uniffiStatus),
@@ -2354,7 +2379,7 @@ func (_self *MultisigWallet) InspectRgbTransfer(psbt string, fasciaPath string, 
 func (_self *MultisigWallet) IssueAssetCfa(online Online, name string, details *string, precision uint8, amounts []uint64, filePath *string) (AssetCfa, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_cfa(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(name), FfiConverterOptionalStringINSTANCE.Lower(details), FfiConverterUint8INSTANCE.Lower(precision), FfiConverterSequenceUint64INSTANCE.Lower(amounts), FfiConverterOptionalStringINSTANCE.Lower(filePath), _uniffiStatus),
@@ -2371,7 +2396,7 @@ func (_self *MultisigWallet) IssueAssetCfa(online Online, name string, details *
 func (_self *MultisigWallet) IssueAssetIfa(online Online, ticker string, name string, precision uint8, amounts []uint64, inflationAmounts []uint64, rejectListUrl *string) (AssetIfa, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_ifa(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(ticker), FfiConverterStringINSTANCE.Lower(name), FfiConverterUint8INSTANCE.Lower(precision), FfiConverterSequenceUint64INSTANCE.Lower(amounts), FfiConverterSequenceUint64INSTANCE.Lower(inflationAmounts), FfiConverterOptionalStringINSTANCE.Lower(rejectListUrl), _uniffiStatus),
@@ -2388,7 +2413,7 @@ func (_self *MultisigWallet) IssueAssetIfa(online Online, ticker string, name st
 func (_self *MultisigWallet) IssueAssetNia(online Online, ticker string, name string, precision uint8, amounts []uint64) (AssetNia, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_nia(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(ticker), FfiConverterStringINSTANCE.Lower(name), FfiConverterUint8INSTANCE.Lower(precision), FfiConverterSequenceUint64INSTANCE.Lower(amounts), _uniffiStatus),
@@ -2405,7 +2430,7 @@ func (_self *MultisigWallet) IssueAssetNia(online Online, ticker string, name st
 func (_self *MultisigWallet) IssueAssetUda(online Online, ticker string, name string, details *string, precision uint8, mediaFilePath *string, attachmentsFilePaths []string) (AssetUda, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_issue_asset_uda(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(ticker), FfiConverterStringINSTANCE.Lower(name), FfiConverterOptionalStringINSTANCE.Lower(details), FfiConverterUint8INSTANCE.Lower(precision), FfiConverterOptionalStringINSTANCE.Lower(mediaFilePath), FfiConverterSequenceStringINSTANCE.Lower(attachmentsFilePaths), _uniffiStatus),
@@ -2422,7 +2447,7 @@ func (_self *MultisigWallet) IssueAssetUda(online Online, ticker string, name st
 func (_self *MultisigWallet) ListAssets(filterAssetSchemas []AssetSchema) (Assets, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_list_assets(
 				_pointer, FfiConverterSequenceAssetSchemaINSTANCE.Lower(filterAssetSchemas), _uniffiStatus),
@@ -2439,7 +2464,7 @@ func (_self *MultisigWallet) ListAssets(filterAssetSchemas []AssetSchema) (Asset
 func (_self *MultisigWallet) ListTransactions(online *Online, skipSync bool) ([]Transaction, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_list_transactions(
 				_pointer, FfiConverterOptionalOnlineINSTANCE.Lower(online), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -2456,7 +2481,7 @@ func (_self *MultisigWallet) ListTransactions(online *Online, skipSync bool) ([]
 func (_self *MultisigWallet) ListTransfers(assetId *string) ([]Transfer, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_list_transfers(
 				_pointer, FfiConverterOptionalStringINSTANCE.Lower(assetId), _uniffiStatus),
@@ -2473,7 +2498,7 @@ func (_self *MultisigWallet) ListTransfers(assetId *string) ([]Transfer, error) 
 func (_self *MultisigWallet) ListUnspents(online *Online, settledOnly bool, skipSync bool) ([]Unspent, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_list_unspents(
 				_pointer, FfiConverterOptionalOnlineINSTANCE.Lower(online), FfiConverterBoolINSTANCE.Lower(settledOnly), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -2490,7 +2515,7 @@ func (_self *MultisigWallet) ListUnspents(online *Online, settledOnly bool, skip
 func (_self *MultisigWallet) Refresh(online Online, assetId *string, filter []RefreshFilter, skipSync bool) (map[int32]RefreshedTransfer, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_refresh(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterSequenceRefreshFilterINSTANCE.Lower(filter), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -2507,7 +2532,7 @@ func (_self *MultisigWallet) Refresh(online Online, assetId *string, filter []Re
 func (_self *MultisigWallet) RespondToOperation(online Online, operationIdx int32, respondToOperation RespondToOperation) (OperationInfo, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_respond_to_operation(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterInt32INSTANCE.Lower(operationIdx), FfiConverterRespondToOperationINSTANCE.Lower(respondToOperation), _uniffiStatus),
@@ -2524,7 +2549,7 @@ func (_self *MultisigWallet) RespondToOperation(online Online, operationIdx int3
 func (_self *MultisigWallet) SendBtcInit(online Online, address string, amount uint64, feeRate uint64, skipSync bool) (InitOperationResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_send_btc_init(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(address), FfiConverterUint64INSTANCE.Lower(amount), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -2541,7 +2566,7 @@ func (_self *MultisigWallet) SendBtcInit(online Online, address string, amount u
 func (_self *MultisigWallet) SendInit(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp *uint64) (InitOperationResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_send_init(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterMapStringSequenceRecipientINSTANCE.Lower(recipientMap), FfiConverterBoolINSTANCE.Lower(donation), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterUint8INSTANCE.Lower(minConfirmations), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), _uniffiStatus),
@@ -2558,7 +2583,7 @@ func (_self *MultisigWallet) SendInit(online Online, recipientMap map[string][]R
 func (_self *MultisigWallet) Sync(online Online) error {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+	_, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
 		C.uniffi_rgblibuniffi_fn_method_multisigwallet_sync(
 			_pointer, FfiConverterOnlineINSTANCE.Lower(online), _uniffiStatus)
 		return false
@@ -2569,7 +2594,7 @@ func (_self *MultisigWallet) Sync(online Online) error {
 func (_self *MultisigWallet) SyncWithHub(online Online) (*OperationInfo, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_sync_with_hub(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), _uniffiStatus),
@@ -2586,7 +2611,7 @@ func (_self *MultisigWallet) SyncWithHub(online Online) (*OperationInfo, error) 
 func (_self *MultisigWallet) VssBackup(client *VssBackupClient) (int64, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int64_t {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int64_t {
 		return C.uniffi_rgblibuniffi_fn_method_multisigwallet_vss_backup(
 			_pointer, FfiConverterVssBackupClientINSTANCE.Lower(client), _uniffiStatus)
 	})
@@ -2601,7 +2626,7 @@ func (_self *MultisigWallet) VssBackup(client *VssBackupClient) (int64, error) {
 func (_self *MultisigWallet) VssBackupInfo(client *VssBackupClient) (VssBackupInfo, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_vss_backup_info(
 				_pointer, FfiConverterVssBackupClientINSTANCE.Lower(client), _uniffiStatus),
@@ -2618,7 +2643,7 @@ func (_self *MultisigWallet) VssBackupInfo(client *VssBackupClient) (VssBackupIn
 func (_self *MultisigWallet) WitnessReceive(online Online, assetId *string, assignment Assignment, expirationTimestamp *uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_witness_receive(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterAssignmentINSTANCE.Lower(assignment), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), FfiConverterSequenceStringINSTANCE.Lower(transportEndpoints), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
@@ -2640,15 +2665,15 @@ type FfiConverterMultisigWallet struct{}
 
 var FfiConverterMultisigWalletINSTANCE = FfiConverterMultisigWallet{}
 
-func (c FfiConverterMultisigWallet) Lift(pointer unsafe.Pointer) *MultisigWallet {
+func (c FfiConverterMultisigWallet) Lift(handle C.uint64_t) *MultisigWallet {
 	result := &MultisigWallet{
 		newFfiObject(
-			pointer,
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_rgblibuniffi_fn_clone_multisigwallet(pointer, status)
+			handle,
+			func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+				return C.uniffi_rgblibuniffi_fn_clone_multisigwallet(handle, status)
 			},
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_rgblibuniffi_fn_free_multisigwallet(pointer, status)
+			func(handle C.uint64_t, status *C.RustCallStatus) {
+				C.uniffi_rgblibuniffi_fn_free_multisigwallet(handle, status)
 			},
 		),
 	}
@@ -2657,21 +2682,28 @@ func (c FfiConverterMultisigWallet) Lift(pointer unsafe.Pointer) *MultisigWallet
 }
 
 func (c FfiConverterMultisigWallet) Read(reader io.Reader) *MultisigWallet {
-	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+	return c.Lift(C.uint64_t(readUint64(reader)))
 }
 
-func (c FfiConverterMultisigWallet) Lower(value *MultisigWallet) unsafe.Pointer {
+func (c FfiConverterMultisigWallet) Lower(value *MultisigWallet) C.uint64_t {
 	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
-	// because the pointer will be decremented immediately after this function returns,
-	// and someone will be left holding onto a non-locked pointer.
-	pointer := value.ffiObject.incrementPointer("*MultisigWallet")
+	// because the handle will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked handle.
+	handle := value.ffiObject.incrementPointer("*MultisigWallet")
 	defer value.ffiObject.decrementPointer()
-	return pointer
-
+	return handle
 }
 
 func (c FfiConverterMultisigWallet) Write(writer io.Writer, value *MultisigWallet) {
-	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+	writeUint64(writer, uint64(c.Lower(value)))
+}
+
+func LiftFromExternalMultisigWallet(handle uint64) *MultisigWallet {
+	return FfiConverterMultisigWalletINSTANCE.Lift(C.uint64_t(handle))
+}
+
+func LowerToExternalMultisigWallet(value *MultisigWallet) uint64 {
+	return uint64(FfiConverterMultisigWalletINSTANCE.Lower(value))
 }
 
 type FfiDestroyerMultisigWallet struct{}
@@ -2689,7 +2721,7 @@ type RecipientInfo struct {
 }
 
 func NewRecipientInfo(recipientId string) (*RecipientInfo, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
 		return C.uniffi_rgblibuniffi_fn_constructor_recipientinfo_new(FfiConverterStringINSTANCE.Lower(recipientId), _uniffiStatus)
 	})
 	if _uniffiErr != nil {
@@ -2730,15 +2762,15 @@ type FfiConverterRecipientInfo struct{}
 
 var FfiConverterRecipientInfoINSTANCE = FfiConverterRecipientInfo{}
 
-func (c FfiConverterRecipientInfo) Lift(pointer unsafe.Pointer) *RecipientInfo {
+func (c FfiConverterRecipientInfo) Lift(handle C.uint64_t) *RecipientInfo {
 	result := &RecipientInfo{
 		newFfiObject(
-			pointer,
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_rgblibuniffi_fn_clone_recipientinfo(pointer, status)
+			handle,
+			func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+				return C.uniffi_rgblibuniffi_fn_clone_recipientinfo(handle, status)
 			},
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_rgblibuniffi_fn_free_recipientinfo(pointer, status)
+			func(handle C.uint64_t, status *C.RustCallStatus) {
+				C.uniffi_rgblibuniffi_fn_free_recipientinfo(handle, status)
 			},
 		),
 	}
@@ -2747,21 +2779,28 @@ func (c FfiConverterRecipientInfo) Lift(pointer unsafe.Pointer) *RecipientInfo {
 }
 
 func (c FfiConverterRecipientInfo) Read(reader io.Reader) *RecipientInfo {
-	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+	return c.Lift(C.uint64_t(readUint64(reader)))
 }
 
-func (c FfiConverterRecipientInfo) Lower(value *RecipientInfo) unsafe.Pointer {
+func (c FfiConverterRecipientInfo) Lower(value *RecipientInfo) C.uint64_t {
 	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
-	// because the pointer will be decremented immediately after this function returns,
-	// and someone will be left holding onto a non-locked pointer.
-	pointer := value.ffiObject.incrementPointer("*RecipientInfo")
+	// because the handle will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked handle.
+	handle := value.ffiObject.incrementPointer("*RecipientInfo")
 	defer value.ffiObject.decrementPointer()
-	return pointer
-
+	return handle
 }
 
 func (c FfiConverterRecipientInfo) Write(writer io.Writer, value *RecipientInfo) {
-	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+	writeUint64(writer, uint64(c.Lower(value)))
+}
+
+func LiftFromExternalRecipientInfo(handle uint64) *RecipientInfo {
+	return FfiConverterRecipientInfoINSTANCE.Lift(C.uint64_t(handle))
+}
+
+func LowerToExternalRecipientInfo(value *RecipientInfo) uint64 {
+	return uint64(FfiConverterRecipientInfoINSTANCE.Lower(value))
 }
 
 type FfiDestroyerRecipientInfo struct{}
@@ -2778,7 +2817,7 @@ type TransportEndpoint struct {
 }
 
 func NewTransportEndpoint(transportEndpoint string) (*TransportEndpoint, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
 		return C.uniffi_rgblibuniffi_fn_constructor_transportendpoint_new(FfiConverterStringINSTANCE.Lower(transportEndpoint), _uniffiStatus)
 	})
 	if _uniffiErr != nil {
@@ -2808,15 +2847,15 @@ type FfiConverterTransportEndpoint struct{}
 
 var FfiConverterTransportEndpointINSTANCE = FfiConverterTransportEndpoint{}
 
-func (c FfiConverterTransportEndpoint) Lift(pointer unsafe.Pointer) *TransportEndpoint {
+func (c FfiConverterTransportEndpoint) Lift(handle C.uint64_t) *TransportEndpoint {
 	result := &TransportEndpoint{
 		newFfiObject(
-			pointer,
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_rgblibuniffi_fn_clone_transportendpoint(pointer, status)
+			handle,
+			func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+				return C.uniffi_rgblibuniffi_fn_clone_transportendpoint(handle, status)
 			},
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_rgblibuniffi_fn_free_transportendpoint(pointer, status)
+			func(handle C.uint64_t, status *C.RustCallStatus) {
+				C.uniffi_rgblibuniffi_fn_free_transportendpoint(handle, status)
 			},
 		),
 	}
@@ -2825,21 +2864,28 @@ func (c FfiConverterTransportEndpoint) Lift(pointer unsafe.Pointer) *TransportEn
 }
 
 func (c FfiConverterTransportEndpoint) Read(reader io.Reader) *TransportEndpoint {
-	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+	return c.Lift(C.uint64_t(readUint64(reader)))
 }
 
-func (c FfiConverterTransportEndpoint) Lower(value *TransportEndpoint) unsafe.Pointer {
+func (c FfiConverterTransportEndpoint) Lower(value *TransportEndpoint) C.uint64_t {
 	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
-	// because the pointer will be decremented immediately after this function returns,
-	// and someone will be left holding onto a non-locked pointer.
-	pointer := value.ffiObject.incrementPointer("*TransportEndpoint")
+	// because the handle will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked handle.
+	handle := value.ffiObject.incrementPointer("*TransportEndpoint")
 	defer value.ffiObject.decrementPointer()
-	return pointer
-
+	return handle
 }
 
 func (c FfiConverterTransportEndpoint) Write(writer io.Writer, value *TransportEndpoint) {
-	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+	writeUint64(writer, uint64(c.Lower(value)))
+}
+
+func LiftFromExternalTransportEndpoint(handle uint64) *TransportEndpoint {
+	return FfiConverterTransportEndpointINSTANCE.Lift(C.uint64_t(handle))
+}
+
+func LowerToExternalTransportEndpoint(value *TransportEndpoint) uint64 {
+	return uint64(FfiConverterTransportEndpointINSTANCE.Lower(value))
 }
 
 type FfiDestroyerTransportEndpoint struct{}
@@ -2857,7 +2903,7 @@ type VssBackupClient struct {
 }
 
 func NewVssBackupClient(config VssBackupConfig) (*VssBackupClient, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
 		return C.uniffi_rgblibuniffi_fn_constructor_vssbackupclient_new(FfiConverterVssBackupConfigINSTANCE.Lower(config), _uniffiStatus)
 	})
 	if _uniffiErr != nil {
@@ -2871,7 +2917,7 @@ func NewVssBackupClient(config VssBackupConfig) (*VssBackupClient, error) {
 func (_self *VssBackupClient) DeleteBackup() error {
 	_pointer := _self.ffiObject.incrementPointer("*VssBackupClient")
 	defer _self.ffiObject.decrementPointer()
-	_, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+	_, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
 		C.uniffi_rgblibuniffi_fn_method_vssbackupclient_delete_backup(
 			_pointer, _uniffiStatus)
 		return false
@@ -2896,15 +2942,15 @@ type FfiConverterVssBackupClient struct{}
 
 var FfiConverterVssBackupClientINSTANCE = FfiConverterVssBackupClient{}
 
-func (c FfiConverterVssBackupClient) Lift(pointer unsafe.Pointer) *VssBackupClient {
+func (c FfiConverterVssBackupClient) Lift(handle C.uint64_t) *VssBackupClient {
 	result := &VssBackupClient{
 		newFfiObject(
-			pointer,
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_rgblibuniffi_fn_clone_vssbackupclient(pointer, status)
+			handle,
+			func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+				return C.uniffi_rgblibuniffi_fn_clone_vssbackupclient(handle, status)
 			},
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_rgblibuniffi_fn_free_vssbackupclient(pointer, status)
+			func(handle C.uint64_t, status *C.RustCallStatus) {
+				C.uniffi_rgblibuniffi_fn_free_vssbackupclient(handle, status)
 			},
 		),
 	}
@@ -2913,21 +2959,28 @@ func (c FfiConverterVssBackupClient) Lift(pointer unsafe.Pointer) *VssBackupClie
 }
 
 func (c FfiConverterVssBackupClient) Read(reader io.Reader) *VssBackupClient {
-	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+	return c.Lift(C.uint64_t(readUint64(reader)))
 }
 
-func (c FfiConverterVssBackupClient) Lower(value *VssBackupClient) unsafe.Pointer {
+func (c FfiConverterVssBackupClient) Lower(value *VssBackupClient) C.uint64_t {
 	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
-	// because the pointer will be decremented immediately after this function returns,
-	// and someone will be left holding onto a non-locked pointer.
-	pointer := value.ffiObject.incrementPointer("*VssBackupClient")
+	// because the handle will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked handle.
+	handle := value.ffiObject.incrementPointer("*VssBackupClient")
 	defer value.ffiObject.decrementPointer()
-	return pointer
-
+	return handle
 }
 
 func (c FfiConverterVssBackupClient) Write(writer io.Writer, value *VssBackupClient) {
-	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+	writeUint64(writer, uint64(c.Lower(value)))
+}
+
+func LiftFromExternalVssBackupClient(handle uint64) *VssBackupClient {
+	return FfiConverterVssBackupClientINSTANCE.Lift(C.uint64_t(handle))
+}
+
+func LowerToExternalVssBackupClient(value *VssBackupClient) uint64 {
+	return uint64(FfiConverterVssBackupClientINSTANCE.Lower(value))
 }
 
 type FfiDestroyerVssBackupClient struct{}
@@ -2993,7 +3046,7 @@ type Wallet struct {
 }
 
 func NewWallet(walletData WalletData, keys SinglesigKeys) (*Wallet, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
 		return C.uniffi_rgblibuniffi_fn_constructor_wallet_new(FfiConverterWalletDataINSTANCE.Lower(walletData), FfiConverterSinglesigKeysINSTANCE.Lower(keys), _uniffiStatus)
 	})
 	if _uniffiErr != nil {
@@ -3007,7 +3060,7 @@ func NewWallet(walletData WalletData, keys SinglesigKeys) (*Wallet, error) {
 func (_self *Wallet) Backup(backupPath string, password string) error {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+	_, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
 		C.uniffi_rgblibuniffi_fn_method_wallet_backup(
 			_pointer, FfiConverterStringINSTANCE.Lower(backupPath), FfiConverterStringINSTANCE.Lower(password), _uniffiStatus)
 		return false
@@ -3018,7 +3071,7 @@ func (_self *Wallet) Backup(backupPath string, password string) error {
 func (_self *Wallet) BackupInfo() (bool, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int8_t {
 		return C.uniffi_rgblibuniffi_fn_method_wallet_backup_info(
 			_pointer, _uniffiStatus)
 	})
@@ -3033,7 +3086,7 @@ func (_self *Wallet) BackupInfo() (bool, error) {
 func (_self *Wallet) BlindReceive(assetId *string, assignment Assignment, expirationTimestamp *uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_blind_receive(
 				_pointer, FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterAssignmentINSTANCE.Lower(assignment), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), FfiConverterSequenceStringINSTANCE.Lower(transportEndpoints), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
@@ -3050,7 +3103,7 @@ func (_self *Wallet) BlindReceive(assetId *string, assignment Assignment, expira
 func (_self *Wallet) ConfigureVssBackup(config VssBackupConfig) error {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+	_, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
 		C.uniffi_rgblibuniffi_fn_method_wallet_configure_vss_backup(
 			_pointer, FfiConverterVssBackupConfigINSTANCE.Lower(config), _uniffiStatus)
 		return false
@@ -3061,7 +3114,7 @@ func (_self *Wallet) ConfigureVssBackup(config VssBackupConfig) error {
 func (_self *Wallet) CreateUtxos(online Online, upTo bool, num *uint8, size *uint32, feeRate uint64, skipSync bool) (uint8, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint8_t {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint8_t {
 		return C.uniffi_rgblibuniffi_fn_method_wallet_create_utxos(
 			_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterBoolINSTANCE.Lower(upTo), FfiConverterOptionalUint8INSTANCE.Lower(num), FfiConverterOptionalUint32INSTANCE.Lower(size), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus)
 	})
@@ -3076,7 +3129,7 @@ func (_self *Wallet) CreateUtxos(online Online, upTo bool, num *uint8, size *uin
 func (_self *Wallet) CreateUtxosBegin(online Online, upTo bool, num *uint8, size *uint32, feeRate uint64, skipSync bool) (string, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_create_utxos_begin(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterBoolINSTANCE.Lower(upTo), FfiConverterOptionalUint8INSTANCE.Lower(num), FfiConverterOptionalUint32INSTANCE.Lower(size), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -3093,7 +3146,7 @@ func (_self *Wallet) CreateUtxosBegin(online Online, upTo bool, num *uint8, size
 func (_self *Wallet) CreateUtxosEnd(online Online, signedPsbt string, skipSync bool) (uint8, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint8_t {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint8_t {
 		return C.uniffi_rgblibuniffi_fn_method_wallet_create_utxos_end(
 			_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(signedPsbt), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus)
 	})
@@ -3108,7 +3161,7 @@ func (_self *Wallet) CreateUtxosEnd(online Online, signedPsbt string, skipSync b
 func (_self *Wallet) DeleteTransfers(batchTransferIdx *int32, noAssetOnly bool) (bool, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int8_t {
 		return C.uniffi_rgblibuniffi_fn_method_wallet_delete_transfers(
 			_pointer, FfiConverterOptionalInt32INSTANCE.Lower(batchTransferIdx), FfiConverterBoolINSTANCE.Lower(noAssetOnly), _uniffiStatus)
 	})
@@ -3133,7 +3186,7 @@ func (_self *Wallet) DisableVssAutoBackup() {
 func (_self *Wallet) DrainTo(online Online, address string, destroyAssets bool, feeRate uint64) (string, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_drain_to(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(address), FfiConverterBoolINSTANCE.Lower(destroyAssets), FfiConverterUint64INSTANCE.Lower(feeRate), _uniffiStatus),
@@ -3150,7 +3203,7 @@ func (_self *Wallet) DrainTo(online Online, address string, destroyAssets bool, 
 func (_self *Wallet) DrainToBegin(online Online, address string, destroyAssets bool, feeRate uint64) (string, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_drain_to_begin(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(address), FfiConverterBoolINSTANCE.Lower(destroyAssets), FfiConverterUint64INSTANCE.Lower(feeRate), _uniffiStatus),
@@ -3167,7 +3220,7 @@ func (_self *Wallet) DrainToBegin(online Online, address string, destroyAssets b
 func (_self *Wallet) DrainToEnd(online Online, signedPsbt string) (string, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_drain_to_end(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(signedPsbt), _uniffiStatus),
@@ -3184,7 +3237,7 @@ func (_self *Wallet) DrainToEnd(online Online, signedPsbt string) (string, error
 func (_self *Wallet) FailTransfers(online Online, batchTransferIdx *int32, noAssetOnly bool, skipSync bool) (bool, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int8_t {
 		return C.uniffi_rgblibuniffi_fn_method_wallet_fail_transfers(
 			_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterOptionalInt32INSTANCE.Lower(batchTransferIdx), FfiConverterBoolINSTANCE.Lower(noAssetOnly), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus)
 	})
@@ -3199,7 +3252,7 @@ func (_self *Wallet) FailTransfers(online Online, batchTransferIdx *int32, noAss
 func (_self *Wallet) FinalizePsbt(signedPsbt string) (string, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_finalize_psbt(
 				_pointer, FfiConverterStringINSTANCE.Lower(signedPsbt), _uniffiStatus),
@@ -3216,7 +3269,7 @@ func (_self *Wallet) FinalizePsbt(signedPsbt string) (string, error) {
 func (_self *Wallet) GetAddress() (string, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_get_address(
 				_pointer, _uniffiStatus),
@@ -3233,7 +3286,7 @@ func (_self *Wallet) GetAddress() (string, error) {
 func (_self *Wallet) GetAssetBalance(assetId string) (Balance, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_get_asset_balance(
 				_pointer, FfiConverterStringINSTANCE.Lower(assetId), _uniffiStatus),
@@ -3250,7 +3303,7 @@ func (_self *Wallet) GetAssetBalance(assetId string) (Balance, error) {
 func (_self *Wallet) GetAssetMetadata(assetId string) (Metadata, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_get_asset_metadata(
 				_pointer, FfiConverterStringINSTANCE.Lower(assetId), _uniffiStatus),
@@ -3267,7 +3320,7 @@ func (_self *Wallet) GetAssetMetadata(assetId string) (Metadata, error) {
 func (_self *Wallet) GetBtcBalance(online *Online, skipSync bool) (BtcBalance, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_get_btc_balance(
 				_pointer, FfiConverterOptionalOnlineINSTANCE.Lower(online), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -3295,7 +3348,7 @@ func (_self *Wallet) GetDescriptors() WalletDescriptors {
 func (_self *Wallet) GetFeeEstimation(online Online, blocks uint16) (float64, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.double {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.double {
 		return C.uniffi_rgblibuniffi_fn_method_wallet_get_fee_estimation(
 			_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterUint16INSTANCE.Lower(blocks), _uniffiStatus)
 	})
@@ -3354,7 +3407,7 @@ func (_self *Wallet) GetWalletDir() string {
 func (_self *Wallet) GoOnline(skipConsistencyCheck bool, indexerUrl string) (Online, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_go_online(
 				_pointer, FfiConverterBoolINSTANCE.Lower(skipConsistencyCheck), FfiConverterStringINSTANCE.Lower(indexerUrl), _uniffiStatus),
@@ -3371,7 +3424,7 @@ func (_self *Wallet) GoOnline(skipConsistencyCheck bool, indexerUrl string) (Onl
 func (_self *Wallet) Inflate(online Online, assetId string, inflationAmounts []uint64, feeRate uint64, minConfirmations uint8) (OperationResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_inflate(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(assetId), FfiConverterSequenceUint64INSTANCE.Lower(inflationAmounts), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
@@ -3388,7 +3441,7 @@ func (_self *Wallet) Inflate(online Online, assetId string, inflationAmounts []u
 func (_self *Wallet) InflateBegin(online Online, assetId string, inflationAmounts []uint64, feeRate uint64, minConfirmations uint8, dryRun bool) (InflateBeginResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_inflate_begin(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(assetId), FfiConverterSequenceUint64INSTANCE.Lower(inflationAmounts), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterUint8INSTANCE.Lower(minConfirmations), FfiConverterBoolINSTANCE.Lower(dryRun), _uniffiStatus),
@@ -3405,7 +3458,7 @@ func (_self *Wallet) InflateBegin(online Online, assetId string, inflationAmount
 func (_self *Wallet) InflateEnd(online Online, signedPsbt string) (OperationResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_inflate_end(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(signedPsbt), _uniffiStatus),
@@ -3422,7 +3475,7 @@ func (_self *Wallet) InflateEnd(online Online, signedPsbt string) (OperationResu
 func (_self *Wallet) InspectPsbt(psbt string) (PsbtInspection, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_inspect_psbt(
 				_pointer, FfiConverterStringINSTANCE.Lower(psbt), _uniffiStatus),
@@ -3439,7 +3492,7 @@ func (_self *Wallet) InspectPsbt(psbt string) (PsbtInspection, error) {
 func (_self *Wallet) InspectRgbTransfer(psbt string, fasciaPath string, entropy uint64) (RgbInspection, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_inspect_rgb_transfer(
 				_pointer, FfiConverterStringINSTANCE.Lower(psbt), FfiConverterStringINSTANCE.Lower(fasciaPath), FfiConverterUint64INSTANCE.Lower(entropy), _uniffiStatus),
@@ -3456,7 +3509,7 @@ func (_self *Wallet) InspectRgbTransfer(psbt string, fasciaPath string, entropy 
 func (_self *Wallet) IssueAssetCfa(name string, details *string, precision uint8, amounts []uint64, filePath *string) (AssetCfa, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_issue_asset_cfa(
 				_pointer, FfiConverterStringINSTANCE.Lower(name), FfiConverterOptionalStringINSTANCE.Lower(details), FfiConverterUint8INSTANCE.Lower(precision), FfiConverterSequenceUint64INSTANCE.Lower(amounts), FfiConverterOptionalStringINSTANCE.Lower(filePath), _uniffiStatus),
@@ -3473,7 +3526,7 @@ func (_self *Wallet) IssueAssetCfa(name string, details *string, precision uint8
 func (_self *Wallet) IssueAssetIfa(ticker string, name string, precision uint8, amounts []uint64, inflationAmounts []uint64, rejectListUrl *string) (AssetIfa, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_issue_asset_ifa(
 				_pointer, FfiConverterStringINSTANCE.Lower(ticker), FfiConverterStringINSTANCE.Lower(name), FfiConverterUint8INSTANCE.Lower(precision), FfiConverterSequenceUint64INSTANCE.Lower(amounts), FfiConverterSequenceUint64INSTANCE.Lower(inflationAmounts), FfiConverterOptionalStringINSTANCE.Lower(rejectListUrl), _uniffiStatus),
@@ -3490,7 +3543,7 @@ func (_self *Wallet) IssueAssetIfa(ticker string, name string, precision uint8, 
 func (_self *Wallet) IssueAssetNia(ticker string, name string, precision uint8, amounts []uint64) (AssetNia, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_issue_asset_nia(
 				_pointer, FfiConverterStringINSTANCE.Lower(ticker), FfiConverterStringINSTANCE.Lower(name), FfiConverterUint8INSTANCE.Lower(precision), FfiConverterSequenceUint64INSTANCE.Lower(amounts), _uniffiStatus),
@@ -3507,7 +3560,7 @@ func (_self *Wallet) IssueAssetNia(ticker string, name string, precision uint8, 
 func (_self *Wallet) IssueAssetUda(ticker string, name string, details *string, precision uint8, mediaFilePath *string, attachmentsFilePaths []string) (AssetUda, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_issue_asset_uda(
 				_pointer, FfiConverterStringINSTANCE.Lower(ticker), FfiConverterStringINSTANCE.Lower(name), FfiConverterOptionalStringINSTANCE.Lower(details), FfiConverterUint8INSTANCE.Lower(precision), FfiConverterOptionalStringINSTANCE.Lower(mediaFilePath), FfiConverterSequenceStringINSTANCE.Lower(attachmentsFilePaths), _uniffiStatus),
@@ -3524,7 +3577,7 @@ func (_self *Wallet) IssueAssetUda(ticker string, name string, details *string, 
 func (_self *Wallet) ListAssets(filterAssetSchemas []AssetSchema) (Assets, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_list_assets(
 				_pointer, FfiConverterSequenceAssetSchemaINSTANCE.Lower(filterAssetSchemas), _uniffiStatus),
@@ -3541,7 +3594,7 @@ func (_self *Wallet) ListAssets(filterAssetSchemas []AssetSchema) (Assets, error
 func (_self *Wallet) ListTransactions(online *Online, skipSync bool) ([]Transaction, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_list_transactions(
 				_pointer, FfiConverterOptionalOnlineINSTANCE.Lower(online), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -3558,7 +3611,7 @@ func (_self *Wallet) ListTransactions(online *Online, skipSync bool) ([]Transact
 func (_self *Wallet) ListTransfers(assetId *string) ([]Transfer, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_list_transfers(
 				_pointer, FfiConverterOptionalStringINSTANCE.Lower(assetId), _uniffiStatus),
@@ -3575,7 +3628,7 @@ func (_self *Wallet) ListTransfers(assetId *string) ([]Transfer, error) {
 func (_self *Wallet) ListUnspents(online *Online, settledOnly bool, skipSync bool) ([]Unspent, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_list_unspents(
 				_pointer, FfiConverterOptionalOnlineINSTANCE.Lower(online), FfiConverterBoolINSTANCE.Lower(settledOnly), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -3592,7 +3645,7 @@ func (_self *Wallet) ListUnspents(online *Online, settledOnly bool, skipSync boo
 func (_self *Wallet) Refresh(online Online, assetId *string, filter []RefreshFilter, skipSync bool) (map[int32]RefreshedTransfer, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_refresh(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterSequenceRefreshFilterINSTANCE.Lower(filter), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -3609,7 +3662,7 @@ func (_self *Wallet) Refresh(online Online, assetId *string, filter []RefreshFil
 func (_self *Wallet) Send(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp *uint64, skipSync bool) (OperationResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_send(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterMapStringSequenceRecipientINSTANCE.Lower(recipientMap), FfiConverterBoolINSTANCE.Lower(donation), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterUint8INSTANCE.Lower(minConfirmations), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -3626,7 +3679,7 @@ func (_self *Wallet) Send(online Online, recipientMap map[string][]Recipient, do
 func (_self *Wallet) SendBegin(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp *uint64, dryRun bool) (SendBeginResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_send_begin(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterMapStringSequenceRecipientINSTANCE.Lower(recipientMap), FfiConverterBoolINSTANCE.Lower(donation), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterUint8INSTANCE.Lower(minConfirmations), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), FfiConverterBoolINSTANCE.Lower(dryRun), _uniffiStatus),
@@ -3643,7 +3696,7 @@ func (_self *Wallet) SendBegin(online Online, recipientMap map[string][]Recipien
 func (_self *Wallet) SendBtc(online Online, address string, amount uint64, feeRate uint64, skipSync bool) (string, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_send_btc(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(address), FfiConverterUint64INSTANCE.Lower(amount), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -3660,7 +3713,7 @@ func (_self *Wallet) SendBtc(online Online, address string, amount uint64, feeRa
 func (_self *Wallet) SendBtcBegin(online Online, address string, amount uint64, feeRate uint64, skipSync bool) (string, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_send_btc_begin(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(address), FfiConverterUint64INSTANCE.Lower(amount), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -3677,7 +3730,7 @@ func (_self *Wallet) SendBtcBegin(online Online, address string, amount uint64, 
 func (_self *Wallet) SendBtcEnd(online Online, signedPsbt string, skipSync bool) (string, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_send_btc_end(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(signedPsbt), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -3694,7 +3747,7 @@ func (_self *Wallet) SendBtcEnd(online Online, signedPsbt string, skipSync bool)
 func (_self *Wallet) SendEnd(online Online, signedPsbt string, skipSync bool) (OperationResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_send_end(
 				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(signedPsbt), FfiConverterBoolINSTANCE.Lower(skipSync), _uniffiStatus),
@@ -3711,7 +3764,7 @@ func (_self *Wallet) SendEnd(online Online, signedPsbt string, skipSync bool) (O
 func (_self *Wallet) SignPsbt(unsignedPsbt string) (string, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_sign_psbt(
 				_pointer, FfiConverterStringINSTANCE.Lower(unsignedPsbt), _uniffiStatus),
@@ -3728,7 +3781,7 @@ func (_self *Wallet) SignPsbt(unsignedPsbt string) (string, error) {
 func (_self *Wallet) Sync(online Online) error {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+	_, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
 		C.uniffi_rgblibuniffi_fn_method_wallet_sync(
 			_pointer, FfiConverterOnlineINSTANCE.Lower(online), _uniffiStatus)
 		return false
@@ -3739,7 +3792,7 @@ func (_self *Wallet) Sync(online Online) error {
 func (_self *Wallet) VssBackup(client *VssBackupClient) (int64, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int64_t {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.int64_t {
 		return C.uniffi_rgblibuniffi_fn_method_wallet_vss_backup(
 			_pointer, FfiConverterVssBackupClientINSTANCE.Lower(client), _uniffiStatus)
 	})
@@ -3754,7 +3807,7 @@ func (_self *Wallet) VssBackup(client *VssBackupClient) (int64, error) {
 func (_self *Wallet) VssBackupInfo(client *VssBackupClient) (VssBackupInfo, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_vss_backup_info(
 				_pointer, FfiConverterVssBackupClientINSTANCE.Lower(client), _uniffiStatus),
@@ -3771,7 +3824,7 @@ func (_self *Wallet) VssBackupInfo(client *VssBackupClient) (VssBackupInfo, erro
 func (_self *Wallet) WitnessReceive(assetId *string, assignment Assignment, expirationTimestamp *uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_witness_receive(
 				_pointer, FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterAssignmentINSTANCE.Lower(assignment), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), FfiConverterSequenceStringINSTANCE.Lower(transportEndpoints), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
@@ -3793,15 +3846,15 @@ type FfiConverterWallet struct{}
 
 var FfiConverterWalletINSTANCE = FfiConverterWallet{}
 
-func (c FfiConverterWallet) Lift(pointer unsafe.Pointer) *Wallet {
+func (c FfiConverterWallet) Lift(handle C.uint64_t) *Wallet {
 	result := &Wallet{
 		newFfiObject(
-			pointer,
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_rgblibuniffi_fn_clone_wallet(pointer, status)
+			handle,
+			func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+				return C.uniffi_rgblibuniffi_fn_clone_wallet(handle, status)
 			},
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_rgblibuniffi_fn_free_wallet(pointer, status)
+			func(handle C.uint64_t, status *C.RustCallStatus) {
+				C.uniffi_rgblibuniffi_fn_free_wallet(handle, status)
 			},
 		),
 	}
@@ -3810,21 +3863,28 @@ func (c FfiConverterWallet) Lift(pointer unsafe.Pointer) *Wallet {
 }
 
 func (c FfiConverterWallet) Read(reader io.Reader) *Wallet {
-	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+	return c.Lift(C.uint64_t(readUint64(reader)))
 }
 
-func (c FfiConverterWallet) Lower(value *Wallet) unsafe.Pointer {
+func (c FfiConverterWallet) Lower(value *Wallet) C.uint64_t {
 	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
-	// because the pointer will be decremented immediately after this function returns,
-	// and someone will be left holding onto a non-locked pointer.
-	pointer := value.ffiObject.incrementPointer("*Wallet")
+	// because the handle will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked handle.
+	handle := value.ffiObject.incrementPointer("*Wallet")
 	defer value.ffiObject.decrementPointer()
-	return pointer
-
+	return handle
 }
 
 func (c FfiConverterWallet) Write(writer io.Writer, value *Wallet) {
-	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+	writeUint64(writer, uint64(c.Lower(value)))
+}
+
+func LiftFromExternalWallet(handle uint64) *Wallet {
+	return FfiConverterWalletINSTANCE.Lift(C.uint64_t(handle))
+}
+
+func LowerToExternalWallet(value *Wallet) uint64 {
+	return uint64(FfiConverterWalletINSTANCE.Lower(value))
 }
 
 type FfiDestroyerWallet struct{}
@@ -13544,7 +13604,7 @@ func GenerateKeys(bitcoinNetwork BitcoinNetwork) Keys {
 }
 
 func RestoreBackup(backupPath string, password string, dataDir string) error {
-	_, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+	_, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) bool {
 		C.uniffi_rgblibuniffi_fn_func_restore_backup(FfiConverterStringINSTANCE.Lower(backupPath), FfiConverterStringINSTANCE.Lower(password), FfiConverterStringINSTANCE.Lower(dataDir), _uniffiStatus)
 		return false
 	})
@@ -13552,7 +13612,7 @@ func RestoreBackup(backupPath string, password string, dataDir string) error {
 }
 
 func RestoreFromVss(config VssBackupConfig, targetDir string) (string, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_func_restore_from_vss(FfiConverterVssBackupConfigINSTANCE.Lower(config), FfiConverterStringINSTANCE.Lower(targetDir), _uniffiStatus),
 		}
@@ -13566,7 +13626,7 @@ func RestoreFromVss(config VssBackupConfig, targetDir string) (string, error) {
 }
 
 func RestoreKeys(bitcoinNetwork BitcoinNetwork, mnemonic string) (Keys, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_func_restore_keys(FfiConverterBitcoinNetworkINSTANCE.Lower(bitcoinNetwork), FfiConverterStringINSTANCE.Lower(mnemonic), _uniffiStatus),
 		}
