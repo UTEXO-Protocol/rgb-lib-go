@@ -92,15 +92,42 @@ jobs:
           mv "$TEMP" rgb_lib.go
         shell: bash
 
-      - name: Commit updated bindings
+      - name: Download native libraries
+        run: |
+          mkdir -p lib
+          rm -f lib/librgblibuniffi* 
+
+          # Linux x86_64
+          curl -L -o /tmp/linux-x64.zip \
+            "https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}/rgb-lib-uniffi-x86_64-unknown-linux-gnu.zip"
+          unzip -o /tmp/linux-x64.zip -d /tmp/linux-x64
+          cp /tmp/linux-x64/librgblibuniffi.so lib/librgblibuniffi.so
+
+          # Linux aarch64
+          curl -L -o /tmp/linux-arm64.zip \
+            "https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}/rgb-lib-uniffi-aarch64-unknown-linux-gnu.zip"
+          unzip -o /tmp/linux-arm64.zip -d /tmp/linux-arm64
+          cp /tmp/linux-arm64/librgblibuniffi.so lib/librgblibuniffi_arm64.so
+
+          # macOS arm64
+          curl -L -o /tmp/macos-arm64.zip \
+            "https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}/rgb-lib-uniffi-aarch64-apple-darwin.zip"
+          unzip -o /tmp/macos-arm64.zip -d /tmp/macos-arm64
+          cp /tmp/macos-arm64/librgblibuniffi.dylib lib/librgblibuniffi.dylib
+
+          echo "lib/ contents:"
+          file lib/*
+        shell: bash
+
+      - name: Commit updated bindings and libraries
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add rgb_lib.go rgb_lib.h
+          git add rgb_lib.go rgb_lib.h lib/
           if git diff --cached --quiet; then
-            echo "No changes to bindings, skipping commit"
+            echo "No changes, skipping commit"
           else
-            git commit -m "Auto-generate Go bindings from rgb-lib ${{ steps.rgb_lib_version.outputs.version }}"
+            git commit -m "Auto-generate Go bindings and update native libs from rgb-lib ${{ steps.rgb_lib_version.outputs.version }}"
             git push
           fi
         shell: bash
