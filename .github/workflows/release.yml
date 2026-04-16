@@ -95,28 +95,34 @@ jobs:
       - name: Download native libraries
         run: |
           mkdir -p lib
-          rm -f lib/librgblibuniffi* 
+          rm -f lib/librgblibuniffi*
+
+          RELEASE_BASE="https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}"
 
           # Linux x86_64
-          curl -L -o /tmp/linux-x64.zip \
-            "https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}/rgb-lib-uniffi-x86_64-unknown-linux-gnu.zip"
+          curl -L --fail -o /tmp/linux-x64.zip \
+            "${RELEASE_BASE}/rgb-lib-uniffi-x86_64-unknown-linux-gnu.zip"
           unzip -o /tmp/linux-x64.zip -d /tmp/linux-x64
           cp /tmp/linux-x64/librgblibuniffi.so lib/librgblibuniffi.so
 
           # Linux aarch64
-          curl -L -o /tmp/linux-arm64.zip \
-            "https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}/rgb-lib-uniffi-aarch64-unknown-linux-gnu.zip"
+          curl -L --fail -o /tmp/linux-arm64.zip \
+            "${RELEASE_BASE}/rgb-lib-uniffi-aarch64-unknown-linux-gnu.zip"
           unzip -o /tmp/linux-arm64.zip -d /tmp/linux-arm64
           cp /tmp/linux-arm64/librgblibuniffi.so lib/librgblibuniffi_arm64.so
 
           # macOS arm64
-          curl -L -o /tmp/macos-arm64.zip \
-            "https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}/rgb-lib-uniffi-aarch64-apple-darwin.zip"
+          curl -L --fail -o /tmp/macos-arm64.zip \
+            "${RELEASE_BASE}/rgb-lib-uniffi-aarch64-apple-darwin.zip"
           unzip -o /tmp/macos-arm64.zip -d /tmp/macos-arm64
           cp /tmp/macos-arm64/librgblibuniffi.dylib lib/librgblibuniffi.dylib
 
-          echo "lib/ contents:"
+          echo "=== Verifying library architectures ==="
           file lib/*
+          file lib/librgblibuniffi.so | grep -q "x86-64" || { echo "ERROR: librgblibuniffi.so is not x86-64"; exit 1; }
+          file lib/librgblibuniffi_arm64.so | grep -q "aarch64\|ARM aarch64" || { echo "ERROR: librgblibuniffi_arm64.so is not aarch64"; exit 1; }
+          file lib/librgblibuniffi.dylib | grep -q "arm64\|aarch64" || { echo "ERROR: librgblibuniffi.dylib is not arm64"; exit 1; }
+          echo "All libraries verified OK"
         shell: bash
 
       - name: Commit updated bindings and libraries
