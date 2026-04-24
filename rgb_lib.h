@@ -767,7 +767,7 @@ uint8_t uniffi_rgblibuniffi_fn_method_wallet_create_utxos(uint64_t ptr, RustBuff
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CREATE_UTXOS_BEGIN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CREATE_UTXOS_BEGIN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_create_utxos_begin(uint64_t ptr, RustBuffer online, int8_t up_to, RustBuffer num, RustBuffer size, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_create_utxos_begin(uint64_t ptr, RustBuffer online, int8_t up_to, RustBuffer num, RustBuffer size, uint64_t fee_rate, int8_t skip_sync, int8_t dry_run, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CREATE_UTXOS_END
@@ -787,12 +787,12 @@ void uniffi_rgblibuniffi_fn_method_wallet_disable_vss_auto_backup(uint64_t ptr, 
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DRAIN_TO
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DRAIN_TO
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_drain_to(uint64_t ptr, RustBuffer online, RustBuffer address, int8_t destroy_assets, uint64_t fee_rate, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_drain_to(uint64_t ptr, RustBuffer online, RustBuffer address, uint64_t fee_rate, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DRAIN_TO_BEGIN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DRAIN_TO_BEGIN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_drain_to_begin(uint64_t ptr, RustBuffer online, RustBuffer address, int8_t destroy_assets, uint64_t fee_rate, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_drain_to_begin(uint64_t ptr, RustBuffer online, RustBuffer address, uint64_t fee_rate, int8_t dry_run, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_DRAIN_TO_END
@@ -962,7 +962,7 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_btc(uint64_t ptr, RustBuffe
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BTC_BEGIN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BTC_BEGIN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_btc_begin(uint64_t ptr, RustBuffer online, RustBuffer address, uint64_t amount, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_btc_begin(uint64_t ptr, RustBuffer online, RustBuffer address, uint64_t amount, uint64_t fee_rate, int8_t skip_sync, int8_t dry_run, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BTC_END
@@ -1002,7 +1002,7 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_witness_receive(uint64_t ptr, Ru
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_GENERATE_KEYS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_GENERATE_KEYS
-RustBuffer uniffi_rgblibuniffi_fn_func_generate_keys(RustBuffer bitcoin_network, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_func_generate_keys(RustBuffer bitcoin_network, RustBuffer witness_version, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_RESTORE_BACKUP
@@ -1017,7 +1017,7 @@ RustBuffer uniffi_rgblibuniffi_fn_func_restore_from_vss(RustBuffer config, RustB
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_RESTORE_KEYS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_RESTORE_KEYS
-RustBuffer uniffi_rgblibuniffi_fn_func_restore_keys(RustBuffer bitcoin_network, RustBuffer mnemonic, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_func_restore_keys(RustBuffer bitcoin_network, RustBuffer mnemonic, RustBuffer witness_version, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_VALIDATE_CONSIGNMENT
