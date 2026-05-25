@@ -22,6 +22,17 @@ func getEnv(key, fallback string) string {
 	return fallback
 }
 
+func parseWitnessVersion(s string) rgb_lib.WitnessVersion {
+	switch strings.ToLower(strings.TrimSpace(s)) {
+	case "segwit_v0", "segwit", "v0":
+		return rgb_lib.WitnessVersionSegWitV0
+	case "taproot", "v1":
+		return rgb_lib.WitnessVersionTaproot
+	default:
+		return rgb_lib.WitnessVersionTaproot
+	}
+}
+
 func parseBitcoinNetwork(s string) rgb_lib.BitcoinNetwork {
 	switch strings.ToLower(strings.TrimSpace(s)) {
 	case "mainnet":
@@ -43,6 +54,7 @@ func main() {
 
 	networkStr := getEnv("BITCOIN_NETWORK", "signet")
 	network := parseBitcoinNetwork(networkStr)
+	witnessVersion := parseWitnessVersion(getEnv("WITNESS_VERSION", "taproot"))
 
 	mnemonic := getEnv("MNEMONIC", "")
 	accountXpubVanilla := getEnv("ACCOUNT_XPUB_VANILLA", "")
@@ -58,7 +70,7 @@ func main() {
 		log.Printf("created data dir: %s", dataDir)
 	}
 
-	keys := rgb_lib.GenerateKeys(network)
+	keys := rgb_lib.GenerateKeys(network, witnessVersion)
 	fmt.Println("generate_keys")
 	fmt.Printf("  network=%s\n", networkStr)
 	fmt.Printf("  mnemonic=%s\n", keys.Mnemonic)
@@ -87,6 +99,7 @@ func main() {
 		VanillaKeychain:    &keychain,
 		MasterFingerprint:  masterFingerprint,
 		Mnemonic:           &mnemonic,
+		WitnessVersion:     witnessVersion,
 	}
 
 	wallet, err := rgb_lib.NewWallet(walletData, walletKeys)
@@ -95,7 +108,10 @@ func main() {
 	}
 	fmt.Printf("\nwallet_data_dir=%s\n", wallet.GetWalletDir())
 
-	online, err := wallet.GoOnline(false, indexerURL)
+	online, err := wallet.GoOnline(rgb_lib.OnlineOptions{
+		IndexerUrl:           indexerURL,
+		SkipConsistencyCheck: false,
+	})
 	if err != nil {
 		log.Fatalf("go online: %v", err)
 	}
