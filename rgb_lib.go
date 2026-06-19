@@ -8183,7 +8183,8 @@ type RefreshTransferStatus uint
 
 const (
 	RefreshTransferStatusWaitingCounterparty  RefreshTransferStatus = 1
-	RefreshTransferStatusWaitingConfirmations RefreshTransferStatus = 2
+	RefreshTransferStatusWaitingSafeHeight    RefreshTransferStatus = 2
+	RefreshTransferStatusWaitingConfirmations RefreshTransferStatus = 3
 )
 
 type FfiConverterRefreshTransferStatus struct{}
