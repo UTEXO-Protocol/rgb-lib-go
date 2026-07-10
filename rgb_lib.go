@@ -5109,6 +5109,7 @@ func (_ FfiDestroyerInitOperationResult) Destroy(value InitOperationResult) {
 
 type InvoiceData struct {
 	RecipientId         string
+	ProxyRecipientId    string
 	AssetSchema         *AssetSchema
 	AssetId             *string
 	Assignment          Assignment
@@ -5120,6 +5121,7 @@ type InvoiceData struct {
 
 func (r *InvoiceData) Destroy() {
 	FfiDestroyerString{}.Destroy(r.RecipientId)
+	FfiDestroyerString{}.Destroy(r.ProxyRecipientId)
 	FfiDestroyerOptionalAssetSchema{}.Destroy(r.AssetSchema)
 	FfiDestroyerOptionalString{}.Destroy(r.AssetId)
 	FfiDestroyerAssignment{}.Destroy(r.Assignment)
@@ -5139,6 +5141,7 @@ func (c FfiConverterInvoiceData) Lift(rb RustBufferI) InvoiceData {
 
 func (c FfiConverterInvoiceData) Read(reader io.Reader) InvoiceData {
 	return InvoiceData{
+		FfiConverterStringINSTANCE.Read(reader),
 		FfiConverterStringINSTANCE.Read(reader),
 		FfiConverterOptionalAssetSchemaINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
@@ -5160,6 +5163,7 @@ func (c FfiConverterInvoiceData) LowerExternal(value InvoiceData) ExternalCRustB
 
 func (c FfiConverterInvoiceData) Write(writer io.Writer, value InvoiceData) {
 	FfiConverterStringINSTANCE.Write(writer, value.RecipientId)
+	FfiConverterStringINSTANCE.Write(writer, value.ProxyRecipientId)
 	FfiConverterOptionalAssetSchemaINSTANCE.Write(writer, value.AssetSchema)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.AssetId)
 	FfiConverterAssignmentINSTANCE.Write(writer, value.Assignment)
@@ -6882,6 +6886,7 @@ type Transfer struct {
 	Kind                TransferKind
 	Txid                *string
 	RecipientId         *string
+	ProxyRecipientId    *string
 	ReceiveUtxo         *Outpoint
 	ChangeUtxo          *Outpoint
 	ExpirationTimestamp *uint64
@@ -6902,6 +6907,7 @@ func (r *Transfer) Destroy() {
 	FfiDestroyerTransferKind{}.Destroy(r.Kind)
 	FfiDestroyerOptionalString{}.Destroy(r.Txid)
 	FfiDestroyerOptionalString{}.Destroy(r.RecipientId)
+	FfiDestroyerOptionalString{}.Destroy(r.ProxyRecipientId)
 	FfiDestroyerOptionalOutpoint{}.Destroy(r.ReceiveUtxo)
 	FfiDestroyerOptionalOutpoint{}.Destroy(r.ChangeUtxo)
 	FfiDestroyerOptionalUint64{}.Destroy(r.ExpirationTimestamp)
@@ -6929,6 +6935,7 @@ func (c FfiConverterTransfer) Read(reader io.Reader) Transfer {
 		FfiConverterOptionalAssignmentINSTANCE.Read(reader),
 		FfiConverterSequenceAssignmentINSTANCE.Read(reader),
 		FfiConverterTransferKindINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalOutpointINSTANCE.Read(reader),
@@ -6960,6 +6967,7 @@ func (c FfiConverterTransfer) Write(writer io.Writer, value Transfer) {
 	FfiConverterTransferKindINSTANCE.Write(writer, value.Kind)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Txid)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.RecipientId)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.ProxyRecipientId)
 	FfiConverterOptionalOutpointINSTANCE.Write(writer, value.ReceiveUtxo)
 	FfiConverterOptionalOutpointINSTANCE.Write(writer, value.ChangeUtxo)
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.ExpirationTimestamp)
