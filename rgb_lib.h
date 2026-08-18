@@ -617,7 +617,7 @@ RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_transactions(uint64
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_TRANSFERS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_TRANSFERS
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_transfers(uint64_t ptr, RustBuffer filter, RustBuffer txid, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_transfers(uint64_t ptr, RustBuffer asset_filter, RustBuffer txid, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_UNSPENTS
@@ -962,7 +962,7 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_transactions(uint64_t ptr, 
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_TRANSFERS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_TRANSFERS
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_transfers(uint64_t ptr, RustBuffer filter, RustBuffer txid, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_transfers(uint64_t ptr, RustBuffer asset_filter, RustBuffer txid, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_UNSPENTS

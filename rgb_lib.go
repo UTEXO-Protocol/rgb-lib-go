@@ -755,7 +755,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transfers()
 		})
-		if checksum != 10076 {
+		if checksum != 19629 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transfers: UniFFI API checksum mismatch")
 		}
@@ -1268,7 +1268,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_list_transfers()
 		})
-		if checksum != 7668 {
+		if checksum != 1523 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_list_transfers: UniFFI API checksum mismatch")
 		}
@@ -2123,7 +2123,7 @@ type MultisigWalletInterface interface {
 	IssueAssetUda(online Online, ticker string, name string, details *string, precision uint8, mediaFilePath *string, attachmentsFilePaths []string) (AssetUda, error)
 	ListAssets(filterAssetSchemas []AssetSchema) (Assets, error)
 	ListTransactions(online *Online, skipSync bool) ([]Transaction, error)
-	ListTransfers(filter AssetFilter, txid *string) ([]Transfer, error)
+	ListTransfers(assetFilter AssetFilter, txid *string) ([]Transfer, error)
 	ListUnspents(online *Online, settledOnly bool, skipSync bool) ([]Unspent, error)
 	Refresh(online Online, assetId *string, filter []RefreshFilter, skipSync bool) (map[int32]RefreshedTransfer, error)
 	RespondToOperation(online Online, operationIdx int32, respondToOperation RespondToOperation) (OperationInfo, error)
@@ -2636,13 +2636,13 @@ func (_self *MultisigWallet) ListTransactions(online *Online, skipSync bool) ([]
 	}
 }
 
-func (_self *MultisigWallet) ListTransfers(filter AssetFilter, txid *string) ([]Transfer, error) {
+func (_self *MultisigWallet) ListTransfers(assetFilter AssetFilter, txid *string) ([]Transfer, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_list_transfers(
-				_pointer, FfiConverterAssetFilterINSTANCE.Lower(filter), FfiConverterOptionalStringINSTANCE.Lower(txid), _uniffiStatus),
+				_pointer, FfiConverterAssetFilterINSTANCE.Lower(assetFilter), FfiConverterOptionalStringINSTANCE.Lower(txid), _uniffiStatus),
 		}
 	})
 	if _uniffiErr != nil {
@@ -3189,7 +3189,7 @@ type WalletInterface interface {
 	ListAssets(filterAssetSchemas []AssetSchema) (Assets, error)
 	ListPendingVanillaTxs() ([]PendingVanillaTx, error)
 	ListTransactions(online *Online, skipSync bool) ([]Transaction, error)
-	ListTransfers(filter AssetFilter, txid *string) ([]Transfer, error)
+	ListTransfers(assetFilter AssetFilter, txid *string) ([]Transfer, error)
 	ListUnspents(online *Online, settledOnly bool, skipSync bool) ([]Unspent, error)
 	Refresh(online Online, assetId *string, filter []RefreshFilter, skipSync bool) (map[int32]RefreshedTransfer, error)
 	RotateColoredAddress() (string, error)
@@ -3852,13 +3852,13 @@ func (_self *Wallet) ListTransactions(online *Online, skipSync bool) ([]Transact
 	}
 }
 
-func (_self *Wallet) ListTransfers(filter AssetFilter, txid *string) ([]Transfer, error) {
+func (_self *Wallet) ListTransfers(assetFilter AssetFilter, txid *string) ([]Transfer, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_list_transfers(
-				_pointer, FfiConverterAssetFilterINSTANCE.Lower(filter), FfiConverterOptionalStringINSTANCE.Lower(txid), _uniffiStatus),
+				_pointer, FfiConverterAssetFilterINSTANCE.Lower(assetFilter), FfiConverterOptionalStringINSTANCE.Lower(txid), _uniffiStatus),
 		}
 	})
 	if _uniffiErr != nil {
@@ -7470,16 +7470,16 @@ func (_ FfiDestroyerWitnessData) Destroy(value WitnessData) {
 type AssetFilter interface {
 	Destroy()
 }
-type AssetFilterAny struct {
+type AssetFilterAnyOrNone struct {
 }
 
-func (e AssetFilterAny) Destroy() {
+func (e AssetFilterAnyOrNone) Destroy() {
 }
 
-type AssetFilterNoAsset struct {
+type AssetFilterNone struct {
 }
 
-func (e AssetFilterNoAsset) Destroy() {
+func (e AssetFilterNone) Destroy() {
 }
 
 type AssetFilterId struct {
@@ -7509,9 +7509,9 @@ func (FfiConverterAssetFilter) Read(reader io.Reader) AssetFilter {
 	id := readInt32(reader)
 	switch id {
 	case 1:
-		return AssetFilterAny{}
+		return AssetFilterAnyOrNone{}
 	case 2:
-		return AssetFilterNoAsset{}
+		return AssetFilterNone{}
 	case 3:
 		return AssetFilterId{
 			FfiConverterStringINSTANCE.Read(reader),
@@ -7523,9 +7523,9 @@ func (FfiConverterAssetFilter) Read(reader io.Reader) AssetFilter {
 
 func (FfiConverterAssetFilter) Write(writer io.Writer, value AssetFilter) {
 	switch variant_value := value.(type) {
-	case AssetFilterAny:
+	case AssetFilterAnyOrNone:
 		writeInt32(writer, 1)
-	case AssetFilterNoAsset:
+	case AssetFilterNone:
 		writeInt32(writer, 2)
 	case AssetFilterId:
 		writeInt32(writer, 3)
