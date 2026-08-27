@@ -1,10 +1,9 @@
-/*
-#cgo LDFLAGS: -lrgblibuniffi -L${SRCDIR}/lib -Wl,-rpath,${SRCDIR}/lib
-*/
-// #include <rgb_lib.h>
 package rgb_lib
 
-// #include <rgb_lib.h>
+/*
+#cgo LDFLAGS: -lrgblibuniffi -L${SRCDIR}/lib -Wl,-rpath,${SRCDIR}/lib
+#include <rgb_lib.h>
+*/
 import "C"
 
 import (
@@ -494,7 +493,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_bridge_init()
 		})
-		if checksum != 65145 {
+		if checksum != 2515 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_bridge_init: UniFFI API checksum mismatch")
 		}
@@ -2139,7 +2138,7 @@ type MultisigWalletInterface interface {
 	Backup(backupPath string, password string) error
 	BackupInfo() (bool, error)
 	BlindReceive(online Online, assetId *string, assignment Assignment, expirationTimestamp *uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error)
-	BridgeInit(online Online, assetId string, recipient Recipient, feeRate uint64, minConfirmations uint8) (InitOperationResult, error)
+	BridgeInit(online Online, assetId string, recipient Recipient, feeRate uint64, minConfirmations uint8) (BridgeInitResult, error)
 	BurnInit(online Online, assetId string, amount uint64, feeRate uint64, minConfirmations uint8) (InitOperationResult, error)
 	ConfigureVssBackup(config VssBackupConfig) error
 	CreateUtxosInit(online Online, upTo bool, num *uint8, size *uint32, feeRate uint64, skipSync bool) (InitOperationResult, error)
@@ -2241,7 +2240,7 @@ func (_self *MultisigWallet) BlindReceive(online Online, assetId *string, assign
 	}
 }
 
-func (_self *MultisigWallet) BridgeInit(online Online, assetId string, recipient Recipient, feeRate uint64, minConfirmations uint8) (InitOperationResult, error) {
+func (_self *MultisigWallet) BridgeInit(online Online, assetId string, recipient Recipient, feeRate uint64, minConfirmations uint8) (BridgeInitResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
@@ -2251,10 +2250,10 @@ func (_self *MultisigWallet) BridgeInit(online Online, assetId string, recipient
 		}
 	})
 	if _uniffiErr != nil {
-		var _uniffiDefaultValue InitOperationResult
+		var _uniffiDefaultValue BridgeInitResult
 		return _uniffiDefaultValue, _uniffiErr
 	} else {
-		return FfiConverterInitOperationResultINSTANCE.Lift(_uniffiRV), nil
+		return FfiConverterBridgeInitResultINSTANCE.Lift(_uniffiRV), nil
 	}
 }
 
@@ -4995,6 +4994,54 @@ func (c FfiConverterBridgeDetails) Write(writer io.Writer, value BridgeDetails) 
 type FfiDestroyerBridgeDetails struct{}
 
 func (_ FfiDestroyerBridgeDetails) Destroy(value BridgeDetails) {
+	value.Destroy()
+}
+
+type BridgeInitResult struct {
+	Psbt         string
+	OperationIdx int32
+	Opid         string
+}
+
+func (r *BridgeInitResult) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Psbt)
+	FfiDestroyerInt32{}.Destroy(r.OperationIdx)
+	FfiDestroyerString{}.Destroy(r.Opid)
+}
+
+type FfiConverterBridgeInitResult struct{}
+
+var FfiConverterBridgeInitResultINSTANCE = FfiConverterBridgeInitResult{}
+
+func (c FfiConverterBridgeInitResult) Lift(rb RustBufferI) BridgeInitResult {
+	return LiftFromRustBuffer[BridgeInitResult](c, rb)
+}
+
+func (c FfiConverterBridgeInitResult) Read(reader io.Reader) BridgeInitResult {
+	return BridgeInitResult{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterInt32INSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterBridgeInitResult) Lower(value BridgeInitResult) C.RustBuffer {
+	return LowerIntoRustBuffer[BridgeInitResult](c, value)
+}
+
+func (c FfiConverterBridgeInitResult) LowerExternal(value BridgeInitResult) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[BridgeInitResult](c, value))
+}
+
+func (c FfiConverterBridgeInitResult) Write(writer io.Writer, value BridgeInitResult) {
+	FfiConverterStringINSTANCE.Write(writer, value.Psbt)
+	FfiConverterInt32INSTANCE.Write(writer, value.OperationIdx)
+	FfiConverterStringINSTANCE.Write(writer, value.Opid)
+}
+
+type FfiDestroyerBridgeInitResult struct{}
+
+func (_ FfiDestroyerBridgeInitResult) Destroy(value BridgeInitResult) {
 	value.Destroy()
 }
 
