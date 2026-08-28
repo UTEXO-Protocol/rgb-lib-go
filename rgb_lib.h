@@ -477,7 +477,7 @@ RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_bridge_init(uint64_t ptr
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BURN_INIT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BURN_INIT
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_burn_init(uint64_t ptr, RustBuffer online, RustBuffer asset_id, uint64_t amount, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_burn_init(uint64_t ptr, RustBuffer online, RustBuffer asset_id, uint64_t amount, RustBuffer burn_recipient, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_CONFIGURE_VSS_BACKUP
@@ -797,12 +797,12 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_bridge_end(uint64_t ptr, RustBuf
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BURN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BURN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_burn(uint64_t ptr, RustBuffer online, RustBuffer asset_id, uint64_t amount, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_burn(uint64_t ptr, RustBuffer online, RustBuffer asset_id, uint64_t amount, RustBuffer burn_recipient, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BURN_BEGIN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BURN_BEGIN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_burn_begin(uint64_t ptr, RustBuffer online, RustBuffer asset_id, uint64_t amount, uint64_t fee_rate, uint8_t min_confirmations, int8_t dry_run, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_burn_begin(uint64_t ptr, RustBuffer online, RustBuffer asset_id, uint64_t amount, RustBuffer burn_recipient, uint64_t fee_rate, uint8_t min_confirmations, int8_t dry_run, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BURN_END
