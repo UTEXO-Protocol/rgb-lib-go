@@ -599,6 +599,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_burn_recipient()
+		})
+		if checksum != 58057 {
+			// If this happens try cleaning and rebuilding your project
+			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_get_burn_recipient: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_descriptors()
 		})
 		if checksum != 20698 {
@@ -1126,6 +1135,15 @@ func uniffiCheckChecksums() {
 		if checksum != 40234 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_btc_balance: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_burn_recipient()
+		})
+		if checksum != 45581 {
+			// If this happens try cleaning and rebuilding your project
+			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_burn_recipient: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -2150,6 +2168,7 @@ type MultisigWalletInterface interface {
 	GetAssetBalance(assetId string) (Balance, error)
 	GetAssetMetadata(assetId string) (Metadata, error)
 	GetBtcBalance(online *Online, skipSync bool) (BtcBalance, error)
+	GetBurnRecipient(consignmentPath string) ([]uint8, error)
 	GetDescriptors() WalletDescriptors
 	GetFeeEstimation(online Online, blocks uint16) (float64, error)
 	GetKeys() MultisigKeys
@@ -2424,6 +2443,23 @@ func (_self *MultisigWallet) GetBtcBalance(online *Online, skipSync bool) (BtcBa
 		return _uniffiDefaultValue, _uniffiErr
 	} else {
 		return FfiConverterBtcBalanceINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+func (_self *MultisigWallet) GetBurnRecipient(consignmentPath string) ([]uint8, error) {
+	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_get_burn_recipient(
+				_pointer, FfiConverterStringINSTANCE.Lower(consignmentPath), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue []uint8
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterSequenceUint8INSTANCE.Lift(_uniffiRV), nil
 	}
 }
 
@@ -3252,6 +3288,7 @@ type WalletInterface interface {
 	GetAssetBalance(assetId string) (Balance, error)
 	GetAssetMetadata(assetId string) (Metadata, error)
 	GetBtcBalance(online *Online, skipSync bool) (BtcBalance, error)
+	GetBurnRecipient(consignmentPath string) ([]uint8, error)
 	GetDescriptors() WalletDescriptors
 	GetFeeEstimation(online Online, blocks uint16) (float64, error)
 	GetKeys() SinglesigKeys
@@ -3675,6 +3712,23 @@ func (_self *Wallet) GetBtcBalance(online *Online, skipSync bool) (BtcBalance, e
 		return _uniffiDefaultValue, _uniffiErr
 	} else {
 		return FfiConverterBtcBalanceINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+func (_self *Wallet) GetBurnRecipient(consignmentPath string) ([]uint8, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Wallet")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_rgblibuniffi_fn_method_wallet_get_burn_recipient(
+				_pointer, FfiConverterStringINSTANCE.Lower(consignmentPath), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue []uint8
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterSequenceUint8INSTANCE.Lift(_uniffiRV), nil
 	}
 }
 
