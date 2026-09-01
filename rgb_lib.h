@@ -1075,6 +1075,11 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_vss_backup_info(uint64_t ptr, ui
 RustBuffer uniffi_rgblibuniffi_fn_method_wallet_witness_receive(uint64_t ptr, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_ASSET_SCHEMA_ID
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_ASSET_SCHEMA_ID
+RustBuffer uniffi_rgblibuniffi_fn_func_asset_schema_id(RustBuffer asset_schema, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_GENERATE_KEYS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_GENERATE_KEYS
 RustBuffer uniffi_rgblibuniffi_fn_func_generate_keys(RustBuffer bitcoin_network, RustBuffer witness_version, RustCallStatus *out_status
@@ -1363,6 +1368,12 @@ void ffi_rgblibuniffi_rust_future_free_void(uint64_t handle
 #ifndef UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUST_FUTURE_COMPLETE_VOID
 #define UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUST_FUTURE_COMPLETE_VOID
 void ffi_rgblibuniffi_rust_future_complete_void(uint64_t handle, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_ASSET_SCHEMA_ID
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_ASSET_SCHEMA_ID
+uint16_t uniffi_rgblibuniffi_checksum_func_asset_schema_id(void
+    
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_GENERATE_KEYS

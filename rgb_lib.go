@@ -374,6 +374,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_rgblibuniffi_checksum_func_asset_schema_id()
+		})
+		if checksum != 27408 {
+			// If this happens try cleaning and rebuilding your project
+			panic("rgb_lib: uniffi_rgblibuniffi_checksum_func_asset_schema_id: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_func_generate_keys()
 		})
 		if checksum != 63042 {
@@ -15619,6 +15628,14 @@ func (_ FfiDestroyerMapStringSequenceRecipient) Destroy(mapValue map[string][]Re
 		FfiDestroyerString{}.Destroy(key)
 		FfiDestroyerSequenceRecipient{}.Destroy(value)
 	}
+}
+
+func AssetSchemaId(assetSchema AssetSchema) string {
+	return FfiConverterStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_rgblibuniffi_fn_func_asset_schema_id(FfiConverterAssetSchemaINSTANCE.Lower(assetSchema), _uniffiStatus),
+		}
+	}))
 }
 
 func GenerateKeys(bitcoinNetwork BitcoinNetwork, witnessVersion WitnessVersion) Keys {
