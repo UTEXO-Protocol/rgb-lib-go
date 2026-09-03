@@ -47,7 +47,7 @@ typedef struct RustCallStatus {
 #define UNIFFI_FFIDEF_RUST_FUTURE_CONTINUATION_CALLBACK
 typedef void (*UniffiRustFutureContinuationCallback)(uint64_t data, int8_t poll_result);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiRustFutureContinuationCallback(
 				UniffiRustFutureContinuationCallback cb, uint64_t data, int8_t poll_result)
@@ -61,7 +61,7 @@ static void call_UniffiRustFutureContinuationCallback(
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_DROPPED_CALLBACK
 typedef void (*UniffiForeignFutureDroppedCallback)(uint64_t handle);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureDroppedCallback(
 				UniffiForeignFutureDroppedCallback cb, uint64_t handle)
@@ -75,7 +75,7 @@ static void call_UniffiForeignFutureDroppedCallback(
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_FREE
 typedef void (*UniffiCallbackInterfaceFree)(uint64_t handle);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceFree(
 				UniffiCallbackInterfaceFree cb, uint64_t handle)
@@ -89,7 +89,7 @@ static void call_UniffiCallbackInterfaceFree(
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_CLONE
 typedef uint64_t (*UniffiCallbackInterfaceClone)(uint64_t handle);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static uint64_t call_UniffiCallbackInterfaceClone(
 				UniffiCallbackInterfaceClone cb, uint64_t handle)
@@ -119,7 +119,7 @@ typedef struct UniffiForeignFutureResultU8 {
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U8
 typedef void (*UniffiForeignFutureCompleteU8)(uint64_t callback_data, UniffiForeignFutureResultU8 result);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteU8(
 				UniffiForeignFutureCompleteU8 cb, uint64_t callback_data, UniffiForeignFutureResultU8 result)
@@ -141,7 +141,7 @@ typedef struct UniffiForeignFutureResultI8 {
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I8
 typedef void (*UniffiForeignFutureCompleteI8)(uint64_t callback_data, UniffiForeignFutureResultI8 result);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteI8(
 				UniffiForeignFutureCompleteI8 cb, uint64_t callback_data, UniffiForeignFutureResultI8 result)
@@ -163,7 +163,7 @@ typedef struct UniffiForeignFutureResultU16 {
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U16
 typedef void (*UniffiForeignFutureCompleteU16)(uint64_t callback_data, UniffiForeignFutureResultU16 result);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteU16(
 				UniffiForeignFutureCompleteU16 cb, uint64_t callback_data, UniffiForeignFutureResultU16 result)
@@ -185,7 +185,7 @@ typedef struct UniffiForeignFutureResultI16 {
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I16
 typedef void (*UniffiForeignFutureCompleteI16)(uint64_t callback_data, UniffiForeignFutureResultI16 result);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteI16(
 				UniffiForeignFutureCompleteI16 cb, uint64_t callback_data, UniffiForeignFutureResultI16 result)
@@ -207,7 +207,7 @@ typedef struct UniffiForeignFutureResultU32 {
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U32
 typedef void (*UniffiForeignFutureCompleteU32)(uint64_t callback_data, UniffiForeignFutureResultU32 result);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteU32(
 				UniffiForeignFutureCompleteU32 cb, uint64_t callback_data, UniffiForeignFutureResultU32 result)
@@ -229,7 +229,7 @@ typedef struct UniffiForeignFutureResultI32 {
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I32
 typedef void (*UniffiForeignFutureCompleteI32)(uint64_t callback_data, UniffiForeignFutureResultI32 result);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteI32(
 				UniffiForeignFutureCompleteI32 cb, uint64_t callback_data, UniffiForeignFutureResultI32 result)
@@ -251,7 +251,7 @@ typedef struct UniffiForeignFutureResultU64 {
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U64
 typedef void (*UniffiForeignFutureCompleteU64)(uint64_t callback_data, UniffiForeignFutureResultU64 result);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteU64(
 				UniffiForeignFutureCompleteU64 cb, uint64_t callback_data, UniffiForeignFutureResultU64 result)
@@ -273,7 +273,7 @@ typedef struct UniffiForeignFutureResultI64 {
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I64
 typedef void (*UniffiForeignFutureCompleteI64)(uint64_t callback_data, UniffiForeignFutureResultI64 result);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteI64(
 				UniffiForeignFutureCompleteI64 cb, uint64_t callback_data, UniffiForeignFutureResultI64 result)
@@ -295,7 +295,7 @@ typedef struct UniffiForeignFutureResultF32 {
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_F32
 typedef void (*UniffiForeignFutureCompleteF32)(uint64_t callback_data, UniffiForeignFutureResultF32 result);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteF32(
 				UniffiForeignFutureCompleteF32 cb, uint64_t callback_data, UniffiForeignFutureResultF32 result)
@@ -317,7 +317,7 @@ typedef struct UniffiForeignFutureResultF64 {
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_F64
 typedef void (*UniffiForeignFutureCompleteF64)(uint64_t callback_data, UniffiForeignFutureResultF64 result);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteF64(
 				UniffiForeignFutureCompleteF64 cb, uint64_t callback_data, UniffiForeignFutureResultF64 result)
@@ -339,7 +339,7 @@ typedef struct UniffiForeignFutureResultRustBuffer {
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_RUST_BUFFER
 typedef void (*UniffiForeignFutureCompleteRustBuffer)(uint64_t callback_data, UniffiForeignFutureResultRustBuffer result);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteRustBuffer(
 				UniffiForeignFutureCompleteRustBuffer cb, uint64_t callback_data, UniffiForeignFutureResultRustBuffer result)
@@ -360,7 +360,7 @@ typedef struct UniffiForeignFutureResultVoid {
 #define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_VOID
 typedef void (*UniffiForeignFutureCompleteVoid)(uint64_t callback_data, UniffiForeignFutureResultVoid result);
 
-// Making function static works arround:
+// Making function static workaround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiForeignFutureCompleteVoid(
 				UniffiForeignFutureCompleteVoid cb, uint64_t callback_data, UniffiForeignFutureResultVoid result)
@@ -467,7 +467,7 @@ int8_t uniffi_rgblibuniffi_fn_method_multisigwallet_backup_info(uint64_t ptr, Ru
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BLIND_RECEIVE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BLIND_RECEIVE
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_blind_receive(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_blind_receive(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer assignment, uint64_t expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BRIDGE_INIT
@@ -632,7 +632,7 @@ RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_transactions(uint64
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_TRANSFERS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_TRANSFERS
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_transfers(uint64_t ptr, RustBuffer asset_id, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_list_transfers(uint64_t ptr, RustBuffer asset_filter, RustBuffer txid, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_LIST_UNSPENTS
@@ -657,7 +657,7 @@ RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_send_btc_init(uint64_t p
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SEND_INIT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SEND_INIT
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_send_init(uint64_t ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, RustBuffer expiration_timestamp, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_send_init(uint64_t ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, uint64_t expiration_timestamp, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_SYNC
@@ -682,7 +682,7 @@ RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_vss_backup_info(uint64_t
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_WITNESS_RECEIVE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_WITNESS_RECEIVE
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_witness_receive(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_witness_receive(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer assignment, uint64_t expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CLONE_RECIPIENTINFO
@@ -765,6 +765,11 @@ uint64_t uniffi_rgblibuniffi_fn_clone_wallet(uint64_t handle, RustCallStatus *ou
 void uniffi_rgblibuniffi_fn_free_wallet(uint64_t handle, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_WALLET_LOAD
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_WALLET_LOAD
+uint64_t uniffi_rgblibuniffi_fn_constructor_wallet_load(RustBuffer data_dir, RustBuffer master_fingerprint, RustBuffer mnemonic, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_WALLET_NEW
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_CONSTRUCTOR_WALLET_NEW
 uint64_t uniffi_rgblibuniffi_fn_constructor_wallet_new(RustBuffer wallet_data, RustBuffer keys, RustCallStatus *out_status
@@ -787,7 +792,7 @@ int8_t uniffi_rgblibuniffi_fn_method_wallet_backup_info(uint64_t ptr, RustCallSt
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BLIND_RECEIVE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BLIND_RECEIVE
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_blind_receive(uint64_t ptr, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_blind_receive(uint64_t ptr, RustBuffer asset_id, RustBuffer assignment, uint64_t expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_BRIDGE_BEGIN
@@ -997,12 +1002,22 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_transactions(uint64_t ptr, 
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_TRANSFERS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_TRANSFERS
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_transfers(uint64_t ptr, RustBuffer asset_id, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_transfers(uint64_t ptr, RustBuffer asset_filter, RustBuffer txid, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_UNSPENTS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LIST_UNSPENTS
 RustBuffer uniffi_rgblibuniffi_fn_method_wallet_list_unspents(uint64_t ptr, RustBuffer online, int8_t settled_only, int8_t skip_sync, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_PROVIDE_OUT_OF_BAND_ACK
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_PROVIDE_OUT_OF_BAND_ACK
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_provide_out_of_band_ack(uint64_t ptr, RustBuffer online, RustBuffer recipient_id, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_PROVIDE_OUT_OF_BAND_CONSIGNMENT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_PROVIDE_OUT_OF_BAND_CONSIGNMENT
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_provide_out_of_band_consignment(uint64_t ptr, RustBuffer online, RustBuffer consignment_path, RustBuffer media_file_paths, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_REFRESH
@@ -1022,12 +1037,12 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_rotate_vanilla_address(uint64_t 
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send(uint64_t ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, RustBuffer expiration_timestamp, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send(uint64_t ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, uint64_t expiration_timestamp, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BEGIN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BEGIN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_begin(uint64_t ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, RustBuffer expiration_timestamp, int8_t dry_run, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_send_begin(uint64_t ptr, RustBuffer online, RustBuffer recipient_map, int8_t donation, uint64_t fee_rate, uint8_t min_confirmations, uint64_t expiration_timestamp, int8_t dry_run, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_SEND_BTC
@@ -1072,7 +1087,7 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_vss_backup_info(uint64_t ptr, ui
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_WITNESS_RECEIVE
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_WITNESS_RECEIVE
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_witness_receive(uint64_t ptr, RustBuffer asset_id, RustBuffer assignment, RustBuffer expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_witness_receive(uint64_t ptr, RustBuffer asset_id, RustBuffer assignment, uint64_t expiration_timestamp, RustBuffer transport_endpoints, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_ASSET_SCHEMA_ID
@@ -2024,6 +2039,18 @@ uint16_t uniffi_rgblibuniffi_checksum_method_wallet_list_unspents(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PROVIDE_OUT_OF_BAND_ACK
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PROVIDE_OUT_OF_BAND_ACK
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_provide_out_of_band_ack(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PROVIDE_OUT_OF_BAND_CONSIGNMENT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PROVIDE_OUT_OF_BAND_CONSIGNMENT
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_provide_out_of_band_consignment(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_REFRESH
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_REFRESH
 uint16_t uniffi_rgblibuniffi_checksum_method_wallet_refresh(void
@@ -2153,6 +2180,12 @@ uint16_t uniffi_rgblibuniffi_checksum_constructor_transportendpoint_new(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_CONSTRUCTOR_VSSBACKUPCLIENT_NEW
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_CONSTRUCTOR_VSSBACKUPCLIENT_NEW
 uint16_t uniffi_rgblibuniffi_checksum_constructor_vssbackupclient_new(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_CONSTRUCTOR_WALLET_LOAD
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_CONSTRUCTOR_WALLET_LOAD
+uint16_t uniffi_rgblibuniffi_checksum_constructor_wallet_load(void
     
 );
 #endif

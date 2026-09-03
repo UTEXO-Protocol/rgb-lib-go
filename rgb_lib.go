@@ -493,7 +493,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_blind_receive()
 		})
-		if checksum != 36277 {
+		if checksum != 22580 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_blind_receive: UniFFI API checksum mismatch")
 		}
@@ -511,7 +511,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_burn_init()
 		})
-		if checksum != 29707 {
+		if checksum != 46517 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_burn_init: UniFFI API checksum mismatch")
 		}
@@ -529,7 +529,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_create_utxos_init()
 		})
-		if checksum != 30968 {
+		if checksum != 789 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_create_utxos_init: UniFFI API checksum mismatch")
 		}
@@ -538,7 +538,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_delete_transfers()
 		})
-		if checksum != 40748 {
+		if checksum != 48494 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_delete_transfers: UniFFI API checksum mismatch")
 		}
@@ -556,7 +556,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_fail_transfers()
 		})
-		if checksum != 35998 {
+		if checksum != 55979 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_fail_transfers: UniFFI API checksum mismatch")
 		}
@@ -601,7 +601,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_btc_balance()
 		})
-		if checksum != 49406 {
+		if checksum != 55887 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_get_btc_balance: UniFFI API checksum mismatch")
 		}
@@ -610,7 +610,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_get_burn_recipient()
 		})
-		if checksum != 58057 {
+		if checksum != 28398 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_get_burn_recipient: UniFFI API checksum mismatch")
 		}
@@ -700,7 +700,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_inflate_init()
 		})
-		if checksum != 46509 {
+		if checksum != 41188 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_inflate_init: UniFFI API checksum mismatch")
 		}
@@ -727,7 +727,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_bfa()
 		})
-		if checksum != 10649 {
+		if checksum != 546 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_bfa: UniFFI API checksum mismatch")
 		}
@@ -736,7 +736,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_cfa()
 		})
-		if checksum != 44678 {
+		if checksum != 41547 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_cfa: UniFFI API checksum mismatch")
 		}
@@ -745,7 +745,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_ifa()
 		})
-		if checksum != 14808 {
+		if checksum != 40032 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_ifa: UniFFI API checksum mismatch")
 		}
@@ -754,7 +754,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_nia()
 		})
-		if checksum != 24678 {
+		if checksum != 19531 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_nia: UniFFI API checksum mismatch")
 		}
@@ -763,7 +763,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_uda()
 		})
-		if checksum != 48866 {
+		if checksum != 30952 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_issue_asset_uda: UniFFI API checksum mismatch")
 		}
@@ -772,7 +772,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_list_assets()
 		})
-		if checksum != 323 {
+		if checksum != 9528 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_list_assets: UniFFI API checksum mismatch")
 		}
@@ -781,7 +781,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transactions()
 		})
-		if checksum != 65474 {
+		if checksum != 59451 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transactions: UniFFI API checksum mismatch")
 		}
@@ -790,7 +790,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transfers()
 		})
-		if checksum != 12717 {
+		if checksum != 15678 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transfers: UniFFI API checksum mismatch")
 		}
@@ -799,7 +799,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_list_unspents()
 		})
-		if checksum != 12847 {
+		if checksum != 40553 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_list_unspents: UniFFI API checksum mismatch")
 		}
@@ -808,7 +808,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_refresh()
 		})
-		if checksum != 55834 {
+		if checksum != 26091 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_refresh: UniFFI API checksum mismatch")
 		}
@@ -835,7 +835,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_send_init()
 		})
-		if checksum != 62562 {
+		if checksum != 20656 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_send_init: UniFFI API checksum mismatch")
 		}
@@ -853,7 +853,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_sync_with_hub()
 		})
-		if checksum != 51547 {
+		if checksum != 51360 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_sync_with_hub: UniFFI API checksum mismatch")
 		}
@@ -880,7 +880,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_witness_receive()
 		})
-		if checksum != 5941 {
+		if checksum != 26311 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_witness_receive: UniFFI API checksum mismatch")
 		}
@@ -961,7 +961,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_blind_receive()
 		})
-		if checksum != 893 {
+		if checksum != 59431 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_blind_receive: UniFFI API checksum mismatch")
 		}
@@ -988,7 +988,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_burn()
 		})
-		if checksum != 63150 {
+		if checksum != 43748 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_burn: UniFFI API checksum mismatch")
 		}
@@ -997,7 +997,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_burn_begin()
 		})
-		if checksum != 28079 {
+		if checksum != 8022 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_burn_begin: UniFFI API checksum mismatch")
 		}
@@ -1024,7 +1024,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_create_utxos()
 		})
-		if checksum != 17853 {
+		if checksum != 42439 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_create_utxos: UniFFI API checksum mismatch")
 		}
@@ -1033,7 +1033,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_create_utxos_begin()
 		})
-		if checksum != 59037 {
+		if checksum != 54099 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_create_utxos_begin: UniFFI API checksum mismatch")
 		}
@@ -1051,7 +1051,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_delete_transfers()
 		})
-		if checksum != 10688 {
+		if checksum != 58239 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_delete_transfers: UniFFI API checksum mismatch")
 		}
@@ -1096,7 +1096,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_fail_transfers()
 		})
-		if checksum != 51416 {
+		if checksum != 15648 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_fail_transfers: UniFFI API checksum mismatch")
 		}
@@ -1141,7 +1141,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_btc_balance()
 		})
-		if checksum != 40234 {
+		if checksum != 23464 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_btc_balance: UniFFI API checksum mismatch")
 		}
@@ -1150,7 +1150,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_burn_recipient()
 		})
-		if checksum != 45581 {
+		if checksum != 32710 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_burn_recipient: UniFFI API checksum mismatch")
 		}
@@ -1222,7 +1222,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_inflate()
 		})
-		if checksum != 1580 {
+		if checksum != 59243 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_inflate: UniFFI API checksum mismatch")
 		}
@@ -1231,7 +1231,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_inflate_begin()
 		})
-		if checksum != 14627 {
+		if checksum != 7764 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_inflate_begin: UniFFI API checksum mismatch")
 		}
@@ -1267,7 +1267,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_bfa()
 		})
-		if checksum != 63058 {
+		if checksum != 17929 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_bfa: UniFFI API checksum mismatch")
 		}
@@ -1276,7 +1276,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_cfa()
 		})
-		if checksum != 22119 {
+		if checksum != 54564 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_cfa: UniFFI API checksum mismatch")
 		}
@@ -1285,7 +1285,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_ifa()
 		})
-		if checksum != 50733 {
+		if checksum != 34047 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_ifa: UniFFI API checksum mismatch")
 		}
@@ -1294,7 +1294,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_nia()
 		})
-		if checksum != 36451 {
+		if checksum != 38855 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_nia: UniFFI API checksum mismatch")
 		}
@@ -1303,7 +1303,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_uda()
 		})
-		if checksum != 30524 {
+		if checksum != 43034 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_issue_asset_uda: UniFFI API checksum mismatch")
 		}
@@ -1312,7 +1312,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_list_assets()
 		})
-		if checksum != 51413 {
+		if checksum != 23322 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_list_assets: UniFFI API checksum mismatch")
 		}
@@ -1321,7 +1321,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_list_pending_vanilla_txs()
 		})
-		if checksum != 31555 {
+		if checksum != 47808 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_list_pending_vanilla_txs: UniFFI API checksum mismatch")
 		}
@@ -1330,7 +1330,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_list_transactions()
 		})
-		if checksum != 41427 {
+		if checksum != 54078 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_list_transactions: UniFFI API checksum mismatch")
 		}
@@ -1339,7 +1339,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_list_transfers()
 		})
-		if checksum != 56936 {
+		if checksum != 429 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_list_transfers: UniFFI API checksum mismatch")
 		}
@@ -1348,16 +1348,34 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_list_unspents()
 		})
-		if checksum != 51361 {
+		if checksum != 43676 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_list_unspents: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_rgblibuniffi_checksum_method_wallet_provide_out_of_band_ack()
+		})
+		if checksum != 3874 {
+			// If this happens try cleaning and rebuilding your project
+			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_provide_out_of_band_ack: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_rgblibuniffi_checksum_method_wallet_provide_out_of_band_consignment()
+		})
+		if checksum != 5235 {
+			// If this happens try cleaning and rebuilding your project
+			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_provide_out_of_band_consignment: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_refresh()
 		})
-		if checksum != 61884 {
+		if checksum != 33420 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_refresh: UniFFI API checksum mismatch")
 		}
@@ -1384,7 +1402,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_send()
 		})
-		if checksum != 40886 {
+		if checksum != 44676 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_send: UniFFI API checksum mismatch")
 		}
@@ -1393,7 +1411,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_send_begin()
 		})
-		if checksum != 16093 {
+		if checksum != 30982 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_send_begin: UniFFI API checksum mismatch")
 		}
@@ -1474,7 +1492,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_witness_receive()
 		})
-		if checksum != 40343 {
+		if checksum != 17270 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_witness_receive: UniFFI API checksum mismatch")
 		}
@@ -1549,6 +1567,15 @@ func uniffiCheckChecksums() {
 		if checksum != 26908 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_constructor_vssbackupclient_new: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_rgblibuniffi_checksum_constructor_wallet_load()
+		})
+		if checksum != 58302 {
+			// If this happens try cleaning and rebuilding your project
+			panic("rgb_lib: uniffi_rgblibuniffi_checksum_constructor_wallet_load: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -2164,7 +2191,7 @@ func (_ FfiDestroyerInvoice) Destroy(value *Invoice) {
 type MultisigWalletInterface interface {
 	Backup(backupPath string, password string) error
 	BackupInfo() (bool, error)
-	BlindReceive(online Online, assetId *string, assignment Assignment, expirationTimestamp *uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error)
+	BlindReceive(online Online, assetId *string, assignment Assignment, expirationTimestamp uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error)
 	BridgeInit(online Online, assetId string, recipient Recipient, feeRate uint64, minConfirmations uint8) (BridgeInitResult, error)
 	BurnInit(online Online, assetId string, amount uint64, burnRecipient *[]uint8, feeRate uint64, minConfirmations uint8) (InitOperationResult, error)
 	ConfigureVssBackup(config VssBackupConfig) error
@@ -2197,17 +2224,17 @@ type MultisigWalletInterface interface {
 	IssueAssetUda(online Online, ticker string, name string, details *string, precision uint8, mediaFilePath *string, attachmentsFilePaths []string) (AssetUda, error)
 	ListAssets(filterAssetSchemas []AssetSchema) (Assets, error)
 	ListTransactions(online *Online, skipSync bool) ([]Transaction, error)
-	ListTransfers(assetId *string) ([]Transfer, error)
+	ListTransfers(assetFilter AssetFilter, txid *string) ([]Transfer, error)
 	ListUnspents(online *Online, settledOnly bool, skipSync bool) ([]Unspent, error)
 	Refresh(online Online, assetId *string, filter []RefreshFilter, skipSync bool) (map[int32]RefreshedTransfer, error)
 	RespondToOperation(online Online, operationIdx int32, respondToOperation RespondToOperation) (OperationInfo, error)
 	SendBtcInit(online Online, address string, amount uint64, feeRate uint64, skipSync bool) (InitOperationResult, error)
-	SendInit(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp *uint64) (InitOperationResult, error)
+	SendInit(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp uint64) (InitOperationResult, error)
 	Sync(online Online, options SyncOptions) error
 	SyncWithHub(online Online) (*OperationInfo, error)
 	VssBackup(client *VssBackupClient) (int64, error)
 	VssBackupInfo(client *VssBackupClient) (VssBackupInfo, error)
-	WitnessReceive(online Online, assetId *string, assignment Assignment, expirationTimestamp *uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error)
+	WitnessReceive(online Online, assetId *string, assignment Assignment, expirationTimestamp uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error)
 }
 type MultisigWallet struct {
 	ffiObject FfiObject
@@ -2251,13 +2278,13 @@ func (_self *MultisigWallet) BackupInfo() (bool, error) {
 	}
 }
 
-func (_self *MultisigWallet) BlindReceive(online Online, assetId *string, assignment Assignment, expirationTimestamp *uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error) {
+func (_self *MultisigWallet) BlindReceive(online Online, assetId *string, assignment Assignment, expirationTimestamp uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_blind_receive(
-				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterAssignmentINSTANCE.Lower(assignment), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), FfiConverterSequenceStringINSTANCE.Lower(transportEndpoints), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
+				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterAssignmentINSTANCE.Lower(assignment), FfiConverterUint64INSTANCE.Lower(expirationTimestamp), FfiConverterSequenceStringINSTANCE.Lower(transportEndpoints), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
 		}
 	})
 	if _uniffiErr != nil {
@@ -2761,13 +2788,13 @@ func (_self *MultisigWallet) ListTransactions(online *Online, skipSync bool) ([]
 	}
 }
 
-func (_self *MultisigWallet) ListTransfers(assetId *string) ([]Transfer, error) {
+func (_self *MultisigWallet) ListTransfers(assetFilter AssetFilter, txid *string) ([]Transfer, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_list_transfers(
-				_pointer, FfiConverterOptionalStringINSTANCE.Lower(assetId), _uniffiStatus),
+				_pointer, FfiConverterAssetFilterINSTANCE.Lower(assetFilter), FfiConverterOptionalStringINSTANCE.Lower(txid), _uniffiStatus),
 		}
 	})
 	if _uniffiErr != nil {
@@ -2846,13 +2873,13 @@ func (_self *MultisigWallet) SendBtcInit(online Online, address string, amount u
 	}
 }
 
-func (_self *MultisigWallet) SendInit(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp *uint64) (InitOperationResult, error) {
+func (_self *MultisigWallet) SendInit(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp uint64) (InitOperationResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_send_init(
-				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterMapStringSequenceRecipientINSTANCE.Lower(recipientMap), FfiConverterBoolINSTANCE.Lower(donation), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterUint8INSTANCE.Lower(minConfirmations), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), _uniffiStatus),
+				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterMapStringSequenceRecipientINSTANCE.Lower(recipientMap), FfiConverterBoolINSTANCE.Lower(donation), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterUint8INSTANCE.Lower(minConfirmations), FfiConverterUint64INSTANCE.Lower(expirationTimestamp), _uniffiStatus),
 		}
 	})
 	if _uniffiErr != nil {
@@ -2923,13 +2950,13 @@ func (_self *MultisigWallet) VssBackupInfo(client *VssBackupClient) (VssBackupIn
 	}
 }
 
-func (_self *MultisigWallet) WitnessReceive(online Online, assetId *string, assignment Assignment, expirationTimestamp *uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error) {
+func (_self *MultisigWallet) WitnessReceive(online Online, assetId *string, assignment Assignment, expirationTimestamp uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_witness_receive(
-				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterAssignmentINSTANCE.Lower(assignment), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), FfiConverterSequenceStringINSTANCE.Lower(transportEndpoints), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
+				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterAssignmentINSTANCE.Lower(assignment), FfiConverterUint64INSTANCE.Lower(expirationTimestamp), FfiConverterSequenceStringINSTANCE.Lower(transportEndpoints), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
 		}
 	})
 	if _uniffiErr != nil {
@@ -3276,7 +3303,7 @@ type WalletInterface interface {
 	AbortPendingVanillaTx(txid string) error
 	Backup(backupPath string, password string) error
 	BackupInfo() (bool, error)
-	BlindReceive(assetId *string, assignment Assignment, expirationTimestamp *uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error)
+	BlindReceive(assetId *string, assignment Assignment, expirationTimestamp uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error)
 	BridgeBegin(online Online, assetId string, recipient Recipient, feeRate uint64, minConfirmations uint8) (BridgeBeginResult, error)
 	BridgeEnd(online Online, signedPsbt string) (OperationResult, error)
 	Burn(online Online, assetId string, amount uint64, burnRecipient *[]uint8, feeRate uint64, minConfirmations uint8) (OperationResult, error)
@@ -3318,13 +3345,15 @@ type WalletInterface interface {
 	ListAssets(filterAssetSchemas []AssetSchema) (Assets, error)
 	ListPendingVanillaTxs() ([]PendingVanillaTx, error)
 	ListTransactions(online *Online, skipSync bool) ([]Transaction, error)
-	ListTransfers(assetId *string) ([]Transfer, error)
+	ListTransfers(assetFilter AssetFilter, txid *string) ([]Transfer, error)
 	ListUnspents(online *Online, settledOnly bool, skipSync bool) ([]Unspent, error)
+	ProvideOutOfBandAck(online Online, recipientId string) (*OperationResult, error)
+	ProvideOutOfBandConsignment(online Online, consignmentPath string, mediaFilePaths []string) (map[int32]RefreshedTransfer, error)
 	Refresh(online Online, assetId *string, filter []RefreshFilter, skipSync bool) (map[int32]RefreshedTransfer, error)
 	RotateColoredAddress() (string, error)
 	RotateVanillaAddress() (string, error)
-	Send(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp *uint64) (OperationResult, error)
-	SendBegin(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp *uint64, dryRun bool) (SendBeginResult, error)
+	Send(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp uint64) (OperationResult, error)
+	SendBegin(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp uint64, dryRun bool) (SendBeginResult, error)
 	SendBtc(online Online, address string, amount uint64, feeRate uint64, skipSync bool) (string, error)
 	SendBtcBegin(online Online, address string, amount uint64, feeRate uint64, skipSync bool, dryRun bool) (string, error)
 	SendBtcEnd(online Online, signedPsbt string) (string, error)
@@ -3333,7 +3362,7 @@ type WalletInterface interface {
 	Sync(online Online, options SyncOptions) error
 	VssBackup(client *VssBackupClient) (int64, error)
 	VssBackupInfo(client *VssBackupClient) (VssBackupInfo, error)
-	WitnessReceive(assetId *string, assignment Assignment, expirationTimestamp *uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error)
+	WitnessReceive(assetId *string, assignment Assignment, expirationTimestamp uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error)
 }
 type Wallet struct {
 	ffiObject FfiObject
@@ -3342,6 +3371,18 @@ type Wallet struct {
 func NewWallet(walletData WalletData, keys SinglesigKeys) (*Wallet, error) {
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
 		return C.uniffi_rgblibuniffi_fn_constructor_wallet_new(FfiConverterWalletDataINSTANCE.Lower(walletData), FfiConverterSinglesigKeysINSTANCE.Lower(keys), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *Wallet
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterWalletINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+func WalletLoad(dataDir string, masterFingerprint string, mnemonic *string) (*Wallet, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
+		return C.uniffi_rgblibuniffi_fn_constructor_wallet_load(FfiConverterStringINSTANCE.Lower(dataDir), FfiConverterStringINSTANCE.Lower(masterFingerprint), FfiConverterOptionalStringINSTANCE.Lower(mnemonic), _uniffiStatus)
 	})
 	if _uniffiErr != nil {
 		var _uniffiDefaultValue *Wallet
@@ -3388,13 +3429,13 @@ func (_self *Wallet) BackupInfo() (bool, error) {
 	}
 }
 
-func (_self *Wallet) BlindReceive(assetId *string, assignment Assignment, expirationTimestamp *uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error) {
+func (_self *Wallet) BlindReceive(assetId *string, assignment Assignment, expirationTimestamp uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_blind_receive(
-				_pointer, FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterAssignmentINSTANCE.Lower(assignment), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), FfiConverterSequenceStringINSTANCE.Lower(transportEndpoints), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
+				_pointer, FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterAssignmentINSTANCE.Lower(assignment), FfiConverterUint64INSTANCE.Lower(expirationTimestamp), FfiConverterSequenceStringINSTANCE.Lower(transportEndpoints), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
 		}
 	})
 	if _uniffiErr != nil {
@@ -4049,13 +4090,13 @@ func (_self *Wallet) ListTransactions(online *Online, skipSync bool) ([]Transact
 	}
 }
 
-func (_self *Wallet) ListTransfers(assetId *string) ([]Transfer, error) {
+func (_self *Wallet) ListTransfers(assetFilter AssetFilter, txid *string) ([]Transfer, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_list_transfers(
-				_pointer, FfiConverterOptionalStringINSTANCE.Lower(assetId), _uniffiStatus),
+				_pointer, FfiConverterAssetFilterINSTANCE.Lower(assetFilter), FfiConverterOptionalStringINSTANCE.Lower(txid), _uniffiStatus),
 		}
 	})
 	if _uniffiErr != nil {
@@ -4080,6 +4121,40 @@ func (_self *Wallet) ListUnspents(online *Online, settledOnly bool, skipSync boo
 		return _uniffiDefaultValue, _uniffiErr
 	} else {
 		return FfiConverterSequenceUnspentINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+func (_self *Wallet) ProvideOutOfBandAck(online Online, recipientId string) (*OperationResult, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Wallet")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_rgblibuniffi_fn_method_wallet_provide_out_of_band_ack(
+				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(recipientId), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *OperationResult
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterOptionalOperationResultINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+func (_self *Wallet) ProvideOutOfBandConsignment(online Online, consignmentPath string, mediaFilePaths []string) (map[int32]RefreshedTransfer, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Wallet")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_rgblibuniffi_fn_method_wallet_provide_out_of_band_consignment(
+				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(consignmentPath), FfiConverterSequenceStringINSTANCE.Lower(mediaFilePaths), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue map[int32]RefreshedTransfer
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterMapInt32RefreshedTransferINSTANCE.Lift(_uniffiRV), nil
 	}
 }
 
@@ -4134,13 +4209,13 @@ func (_self *Wallet) RotateVanillaAddress() (string, error) {
 	}
 }
 
-func (_self *Wallet) Send(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp *uint64) (OperationResult, error) {
+func (_self *Wallet) Send(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp uint64) (OperationResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_send(
-				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterMapStringSequenceRecipientINSTANCE.Lower(recipientMap), FfiConverterBoolINSTANCE.Lower(donation), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterUint8INSTANCE.Lower(minConfirmations), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), _uniffiStatus),
+				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterMapStringSequenceRecipientINSTANCE.Lower(recipientMap), FfiConverterBoolINSTANCE.Lower(donation), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterUint8INSTANCE.Lower(minConfirmations), FfiConverterUint64INSTANCE.Lower(expirationTimestamp), _uniffiStatus),
 		}
 	})
 	if _uniffiErr != nil {
@@ -4151,13 +4226,13 @@ func (_self *Wallet) Send(online Online, recipientMap map[string][]Recipient, do
 	}
 }
 
-func (_self *Wallet) SendBegin(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp *uint64, dryRun bool) (SendBeginResult, error) {
+func (_self *Wallet) SendBegin(online Online, recipientMap map[string][]Recipient, donation bool, feeRate uint64, minConfirmations uint8, expirationTimestamp uint64, dryRun bool) (SendBeginResult, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_send_begin(
-				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterMapStringSequenceRecipientINSTANCE.Lower(recipientMap), FfiConverterBoolINSTANCE.Lower(donation), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterUint8INSTANCE.Lower(minConfirmations), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), FfiConverterBoolINSTANCE.Lower(dryRun), _uniffiStatus),
+				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterMapStringSequenceRecipientINSTANCE.Lower(recipientMap), FfiConverterBoolINSTANCE.Lower(donation), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterUint8INSTANCE.Lower(minConfirmations), FfiConverterUint64INSTANCE.Lower(expirationTimestamp), FfiConverterBoolINSTANCE.Lower(dryRun), _uniffiStatus),
 		}
 	})
 	if _uniffiErr != nil {
@@ -4296,13 +4371,13 @@ func (_self *Wallet) VssBackupInfo(client *VssBackupClient) (VssBackupInfo, erro
 	}
 }
 
-func (_self *Wallet) WitnessReceive(assetId *string, assignment Assignment, expirationTimestamp *uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error) {
+func (_self *Wallet) WitnessReceive(assetId *string, assignment Assignment, expirationTimestamp uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_witness_receive(
-				_pointer, FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterAssignmentINSTANCE.Lower(assignment), FfiConverterOptionalUint64INSTANCE.Lower(expirationTimestamp), FfiConverterSequenceStringINSTANCE.Lower(transportEndpoints), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
+				_pointer, FfiConverterOptionalStringINSTANCE.Lower(assetId), FfiConverterAssignmentINSTANCE.Lower(assignment), FfiConverterUint64INSTANCE.Lower(expirationTimestamp), FfiConverterSequenceStringINSTANCE.Lower(transportEndpoints), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
 		}
 	})
 	if _uniffiErr != nil {
@@ -4521,19 +4596,22 @@ func (_ FfiDestroyerAssetCfa) Destroy(value AssetCfa) {
 }
 
 type AssetIfa struct {
-	AssetId                string
-	Ticker                 string
-	Name                   string
-	Details                *string
-	Precision              uint8
-	InitialSupply          uint64
-	MaxSupply              uint64
-	KnownCirculatingSupply uint64
-	Timestamp              int64
-	AddedAt                int64
-	Balance                Balance
-	Media                  *Media
-	RejectListUrl          *string
+	AssetId                   string
+	Ticker                    string
+	Name                      string
+	Details                   *string
+	Precision                 uint8
+	InitialSupply             uint64
+	MaxSupply                 uint64
+	KnownCirculatingSupply    uint64
+	Timestamp                 int64
+	AddedAt                   int64
+	Balance                   Balance
+	Media                     *Media
+	RejectListUrl             *string
+	IssuanceLinkRightOutpoint *Outpoint
+	LinkedFromAssetId         *string
+	LinkedToAssetId           *string
 }
 
 func (r *AssetIfa) Destroy() {
@@ -4550,6 +4628,9 @@ func (r *AssetIfa) Destroy() {
 	FfiDestroyerBalance{}.Destroy(r.Balance)
 	FfiDestroyerOptionalMedia{}.Destroy(r.Media)
 	FfiDestroyerOptionalString{}.Destroy(r.RejectListUrl)
+	FfiDestroyerOptionalOutpoint{}.Destroy(r.IssuanceLinkRightOutpoint)
+	FfiDestroyerOptionalString{}.Destroy(r.LinkedFromAssetId)
+	FfiDestroyerOptionalString{}.Destroy(r.LinkedToAssetId)
 }
 
 type FfiConverterAssetIfa struct{}
@@ -4574,6 +4655,9 @@ func (c FfiConverterAssetIfa) Read(reader io.Reader) AssetIfa {
 		FfiConverterInt64INSTANCE.Read(reader),
 		FfiConverterBalanceINSTANCE.Read(reader),
 		FfiConverterOptionalMediaINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalOutpointINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
@@ -4600,6 +4684,9 @@ func (c FfiConverterAssetIfa) Write(writer io.Writer, value AssetIfa) {
 	FfiConverterBalanceINSTANCE.Write(writer, value.Balance)
 	FfiConverterOptionalMediaINSTANCE.Write(writer, value.Media)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.RejectListUrl)
+	FfiConverterOptionalOutpointINSTANCE.Write(writer, value.IssuanceLinkRightOutpoint)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.LinkedFromAssetId)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.LinkedToAssetId)
 }
 
 type FfiDestroyerAssetIfa struct{}
@@ -5550,6 +5637,7 @@ type InvoiceData struct {
 	Network             BitcoinNetwork
 	ExpirationTimestamp *uint64
 	TransportEndpoints  []string
+	UnknownQueryParams  map[string]string
 }
 
 func (r *InvoiceData) Destroy() {
@@ -5562,6 +5650,7 @@ func (r *InvoiceData) Destroy() {
 	FfiDestroyerBitcoinNetwork{}.Destroy(r.Network)
 	FfiDestroyerOptionalUint64{}.Destroy(r.ExpirationTimestamp)
 	FfiDestroyerSequenceString{}.Destroy(r.TransportEndpoints)
+	FfiDestroyerMapStringString{}.Destroy(r.UnknownQueryParams)
 }
 
 type FfiConverterInvoiceData struct{}
@@ -5583,6 +5672,7 @@ func (c FfiConverterInvoiceData) Read(reader io.Reader) InvoiceData {
 		FfiConverterBitcoinNetworkINSTANCE.Read(reader),
 		FfiConverterOptionalUint64INSTANCE.Read(reader),
 		FfiConverterSequenceStringINSTANCE.Read(reader),
+		FfiConverterMapStringStringINSTANCE.Read(reader),
 	}
 }
 
@@ -5604,6 +5694,7 @@ func (c FfiConverterInvoiceData) Write(writer io.Writer, value InvoiceData) {
 	FfiConverterBitcoinNetworkINSTANCE.Write(writer, value.Network)
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.ExpirationTimestamp)
 	FfiConverterSequenceStringINSTANCE.Write(writer, value.TransportEndpoints)
+	FfiConverterMapStringStringINSTANCE.Write(writer, value.UnknownQueryParams)
 }
 
 type FfiDestroyerInvoiceData struct{}
@@ -5721,17 +5812,20 @@ func (_ FfiDestroyerMedia) Destroy(value Media) {
 }
 
 type Metadata struct {
-	AssetSchema            AssetSchema
-	InitialSupply          uint64
-	MaxSupply              uint64
-	KnownCirculatingSupply uint64
-	Timestamp              int64
-	Name                   string
-	Precision              uint8
-	Ticker                 *string
-	Details                *string
-	Token                  *Token
-	RejectListUrl          *string
+	AssetSchema              AssetSchema
+	InitialSupply            uint64
+	MaxSupply                uint64
+	KnownCirculatingSupply   uint64
+	Timestamp                int64
+	Name                     string
+	Precision                uint8
+	Ticker                   *string
+	Details                  *string
+	Token                    *Token
+	RejectListUrl            *string
+	LinkedFromAssetId        *string
+	LinkedToAssetId          *string
+	UnspentLinkRightOutpoint *Outpoint
 }
 
 func (r *Metadata) Destroy() {
@@ -5746,6 +5840,9 @@ func (r *Metadata) Destroy() {
 	FfiDestroyerOptionalString{}.Destroy(r.Details)
 	FfiDestroyerOptionalToken{}.Destroy(r.Token)
 	FfiDestroyerOptionalString{}.Destroy(r.RejectListUrl)
+	FfiDestroyerOptionalString{}.Destroy(r.LinkedFromAssetId)
+	FfiDestroyerOptionalString{}.Destroy(r.LinkedToAssetId)
+	FfiDestroyerOptionalOutpoint{}.Destroy(r.UnspentLinkRightOutpoint)
 }
 
 type FfiConverterMetadata struct{}
@@ -5769,6 +5866,9 @@ func (c FfiConverterMetadata) Read(reader io.Reader) Metadata {
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalTokenINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalOutpointINSTANCE.Read(reader),
 	}
 }
 
@@ -5792,6 +5892,9 @@ func (c FfiConverterMetadata) Write(writer io.Writer, value Metadata) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Details)
 	FfiConverterOptionalTokenINSTANCE.Write(writer, value.Token)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.RejectListUrl)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.LinkedFromAssetId)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.LinkedToAssetId)
+	FfiConverterOptionalOutpointINSTANCE.Write(writer, value.UnspentLinkRightOutpoint)
 }
 
 type FfiDestroyerMetadata struct{}
@@ -6439,14 +6542,14 @@ func (_ FfiDestroyerPsbtOutputInfo) Destroy(value PsbtOutputInfo) {
 type ReceiveData struct {
 	Invoice             string
 	RecipientId         string
-	ExpirationTimestamp *uint64
+	ExpirationTimestamp uint64
 	BatchTransferIdx    int32
 }
 
 func (r *ReceiveData) Destroy() {
 	FfiDestroyerString{}.Destroy(r.Invoice)
 	FfiDestroyerString{}.Destroy(r.RecipientId)
-	FfiDestroyerOptionalUint64{}.Destroy(r.ExpirationTimestamp)
+	FfiDestroyerUint64{}.Destroy(r.ExpirationTimestamp)
 	FfiDestroyerInt32{}.Destroy(r.BatchTransferIdx)
 }
 
@@ -6462,7 +6565,7 @@ func (c FfiConverterReceiveData) Read(reader io.Reader) ReceiveData {
 	return ReceiveData{
 		FfiConverterStringINSTANCE.Read(reader),
 		FfiConverterStringINSTANCE.Read(reader),
-		FfiConverterOptionalUint64INSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
 		FfiConverterInt32INSTANCE.Read(reader),
 	}
 }
@@ -6478,7 +6581,7 @@ func (c FfiConverterReceiveData) LowerExternal(value ReceiveData) ExternalCRustB
 func (c FfiConverterReceiveData) Write(writer io.Writer, value ReceiveData) {
 	FfiConverterStringINSTANCE.Write(writer, value.Invoice)
 	FfiConverterStringINSTANCE.Write(writer, value.RecipientId)
-	FfiConverterOptionalUint64INSTANCE.Write(writer, value.ExpirationTimestamp)
+	FfiConverterUint64INSTANCE.Write(writer, value.ExpirationTimestamp)
 	FfiConverterInt32INSTANCE.Write(writer, value.BatchTransferIdx)
 }
 
@@ -7517,10 +7620,11 @@ func (_ FfiDestroyerUnspent) Destroy(value Unspent) {
 }
 
 type Utxo struct {
-	Outpoint  Outpoint
-	BtcAmount uint64
-	Colorable bool
-	Exists    bool
+	Outpoint        Outpoint
+	BtcAmount       uint64
+	Colorable       bool
+	Exists          bool
+	DerivationIndex *uint32
 }
 
 func (r *Utxo) Destroy() {
@@ -7528,6 +7632,7 @@ func (r *Utxo) Destroy() {
 	FfiDestroyerUint64{}.Destroy(r.BtcAmount)
 	FfiDestroyerBool{}.Destroy(r.Colorable)
 	FfiDestroyerBool{}.Destroy(r.Exists)
+	FfiDestroyerOptionalUint32{}.Destroy(r.DerivationIndex)
 }
 
 type FfiConverterUtxo struct{}
@@ -7544,6 +7649,7 @@ func (c FfiConverterUtxo) Read(reader io.Reader) Utxo {
 		FfiConverterUint64INSTANCE.Read(reader),
 		FfiConverterBoolINSTANCE.Read(reader),
 		FfiConverterBoolINSTANCE.Read(reader),
+		FfiConverterOptionalUint32INSTANCE.Read(reader),
 	}
 }
 
@@ -7560,6 +7666,7 @@ func (c FfiConverterUtxo) Write(writer io.Writer, value Utxo) {
 	FfiConverterUint64INSTANCE.Write(writer, value.BtcAmount)
 	FfiConverterBoolINSTANCE.Write(writer, value.Colorable)
 	FfiConverterBoolINSTANCE.Write(writer, value.Exists)
+	FfiConverterOptionalUint32INSTANCE.Write(writer, value.DerivationIndex)
 }
 
 type FfiDestroyerUtxo struct{}
@@ -7681,15 +7788,17 @@ func (_ FfiDestroyerVssBackupConfig) Destroy(value VssBackupConfig) {
 }
 
 type VssBackupInfo struct {
-	BackupExists   bool
-	ServerVersion  *int64
-	BackupRequired bool
+	BackupExists        bool
+	ServerVersion       *int64
+	BackupRequired      bool
+	LastAutoBackupError *string
 }
 
 func (r *VssBackupInfo) Destroy() {
 	FfiDestroyerBool{}.Destroy(r.BackupExists)
 	FfiDestroyerOptionalInt64{}.Destroy(r.ServerVersion)
 	FfiDestroyerBool{}.Destroy(r.BackupRequired)
+	FfiDestroyerOptionalString{}.Destroy(r.LastAutoBackupError)
 }
 
 type FfiConverterVssBackupInfo struct{}
@@ -7705,6 +7814,7 @@ func (c FfiConverterVssBackupInfo) Read(reader io.Reader) VssBackupInfo {
 		FfiConverterBoolINSTANCE.Read(reader),
 		FfiConverterOptionalInt64INSTANCE.Read(reader),
 		FfiConverterBoolINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
 
@@ -7720,6 +7830,7 @@ func (c FfiConverterVssBackupInfo) Write(writer io.Writer, value VssBackupInfo) 
 	FfiConverterBoolINSTANCE.Write(writer, value.BackupExists)
 	FfiConverterOptionalInt64INSTANCE.Write(writer, value.ServerVersion)
 	FfiConverterBoolINSTANCE.Write(writer, value.BackupRequired)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.LastAutoBackupError)
 }
 
 type FfiDestroyerVssBackupInfo struct{}
@@ -7876,6 +7987,81 @@ func (_ FfiDestroyerWitnessData) Destroy(value WitnessData) {
 	value.Destroy()
 }
 
+type AssetFilter interface {
+	Destroy()
+}
+type AssetFilterAnyOrNone struct {
+}
+
+func (e AssetFilterAnyOrNone) Destroy() {
+}
+
+type AssetFilterNone struct {
+}
+
+func (e AssetFilterNone) Destroy() {
+}
+
+type AssetFilterId struct {
+	AssetId string
+}
+
+func (e AssetFilterId) Destroy() {
+	FfiDestroyerString{}.Destroy(e.AssetId)
+}
+
+type FfiConverterAssetFilter struct{}
+
+var FfiConverterAssetFilterINSTANCE = FfiConverterAssetFilter{}
+
+func (c FfiConverterAssetFilter) Lift(rb RustBufferI) AssetFilter {
+	return LiftFromRustBuffer[AssetFilter](c, rb)
+}
+
+func (c FfiConverterAssetFilter) Lower(value AssetFilter) C.RustBuffer {
+	return LowerIntoRustBuffer[AssetFilter](c, value)
+}
+
+func (c FfiConverterAssetFilter) LowerExternal(value AssetFilter) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[AssetFilter](c, value))
+}
+func (FfiConverterAssetFilter) Read(reader io.Reader) AssetFilter {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return AssetFilterAnyOrNone{}
+	case 2:
+		return AssetFilterNone{}
+	case 3:
+		return AssetFilterId{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterAssetFilter.Read()", id))
+	}
+}
+
+func (FfiConverterAssetFilter) Write(writer io.Writer, value AssetFilter) {
+	switch variant_value := value.(type) {
+	case AssetFilterAnyOrNone:
+		writeInt32(writer, 1)
+	case AssetFilterNone:
+		writeInt32(writer, 2)
+	case AssetFilterId:
+		writeInt32(writer, 3)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.AssetId)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterAssetFilter.Write", value))
+	}
+}
+
+type FfiDestroyerAssetFilter struct{}
+
+func (_ FfiDestroyerAssetFilter) Destroy(value AssetFilter) {
+	value.Destroy()
+}
+
 type AssetSchema uint
 
 const (
@@ -7946,6 +8132,12 @@ type AssignmentBridgeRight struct {
 func (e AssignmentBridgeRight) Destroy() {
 }
 
+type AssignmentLinkRight struct {
+}
+
+func (e AssignmentLinkRight) Destroy() {
+}
+
 type AssignmentAny struct {
 }
 
@@ -7983,6 +8175,8 @@ func (FfiConverterAssignment) Read(reader io.Reader) Assignment {
 	case 4:
 		return AssignmentBridgeRight{}
 	case 5:
+		return AssignmentLinkRight{}
+	case 6:
 		return AssignmentAny{}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterAssignment.Read()", id))
@@ -8001,8 +8195,10 @@ func (FfiConverterAssignment) Write(writer io.Writer, value Assignment) {
 		FfiConverterUint64INSTANCE.Write(writer, variant_value.Amount)
 	case AssignmentBridgeRight:
 		writeInt32(writer, 4)
-	case AssignmentAny:
+	case AssignmentLinkRight:
 		writeInt32(writer, 5)
+	case AssignmentAny:
+		writeInt32(writer, 6)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterAssignment.Write", value))
@@ -8724,7 +8920,8 @@ type RefreshTransferStatus uint
 const (
 	RefreshTransferStatusWaitingCounterparty  RefreshTransferStatus = 1
 	RefreshTransferStatusWaitingSafeHeight    RefreshTransferStatus = 2
-	RefreshTransferStatusWaitingConfirmations RefreshTransferStatus = 3
+	RefreshTransferStatusWaitingBroadcast     RefreshTransferStatus = 3
+	RefreshTransferStatusWaitingConfirmations RefreshTransferStatus = 4
 )
 
 type FfiConverterRefreshTransferStatus struct{}
@@ -8825,7 +9022,7 @@ type RgbLibError struct {
 	err error
 }
 
-// Convience method to turn *RgbLibError into error
+// Convenience method to turn *RgbLibError into error
 // Avoiding treating nil pointer as non nil error interface
 func (err *RgbLibError) AsError() error {
 	if err == nil {
@@ -8850,8 +9047,10 @@ var ErrRgbLibErrorAssetNotFound = fmt.Errorf("RgbLibErrorAssetNotFound")
 var ErrRgbLibErrorBatchTransferNotFound = fmt.Errorf("RgbLibErrorBatchTransferNotFound")
 var ErrRgbLibErrorBitcoinNetworkMismatch = fmt.Errorf("RgbLibErrorBitcoinNetworkMismatch")
 var ErrRgbLibErrorCannotAbortPendingVanillaTx = fmt.Errorf("RgbLibErrorCannotAbortPendingVanillaTx")
+var ErrRgbLibErrorCannotProvideOutOfBandAck = fmt.Errorf("RgbLibErrorCannotProvideOutOfBandAck")
 var ErrRgbLibErrorCannotChangeOnline = fmt.Errorf("RgbLibErrorCannotChangeOnline")
 var ErrRgbLibErrorCannotCombinePsbts = fmt.Errorf("RgbLibErrorCannotCombinePsbts")
+var ErrRgbLibErrorCannotProvideOutOfBandConsignment = fmt.Errorf("RgbLibErrorCannotProvideOutOfBandConsignment")
 var ErrRgbLibErrorCannotDeleteBatchTransfer = fmt.Errorf("RgbLibErrorCannotDeleteBatchTransfer")
 var ErrRgbLibErrorCannotEstimateFees = fmt.Errorf("RgbLibErrorCannotEstimateFees")
 var ErrRgbLibErrorCannotFailBatchTransfer = fmt.Errorf("RgbLibErrorCannotFailBatchTransfer")
@@ -8868,6 +9067,7 @@ var ErrRgbLibErrorIo = fmt.Errorf("RgbLibErrorIo")
 var ErrRgbLibErrorInconsistency = fmt.Errorf("RgbLibErrorInconsistency")
 var ErrRgbLibErrorIndexer = fmt.Errorf("RgbLibErrorIndexer")
 var ErrRgbLibErrorInexistentDataDir = fmt.Errorf("RgbLibErrorInexistentDataDir")
+var ErrRgbLibErrorInexistentWalletManifest = fmt.Errorf("RgbLibErrorInexistentWalletManifest")
 var ErrRgbLibErrorInsufficientAllocationSlots = fmt.Errorf("RgbLibErrorInsufficientAllocationSlots")
 var ErrRgbLibErrorInsufficientAssignments = fmt.Errorf("RgbLibErrorInsufficientAssignments")
 var ErrRgbLibErrorInsufficientBitcoins = fmt.Errorf("RgbLibErrorInsufficientBitcoins")
@@ -8881,6 +9081,7 @@ var ErrRgbLibErrorInvalidBitcoinNetwork = fmt.Errorf("RgbLibErrorInvalidBitcoinN
 var ErrRgbLibErrorInvalidBurnRecipient = fmt.Errorf("RgbLibErrorInvalidBurnRecipient")
 var ErrRgbLibErrorInvalidColoringInfo = fmt.Errorf("RgbLibErrorInvalidColoringInfo")
 var ErrRgbLibErrorInvalidConsignment = fmt.Errorf("RgbLibErrorInvalidConsignment")
+var ErrRgbLibErrorInvalidContractLink = fmt.Errorf("RgbLibErrorInvalidContractLink")
 var ErrRgbLibErrorInvalidCosigner = fmt.Errorf("RgbLibErrorInvalidCosigner")
 var ErrRgbLibErrorInvalidDetails = fmt.Errorf("RgbLibErrorInvalidDetails")
 var ErrRgbLibErrorInvalidElectrum = fmt.Errorf("RgbLibErrorInvalidElectrum")
@@ -8903,6 +9104,7 @@ var ErrRgbLibErrorInvalidRecipientId = fmt.Errorf("RgbLibErrorInvalidRecipientId
 var ErrRgbLibErrorInvalidRecipientMap = fmt.Errorf("RgbLibErrorInvalidRecipientMap")
 var ErrRgbLibErrorInvalidRecipientNetwork = fmt.Errorf("RgbLibErrorInvalidRecipientNetwork")
 var ErrRgbLibErrorInvalidRejectListUrl = fmt.Errorf("RgbLibErrorInvalidRejectListUrl")
+var ErrRgbLibErrorInvalidRightOutpoint = fmt.Errorf("RgbLibErrorInvalidRightOutpoint")
 var ErrRgbLibErrorInvalidTicker = fmt.Errorf("RgbLibErrorInvalidTicker")
 var ErrRgbLibErrorInvalidTransportEndpoint = fmt.Errorf("RgbLibErrorInvalidTransportEndpoint")
 var ErrRgbLibErrorInvalidTransportEndpoints = fmt.Errorf("RgbLibErrorInvalidTransportEndpoints")
@@ -8928,6 +9130,7 @@ var ErrRgbLibErrorNoBurnAmount = fmt.Errorf("RgbLibErrorNoBurnAmount")
 var ErrRgbLibErrorNoInflationAmounts = fmt.Errorf("RgbLibErrorNoInflationAmounts")
 var ErrRgbLibErrorNoIssuanceAmounts = fmt.Errorf("RgbLibErrorNoIssuanceAmounts")
 var ErrRgbLibErrorNoKeysSupplied = fmt.Errorf("RgbLibErrorNoKeysSupplied")
+var ErrRgbLibErrorNoMaxAllocationsPerUtxo = fmt.Errorf("RgbLibErrorNoMaxAllocationsPerUtxo")
 var ErrRgbLibErrorNoSupportedSchemas = fmt.Errorf("RgbLibErrorNoSupportedSchemas")
 var ErrRgbLibErrorNoValidTransportEndpoint = fmt.Errorf("RgbLibErrorNoValidTransportEndpoint")
 var ErrRgbLibErrorOffline = fmt.Errorf("RgbLibErrorOffline")
@@ -8939,6 +9142,7 @@ var ErrRgbLibErrorRecipientIdAlreadyUsed = fmt.Errorf("RgbLibErrorRecipientIdAlr
 var ErrRgbLibErrorRecipientIdDuplicated = fmt.Errorf("RgbLibErrorRecipientIdDuplicated")
 var ErrRgbLibErrorRejectListService = fmt.Errorf("RgbLibErrorRejectListService")
 var ErrRgbLibErrorRestClientBuild = fmt.Errorf("RgbLibErrorRestClientBuild")
+var ErrRgbLibErrorRestoredBackupInconsistent = fmt.Errorf("RgbLibErrorRestoredBackupInconsistent")
 var ErrRgbLibErrorRgbInspection = fmt.Errorf("RgbLibErrorRgbInspection")
 var ErrRgbLibErrorTooHighInflationAmounts = fmt.Errorf("RgbLibErrorTooHighInflationAmounts")
 var ErrRgbLibErrorTooHighIssuanceAmounts = fmt.Errorf("RgbLibErrorTooHighIssuanceAmounts")
@@ -8955,11 +9159,13 @@ var ErrRgbLibErrorUnsupportedInflation = fmt.Errorf("RgbLibErrorUnsupportedInfla
 var ErrRgbLibErrorUnsupportedLayer1 = fmt.Errorf("RgbLibErrorUnsupportedLayer1")
 var ErrRgbLibErrorUnsupportedSchema = fmt.Errorf("RgbLibErrorUnsupportedSchema")
 var ErrRgbLibErrorUnsupportedTransportType = fmt.Errorf("RgbLibErrorUnsupportedTransportType")
+var ErrRgbLibErrorUnsupportedWalletManifestVersion = fmt.Errorf("RgbLibErrorUnsupportedWalletManifestVersion")
 var ErrRgbLibErrorVssAuth = fmt.Errorf("RgbLibErrorVssAuth")
 var ErrRgbLibErrorVssBackupNotFound = fmt.Errorf("RgbLibErrorVssBackupNotFound")
 var ErrRgbLibErrorVssError = fmt.Errorf("RgbLibErrorVssError")
 var ErrRgbLibErrorVssVersionConflict = fmt.Errorf("RgbLibErrorVssVersionConflict")
 var ErrRgbLibErrorWalletDirAlreadyExists = fmt.Errorf("RgbLibErrorWalletDirAlreadyExists")
+var ErrRgbLibErrorWalletSettingMismatch = fmt.Errorf("RgbLibErrorWalletSettingMismatch")
 var ErrRgbLibErrorWatchOnly = fmt.Errorf("RgbLibErrorWatchOnly")
 var ErrRgbLibErrorWrongPassword = fmt.Errorf("RgbLibErrorWrongPassword")
 
@@ -9092,6 +9298,34 @@ func (self RgbLibErrorCannotAbortPendingVanillaTx) Is(target error) bool {
 	return target == ErrRgbLibErrorCannotAbortPendingVanillaTx
 }
 
+type RgbLibErrorCannotProvideOutOfBandAck struct {
+	Details string
+}
+
+func NewRgbLibErrorCannotProvideOutOfBandAck(
+	details string,
+) *RgbLibError {
+	return &RgbLibError{err: &RgbLibErrorCannotProvideOutOfBandAck{
+		Details: details}}
+}
+
+func (e RgbLibErrorCannotProvideOutOfBandAck) destroy() {
+	FfiDestroyerString{}.Destroy(e.Details)
+}
+
+func (err RgbLibErrorCannotProvideOutOfBandAck) Error() string {
+	return fmt.Sprint("CannotProvideOutOfBandAck",
+		": ",
+
+		"Details=",
+		err.Details,
+	)
+}
+
+func (self RgbLibErrorCannotProvideOutOfBandAck) Is(target error) bool {
+	return target == ErrRgbLibErrorCannotProvideOutOfBandAck
+}
+
 type RgbLibErrorCannotChangeOnline struct {
 }
 
@@ -9126,6 +9360,34 @@ func (err RgbLibErrorCannotCombinePsbts) Error() string {
 
 func (self RgbLibErrorCannotCombinePsbts) Is(target error) bool {
 	return target == ErrRgbLibErrorCannotCombinePsbts
+}
+
+type RgbLibErrorCannotProvideOutOfBandConsignment struct {
+	Details string
+}
+
+func NewRgbLibErrorCannotProvideOutOfBandConsignment(
+	details string,
+) *RgbLibError {
+	return &RgbLibError{err: &RgbLibErrorCannotProvideOutOfBandConsignment{
+		Details: details}}
+}
+
+func (e RgbLibErrorCannotProvideOutOfBandConsignment) destroy() {
+	FfiDestroyerString{}.Destroy(e.Details)
+}
+
+func (err RgbLibErrorCannotProvideOutOfBandConsignment) Error() string {
+	return fmt.Sprint("CannotProvideOutOfBandConsignment",
+		": ",
+
+		"Details=",
+		err.Details,
+	)
+}
+
+func (self RgbLibErrorCannotProvideOutOfBandConsignment) Is(target error) bool {
+	return target == ErrRgbLibErrorCannotProvideOutOfBandConsignment
 }
 
 type RgbLibErrorCannotDeleteBatchTransfer struct {
@@ -9506,6 +9768,34 @@ func (self RgbLibErrorInexistentDataDir) Is(target error) bool {
 	return target == ErrRgbLibErrorInexistentDataDir
 }
 
+type RgbLibErrorInexistentWalletManifest struct {
+	Path string
+}
+
+func NewRgbLibErrorInexistentWalletManifest(
+	path string,
+) *RgbLibError {
+	return &RgbLibError{err: &RgbLibErrorInexistentWalletManifest{
+		Path: path}}
+}
+
+func (e RgbLibErrorInexistentWalletManifest) destroy() {
+	FfiDestroyerString{}.Destroy(e.Path)
+}
+
+func (err RgbLibErrorInexistentWalletManifest) Error() string {
+	return fmt.Sprint("InexistentWalletManifest",
+		": ",
+
+		"Path=",
+		err.Path,
+	)
+}
+
+func (self RgbLibErrorInexistentWalletManifest) Is(target error) bool {
+	return target == ErrRgbLibErrorInexistentWalletManifest
+}
+
 type RgbLibErrorInsufficientAllocationSlots struct {
 }
 
@@ -9832,6 +10122,34 @@ func (err RgbLibErrorInvalidConsignment) Error() string {
 
 func (self RgbLibErrorInvalidConsignment) Is(target error) bool {
 	return target == ErrRgbLibErrorInvalidConsignment
+}
+
+type RgbLibErrorInvalidContractLink struct {
+	Details string
+}
+
+func NewRgbLibErrorInvalidContractLink(
+	details string,
+) *RgbLibError {
+	return &RgbLibError{err: &RgbLibErrorInvalidContractLink{
+		Details: details}}
+}
+
+func (e RgbLibErrorInvalidContractLink) destroy() {
+	FfiDestroyerString{}.Destroy(e.Details)
+}
+
+func (err RgbLibErrorInvalidContractLink) Error() string {
+	return fmt.Sprint("InvalidContractLink",
+		": ",
+
+		"Details=",
+		err.Details,
+	)
+}
+
+func (self RgbLibErrorInvalidContractLink) Is(target error) bool {
+	return target == ErrRgbLibErrorInvalidContractLink
 }
 
 type RgbLibErrorInvalidCosigner struct {
@@ -10395,6 +10713,34 @@ func (err RgbLibErrorInvalidRejectListUrl) Error() string {
 
 func (self RgbLibErrorInvalidRejectListUrl) Is(target error) bool {
 	return target == ErrRgbLibErrorInvalidRejectListUrl
+}
+
+type RgbLibErrorInvalidRightOutpoint struct {
+	Details string
+}
+
+func NewRgbLibErrorInvalidRightOutpoint(
+	details string,
+) *RgbLibError {
+	return &RgbLibError{err: &RgbLibErrorInvalidRightOutpoint{
+		Details: details}}
+}
+
+func (e RgbLibErrorInvalidRightOutpoint) destroy() {
+	FfiDestroyerString{}.Destroy(e.Details)
+}
+
+func (err RgbLibErrorInvalidRightOutpoint) Error() string {
+	return fmt.Sprint("InvalidRightOutpoint",
+		": ",
+
+		"Details=",
+		err.Details,
+	)
+}
+
+func (self RgbLibErrorInvalidRightOutpoint) Is(target error) bool {
+	return target == ErrRgbLibErrorInvalidRightOutpoint
 }
 
 type RgbLibErrorInvalidTicker struct {
@@ -10977,6 +11323,24 @@ func (self RgbLibErrorNoKeysSupplied) Is(target error) bool {
 	return target == ErrRgbLibErrorNoKeysSupplied
 }
 
+type RgbLibErrorNoMaxAllocationsPerUtxo struct {
+}
+
+func NewRgbLibErrorNoMaxAllocationsPerUtxo() *RgbLibError {
+	return &RgbLibError{err: &RgbLibErrorNoMaxAllocationsPerUtxo{}}
+}
+
+func (e RgbLibErrorNoMaxAllocationsPerUtxo) destroy() {
+}
+
+func (err RgbLibErrorNoMaxAllocationsPerUtxo) Error() string {
+	return fmt.Sprint("NoMaxAllocationsPerUtxo")
+}
+
+func (self RgbLibErrorNoMaxAllocationsPerUtxo) Is(target error) bool {
+	return target == ErrRgbLibErrorNoMaxAllocationsPerUtxo
+}
+
 type RgbLibErrorNoSupportedSchemas struct {
 }
 
@@ -11213,6 +11577,34 @@ func (err RgbLibErrorRestClientBuild) Error() string {
 
 func (self RgbLibErrorRestClientBuild) Is(target error) bool {
 	return target == ErrRgbLibErrorRestClientBuild
+}
+
+type RgbLibErrorRestoredBackupInconsistent struct {
+	Details string
+}
+
+func NewRgbLibErrorRestoredBackupInconsistent(
+	details string,
+) *RgbLibError {
+	return &RgbLibError{err: &RgbLibErrorRestoredBackupInconsistent{
+		Details: details}}
+}
+
+func (e RgbLibErrorRestoredBackupInconsistent) destroy() {
+	FfiDestroyerString{}.Destroy(e.Details)
+}
+
+func (err RgbLibErrorRestoredBackupInconsistent) Error() string {
+	return fmt.Sprint("RestoredBackupInconsistent",
+		": ",
+
+		"Details=",
+		err.Details,
+	)
+}
+
+func (self RgbLibErrorRestoredBackupInconsistent) Is(target error) bool {
+	return target == ErrRgbLibErrorRestoredBackupInconsistent
 }
 
 type RgbLibErrorRgbInspection struct {
@@ -11603,6 +11995,34 @@ func (self RgbLibErrorUnsupportedTransportType) Is(target error) bool {
 	return target == ErrRgbLibErrorUnsupportedTransportType
 }
 
+type RgbLibErrorUnsupportedWalletManifestVersion struct {
+	Version string
+}
+
+func NewRgbLibErrorUnsupportedWalletManifestVersion(
+	version string,
+) *RgbLibError {
+	return &RgbLibError{err: &RgbLibErrorUnsupportedWalletManifestVersion{
+		Version: version}}
+}
+
+func (e RgbLibErrorUnsupportedWalletManifestVersion) destroy() {
+	FfiDestroyerString{}.Destroy(e.Version)
+}
+
+func (err RgbLibErrorUnsupportedWalletManifestVersion) Error() string {
+	return fmt.Sprint("UnsupportedWalletManifestVersion",
+		": ",
+
+		"Version=",
+		err.Version,
+	)
+}
+
+func (self RgbLibErrorUnsupportedWalletManifestVersion) Is(target error) bool {
+	return target == ErrRgbLibErrorUnsupportedWalletManifestVersion
+}
+
 type RgbLibErrorVssAuth struct {
 	Details string
 }
@@ -11733,6 +12153,48 @@ func (self RgbLibErrorWalletDirAlreadyExists) Is(target error) bool {
 	return target == ErrRgbLibErrorWalletDirAlreadyExists
 }
 
+type RgbLibErrorWalletSettingMismatch struct {
+	Setting  string
+	Expected string
+	Provided string
+}
+
+func NewRgbLibErrorWalletSettingMismatch(
+	setting string,
+	expected string,
+	provided string,
+) *RgbLibError {
+	return &RgbLibError{err: &RgbLibErrorWalletSettingMismatch{
+		Setting:  setting,
+		Expected: expected,
+		Provided: provided}}
+}
+
+func (e RgbLibErrorWalletSettingMismatch) destroy() {
+	FfiDestroyerString{}.Destroy(e.Setting)
+	FfiDestroyerString{}.Destroy(e.Expected)
+	FfiDestroyerString{}.Destroy(e.Provided)
+}
+
+func (err RgbLibErrorWalletSettingMismatch) Error() string {
+	return fmt.Sprint("WalletSettingMismatch",
+		": ",
+
+		"Setting=",
+		err.Setting,
+		", ",
+		"Expected=",
+		err.Expected,
+		", ",
+		"Provided=",
+		err.Provided,
+	)
+}
+
+func (self RgbLibErrorWalletSettingMismatch) Is(target error) bool {
+	return target == ErrRgbLibErrorWalletSettingMismatch
+}
+
 type RgbLibErrorWatchOnly struct {
 }
 
@@ -11806,359 +12268,395 @@ func (c FfiConverterRgbLibError) Read(reader io.Reader) *RgbLibError {
 	case 6:
 		return &RgbLibError{&RgbLibErrorCannotAbortPendingVanillaTx{}}
 	case 7:
-		return &RgbLibError{&RgbLibErrorCannotChangeOnline{}}
+		return &RgbLibError{&RgbLibErrorCannotProvideOutOfBandAck{
+			Details: FfiConverterStringINSTANCE.Read(reader),
+		}}
 	case 8:
-		return &RgbLibError{&RgbLibErrorCannotCombinePsbts{}}
+		return &RgbLibError{&RgbLibErrorCannotChangeOnline{}}
 	case 9:
-		return &RgbLibError{&RgbLibErrorCannotDeleteBatchTransfer{}}
+		return &RgbLibError{&RgbLibErrorCannotCombinePsbts{}}
 	case 10:
-		return &RgbLibError{&RgbLibErrorCannotEstimateFees{}}
+		return &RgbLibError{&RgbLibErrorCannotProvideOutOfBandConsignment{
+			Details: FfiConverterStringINSTANCE.Read(reader),
+		}}
 	case 11:
-		return &RgbLibError{&RgbLibErrorCannotFailBatchTransfer{}}
+		return &RgbLibError{&RgbLibErrorCannotDeleteBatchTransfer{}}
 	case 12:
-		return &RgbLibError{&RgbLibErrorCannotFinalizePsbt{}}
+		return &RgbLibError{&RgbLibErrorCannotEstimateFees{}}
 	case 13:
-		return &RgbLibError{&RgbLibErrorCannotUseIfaOnMainnet{}}
+		return &RgbLibError{&RgbLibErrorCannotFailBatchTransfer{}}
 	case 14:
+		return &RgbLibError{&RgbLibErrorCannotFinalizePsbt{}}
+	case 15:
+		return &RgbLibError{&RgbLibErrorCannotUseIfaOnMainnet{}}
+	case 16:
 		return &RgbLibError{&RgbLibErrorDatabase{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 15:
+	case 17:
 		return &RgbLibError{&RgbLibErrorEmptyFile{
 			FilePath: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 16:
+	case 18:
 		return &RgbLibError{&RgbLibErrorFailedBdkSync{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 17:
+	case 19:
 		return &RgbLibError{&RgbLibErrorFailedBroadcast{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 18:
+	case 20:
 		return &RgbLibError{&RgbLibErrorFailedIssuance{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 19:
+	case 21:
 		return &RgbLibError{&RgbLibErrorFileAlreadyExists{
 			Path: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 20:
+	case 22:
 		return &RgbLibError{&RgbLibErrorFingerprintMismatch{}}
-	case 21:
+	case 23:
 		return &RgbLibError{&RgbLibErrorIo{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 22:
+	case 24:
 		return &RgbLibError{&RgbLibErrorInconsistency{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 23:
+	case 25:
 		return &RgbLibError{&RgbLibErrorIndexer{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 24:
-		return &RgbLibError{&RgbLibErrorInexistentDataDir{}}
-	case 25:
-		return &RgbLibError{&RgbLibErrorInsufficientAllocationSlots{}}
 	case 26:
+		return &RgbLibError{&RgbLibErrorInexistentDataDir{}}
+	case 27:
+		return &RgbLibError{&RgbLibErrorInexistentWalletManifest{
+			Path: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 28:
+		return &RgbLibError{&RgbLibErrorInsufficientAllocationSlots{}}
+	case 29:
 		return &RgbLibError{&RgbLibErrorInsufficientAssignments{
 			AssetId:   FfiConverterStringINSTANCE.Read(reader),
 			Available: FfiConverterAssignmentsCollectionINSTANCE.Read(reader),
 		}}
-	case 27:
+	case 30:
 		return &RgbLibError{&RgbLibErrorInsufficientBitcoins{
 			Needed:    FfiConverterUint64INSTANCE.Read(reader),
 			Available: FfiConverterUint64INSTANCE.Read(reader),
 		}}
-	case 28:
+	case 31:
 		return &RgbLibError{&RgbLibErrorInternal{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 29:
+	case 32:
 		return &RgbLibError{&RgbLibErrorInvalidAddress{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 30:
+	case 33:
 		return &RgbLibError{&RgbLibErrorInvalidAmountZero{}}
-	case 31:
+	case 34:
 		return &RgbLibError{&RgbLibErrorInvalidAssignment{}}
-	case 32:
+	case 35:
 		return &RgbLibError{&RgbLibErrorInvalidAttachments{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 33:
+	case 36:
 		return &RgbLibError{&RgbLibErrorInvalidBitcoinKeys{}}
-	case 34:
+	case 37:
 		return &RgbLibError{&RgbLibErrorInvalidBitcoinNetwork{
 			Network: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 35:
+	case 38:
 		return &RgbLibError{&RgbLibErrorInvalidBurnRecipient{
 			Len: FfiConverterUint64INSTANCE.Read(reader),
 		}}
-	case 36:
+	case 39:
 		return &RgbLibError{&RgbLibErrorInvalidColoringInfo{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 37:
+	case 40:
 		return &RgbLibError{&RgbLibErrorInvalidConsignment{}}
-	case 38:
+	case 41:
+		return &RgbLibError{&RgbLibErrorInvalidContractLink{
+			Details: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 42:
 		return &RgbLibError{&RgbLibErrorInvalidCosigner{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 39:
+	case 43:
 		return &RgbLibError{&RgbLibErrorInvalidDetails{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 40:
+	case 44:
 		return &RgbLibError{&RgbLibErrorInvalidElectrum{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 41:
+	case 45:
 		return &RgbLibError{&RgbLibErrorInvalidEstimationBlocks{}}
-	case 42:
+	case 46:
 		return &RgbLibError{&RgbLibErrorInvalidExpiration{}}
-	case 43:
+	case 47:
 		return &RgbLibError{&RgbLibErrorInvalidFeeRate{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 44:
+	case 48:
 		return &RgbLibError{&RgbLibErrorInvalidFilePath{
 			FilePath: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 45:
+	case 49:
 		return &RgbLibError{&RgbLibErrorInvalidFingerprint{}}
-	case 46:
+	case 50:
 		return &RgbLibError{&RgbLibErrorInvalidIndexer{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 47:
+	case 51:
 		return &RgbLibError{&RgbLibErrorInvalidInvoice{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 48:
+	case 52:
 		return &RgbLibError{&RgbLibErrorInvalidMnemonic{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 49:
+	case 53:
 		return &RgbLibError{&RgbLibErrorInvalidMultisigThreshold{
 			Required: FfiConverterUint8INSTANCE.Read(reader),
 			Total:    FfiConverterUint8INSTANCE.Read(reader),
 		}}
-	case 50:
+	case 54:
 		return &RgbLibError{&RgbLibErrorInvalidName{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 51:
+	case 55:
 		return &RgbLibError{&RgbLibErrorInvalidPrecision{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 52:
+	case 56:
 		return &RgbLibError{&RgbLibErrorInvalidProxyProtocol{
 			Version: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 53:
+	case 57:
 		return &RgbLibError{&RgbLibErrorInvalidPsbt{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 54:
+	case 58:
 		return &RgbLibError{&RgbLibErrorInvalidPubkey{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 55:
+	case 59:
 		return &RgbLibError{&RgbLibErrorInvalidRecipientData{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 56:
+	case 60:
 		return &RgbLibError{&RgbLibErrorInvalidRecipientId{}}
-	case 57:
+	case 61:
 		return &RgbLibError{&RgbLibErrorInvalidRecipientMap{}}
-	case 58:
+	case 62:
 		return &RgbLibError{&RgbLibErrorInvalidRecipientNetwork{}}
-	case 59:
+	case 63:
 		return &RgbLibError{&RgbLibErrorInvalidRejectListUrl{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 60:
+	case 64:
+		return &RgbLibError{&RgbLibErrorInvalidRightOutpoint{
+			Details: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 65:
 		return &RgbLibError{&RgbLibErrorInvalidTicker{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 61:
+	case 66:
 		return &RgbLibError{&RgbLibErrorInvalidTransportEndpoint{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 62:
+	case 67:
 		return &RgbLibError{&RgbLibErrorInvalidTransportEndpoints{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 63:
+	case 68:
 		return &RgbLibError{&RgbLibErrorInvalidTxid{}}
-	case 64:
+	case 69:
 		return &RgbLibError{&RgbLibErrorInvalidVanillaKeychain{}}
-	case 65:
+	case 70:
 		return &RgbLibError{&RgbLibErrorInvalidWitnessVersion{
 			WitnessVersion: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 66:
+	case 71:
 		return &RgbLibError{&RgbLibErrorMaxFeeExceeded{
 			Txid: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 67:
+	case 72:
 		return &RgbLibError{&RgbLibErrorMinFeeNotMet{
 			Txid: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 68:
+	case 73:
 		return &RgbLibError{&RgbLibErrorMpcProvider{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 69:
+	case 74:
 		return &RgbLibError{&RgbLibErrorMultisigHubService{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 70:
+	case 75:
 		return &RgbLibError{&RgbLibErrorMultisigCannotMarkOperationProcessed{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 71:
+	case 76:
 		return &RgbLibError{&RgbLibErrorMultisigCannotRespondToOperation{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 72:
+	case 77:
 		return &RgbLibError{&RgbLibErrorMultisigOperationInProgress{}}
-	case 73:
+	case 78:
 		return &RgbLibError{&RgbLibErrorMultisigOperationNotFound{
 			OperationIdx: FfiConverterInt32INSTANCE.Read(reader),
 		}}
-	case 74:
+	case 79:
 		return &RgbLibError{&RgbLibErrorMultisigTransferStatusMismatch{}}
-	case 75:
+	case 80:
 		return &RgbLibError{&RgbLibErrorMultisigUnexpectedData{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 76:
+	case 81:
 		return &RgbLibError{&RgbLibErrorMissingBurnRecipient{}}
-	case 77:
+	case 82:
 		return &RgbLibError{&RgbLibErrorMultisigUserNotCosigner{}}
-	case 78:
+	case 83:
 		return &RgbLibError{&RgbLibErrorNetwork{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 79:
-		return &RgbLibError{&RgbLibErrorNoConsignment{}}
-	case 80:
-		return &RgbLibError{&RgbLibErrorNoCosignersSupplied{}}
-	case 81:
-		return &RgbLibError{&RgbLibErrorNoBurnAmount{}}
-	case 82:
-		return &RgbLibError{&RgbLibErrorNoInflationAmounts{}}
-	case 83:
-		return &RgbLibError{&RgbLibErrorNoIssuanceAmounts{}}
 	case 84:
-		return &RgbLibError{&RgbLibErrorNoKeysSupplied{}}
+		return &RgbLibError{&RgbLibErrorNoConsignment{}}
 	case 85:
-		return &RgbLibError{&RgbLibErrorNoSupportedSchemas{}}
+		return &RgbLibError{&RgbLibErrorNoCosignersSupplied{}}
 	case 86:
-		return &RgbLibError{&RgbLibErrorNoValidTransportEndpoint{}}
+		return &RgbLibError{&RgbLibErrorNoBurnAmount{}}
 	case 87:
-		return &RgbLibError{&RgbLibErrorOffline{}}
+		return &RgbLibError{&RgbLibErrorNoInflationAmounts{}}
 	case 88:
-		return &RgbLibError{&RgbLibErrorOnlineNeeded{}}
+		return &RgbLibError{&RgbLibErrorNoIssuanceAmounts{}}
 	case 89:
-		return &RgbLibError{&RgbLibErrorOutputBelowDustLimit{}}
+		return &RgbLibError{&RgbLibErrorNoKeysSupplied{}}
 	case 90:
+		return &RgbLibError{&RgbLibErrorNoMaxAllocationsPerUtxo{}}
+	case 91:
+		return &RgbLibError{&RgbLibErrorNoSupportedSchemas{}}
+	case 92:
+		return &RgbLibError{&RgbLibErrorNoValidTransportEndpoint{}}
+	case 93:
+		return &RgbLibError{&RgbLibErrorOffline{}}
+	case 94:
+		return &RgbLibError{&RgbLibErrorOnlineNeeded{}}
+	case 95:
+		return &RgbLibError{&RgbLibErrorOutputBelowDustLimit{}}
+	case 96:
 		return &RgbLibError{&RgbLibErrorProxy{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 91:
+	case 97:
 		return &RgbLibError{&RgbLibErrorPsbtInspection{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 92:
+	case 98:
 		return &RgbLibError{&RgbLibErrorRecipientIdAlreadyUsed{}}
-	case 93:
+	case 99:
 		return &RgbLibError{&RgbLibErrorRecipientIdDuplicated{}}
-	case 94:
+	case 100:
 		return &RgbLibError{&RgbLibErrorRejectListService{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 95:
+	case 101:
 		return &RgbLibError{&RgbLibErrorRestClientBuild{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 96:
+	case 102:
+		return &RgbLibError{&RgbLibErrorRestoredBackupInconsistent{
+			Details: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 103:
 		return &RgbLibError{&RgbLibErrorRgbInspection{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 97:
+	case 104:
 		return &RgbLibError{&RgbLibErrorTooHighInflationAmounts{}}
-	case 98:
+	case 105:
 		return &RgbLibError{&RgbLibErrorTooHighIssuanceAmounts{}}
-	case 99:
+	case 106:
 		return &RgbLibError{&RgbLibErrorTooManyCosigners{}}
-	case 100:
+	case 107:
 		return &RgbLibError{&RgbLibErrorTooManySignaturesInPsbt{}}
-	case 101:
+	case 108:
 		return &RgbLibError{&RgbLibErrorUnknownRgbSchema{
 			SchemaId: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 102:
+	case 109:
 		return &RgbLibError{&RgbLibErrorUnknownTransfer{
 			Txid: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 103:
+	case 110:
 		return &RgbLibError{&RgbLibErrorUnsupportedBackupVersion{
 			Version: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 104:
+	case 111:
 		return &RgbLibError{&RgbLibErrorUnsupportedBurn{
 			AssetSchema: FfiConverterAssetSchemaINSTANCE.Read(reader),
 		}}
-	case 105:
+	case 112:
 		return &RgbLibError{&RgbLibErrorInvalidEthRpcUrl{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 106:
+	case 113:
 		return &RgbLibError{&RgbLibErrorNoBridgeRights{}}
-	case 107:
+	case 114:
 		return &RgbLibError{&RgbLibErrorUnsupportedBridge{
 			AssetSchema: FfiConverterAssetSchemaINSTANCE.Read(reader),
 		}}
-	case 108:
+	case 115:
 		return &RgbLibError{&RgbLibErrorUnsupportedInflation{
 			AssetSchema: FfiConverterAssetSchemaINSTANCE.Read(reader),
 		}}
-	case 109:
+	case 116:
 		return &RgbLibError{&RgbLibErrorUnsupportedLayer1{
 			Layer1: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 110:
+	case 117:
 		return &RgbLibError{&RgbLibErrorUnsupportedSchema{
 			AssetSchema: FfiConverterAssetSchemaINSTANCE.Read(reader),
 		}}
-	case 111:
+	case 118:
 		return &RgbLibError{&RgbLibErrorUnsupportedTransportType{}}
-	case 112:
+	case 119:
+		return &RgbLibError{&RgbLibErrorUnsupportedWalletManifestVersion{
+			Version: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 120:
 		return &RgbLibError{&RgbLibErrorVssAuth{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 113:
+	case 121:
 		return &RgbLibError{&RgbLibErrorVssBackupNotFound{}}
-	case 114:
+	case 122:
 		return &RgbLibError{&RgbLibErrorVssError{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 115:
+	case 123:
 		return &RgbLibError{&RgbLibErrorVssVersionConflict{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 116:
+	case 124:
 		return &RgbLibError{&RgbLibErrorWalletDirAlreadyExists{
 			Path: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 117:
+	case 125:
+		return &RgbLibError{&RgbLibErrorWalletSettingMismatch{
+			Setting:  FfiConverterStringINSTANCE.Read(reader),
+			Expected: FfiConverterStringINSTANCE.Read(reader),
+			Provided: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 126:
 		return &RgbLibError{&RgbLibErrorWatchOnly{}}
-	case 118:
+	case 127:
 		return &RgbLibError{&RgbLibErrorWrongPassword{}}
 	default:
 		panic(fmt.Sprintf("Unknown error code %d in FfiConverterRgbLibError.Read()", errorID))
@@ -12181,297 +12679,325 @@ func (c FfiConverterRgbLibError) Write(writer io.Writer, value *RgbLibError) {
 		writeInt32(writer, 5)
 	case *RgbLibErrorCannotAbortPendingVanillaTx:
 		writeInt32(writer, 6)
-	case *RgbLibErrorCannotChangeOnline:
+	case *RgbLibErrorCannotProvideOutOfBandAck:
 		writeInt32(writer, 7)
-	case *RgbLibErrorCannotCombinePsbts:
-		writeInt32(writer, 8)
-	case *RgbLibErrorCannotDeleteBatchTransfer:
-		writeInt32(writer, 9)
-	case *RgbLibErrorCannotEstimateFees:
-		writeInt32(writer, 10)
-	case *RgbLibErrorCannotFailBatchTransfer:
-		writeInt32(writer, 11)
-	case *RgbLibErrorCannotFinalizePsbt:
-		writeInt32(writer, 12)
-	case *RgbLibErrorCannotUseIfaOnMainnet:
-		writeInt32(writer, 13)
-	case *RgbLibErrorDatabase:
-		writeInt32(writer, 14)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorEmptyFile:
+	case *RgbLibErrorCannotChangeOnline:
+		writeInt32(writer, 8)
+	case *RgbLibErrorCannotCombinePsbts:
+		writeInt32(writer, 9)
+	case *RgbLibErrorCannotProvideOutOfBandConsignment:
+		writeInt32(writer, 10)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorCannotDeleteBatchTransfer:
+		writeInt32(writer, 11)
+	case *RgbLibErrorCannotEstimateFees:
+		writeInt32(writer, 12)
+	case *RgbLibErrorCannotFailBatchTransfer:
+		writeInt32(writer, 13)
+	case *RgbLibErrorCannotFinalizePsbt:
+		writeInt32(writer, 14)
+	case *RgbLibErrorCannotUseIfaOnMainnet:
 		writeInt32(writer, 15)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.FilePath)
-	case *RgbLibErrorFailedBdkSync:
+	case *RgbLibErrorDatabase:
 		writeInt32(writer, 16)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorFailedBroadcast:
+	case *RgbLibErrorEmptyFile:
 		writeInt32(writer, 17)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorFailedIssuance:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.FilePath)
+	case *RgbLibErrorFailedBdkSync:
 		writeInt32(writer, 18)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorFileAlreadyExists:
+	case *RgbLibErrorFailedBroadcast:
 		writeInt32(writer, 19)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorFailedIssuance:
+		writeInt32(writer, 20)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorFileAlreadyExists:
+		writeInt32(writer, 21)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Path)
 	case *RgbLibErrorFingerprintMismatch:
-		writeInt32(writer, 20)
-	case *RgbLibErrorIo:
-		writeInt32(writer, 21)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInconsistency:
 		writeInt32(writer, 22)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorIndexer:
+	case *RgbLibErrorIo:
 		writeInt32(writer, 23)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInexistentDataDir:
+	case *RgbLibErrorInconsistency:
 		writeInt32(writer, 24)
-	case *RgbLibErrorInsufficientAllocationSlots:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorIndexer:
 		writeInt32(writer, 25)
-	case *RgbLibErrorInsufficientAssignments:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInexistentDataDir:
 		writeInt32(writer, 26)
+	case *RgbLibErrorInexistentWalletManifest:
+		writeInt32(writer, 27)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Path)
+	case *RgbLibErrorInsufficientAllocationSlots:
+		writeInt32(writer, 28)
+	case *RgbLibErrorInsufficientAssignments:
+		writeInt32(writer, 29)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.AssetId)
 		FfiConverterAssignmentsCollectionINSTANCE.Write(writer, variantValue.Available)
 	case *RgbLibErrorInsufficientBitcoins:
-		writeInt32(writer, 27)
+		writeInt32(writer, 30)
 		FfiConverterUint64INSTANCE.Write(writer, variantValue.Needed)
 		FfiConverterUint64INSTANCE.Write(writer, variantValue.Available)
 	case *RgbLibErrorInternal:
-		writeInt32(writer, 28)
+		writeInt32(writer, 31)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
 	case *RgbLibErrorInvalidAddress:
-		writeInt32(writer, 29)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidAmountZero:
-		writeInt32(writer, 30)
-	case *RgbLibErrorInvalidAssignment:
-		writeInt32(writer, 31)
-	case *RgbLibErrorInvalidAttachments:
 		writeInt32(writer, 32)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidBitcoinKeys:
+	case *RgbLibErrorInvalidAmountZero:
 		writeInt32(writer, 33)
-	case *RgbLibErrorInvalidBitcoinNetwork:
+	case *RgbLibErrorInvalidAssignment:
 		writeInt32(writer, 34)
+	case *RgbLibErrorInvalidAttachments:
+		writeInt32(writer, 35)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidBitcoinKeys:
+		writeInt32(writer, 36)
+	case *RgbLibErrorInvalidBitcoinNetwork:
+		writeInt32(writer, 37)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Network)
 	case *RgbLibErrorInvalidBurnRecipient:
-		writeInt32(writer, 35)
+		writeInt32(writer, 38)
 		FfiConverterUint64INSTANCE.Write(writer, variantValue.Len)
 	case *RgbLibErrorInvalidColoringInfo:
-		writeInt32(writer, 36)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidConsignment:
-		writeInt32(writer, 37)
-	case *RgbLibErrorInvalidCosigner:
-		writeInt32(writer, 38)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidDetails:
 		writeInt32(writer, 39)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidElectrum:
+	case *RgbLibErrorInvalidConsignment:
 		writeInt32(writer, 40)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidEstimationBlocks:
+	case *RgbLibErrorInvalidContractLink:
 		writeInt32(writer, 41)
-	case *RgbLibErrorInvalidExpiration:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidCosigner:
 		writeInt32(writer, 42)
-	case *RgbLibErrorInvalidFeeRate:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidDetails:
 		writeInt32(writer, 43)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidFilePath:
+	case *RgbLibErrorInvalidElectrum:
 		writeInt32(writer, 44)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.FilePath)
-	case *RgbLibErrorInvalidFingerprint:
-		writeInt32(writer, 45)
-	case *RgbLibErrorInvalidIndexer:
-		writeInt32(writer, 46)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidInvoice:
+	case *RgbLibErrorInvalidEstimationBlocks:
+		writeInt32(writer, 45)
+	case *RgbLibErrorInvalidExpiration:
+		writeInt32(writer, 46)
+	case *RgbLibErrorInvalidFeeRate:
 		writeInt32(writer, 47)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidMnemonic:
+	case *RgbLibErrorInvalidFilePath:
 		writeInt32(writer, 48)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.FilePath)
+	case *RgbLibErrorInvalidFingerprint:
+		writeInt32(writer, 49)
+	case *RgbLibErrorInvalidIndexer:
+		writeInt32(writer, 50)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidInvoice:
+		writeInt32(writer, 51)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidMnemonic:
+		writeInt32(writer, 52)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
 	case *RgbLibErrorInvalidMultisigThreshold:
-		writeInt32(writer, 49)
+		writeInt32(writer, 53)
 		FfiConverterUint8INSTANCE.Write(writer, variantValue.Required)
 		FfiConverterUint8INSTANCE.Write(writer, variantValue.Total)
 	case *RgbLibErrorInvalidName:
-		writeInt32(writer, 50)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidPrecision:
-		writeInt32(writer, 51)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidProxyProtocol:
-		writeInt32(writer, 52)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Version)
-	case *RgbLibErrorInvalidPsbt:
-		writeInt32(writer, 53)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidPubkey:
 		writeInt32(writer, 54)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidRecipientData:
+	case *RgbLibErrorInvalidPrecision:
 		writeInt32(writer, 55)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidRecipientId:
+	case *RgbLibErrorInvalidProxyProtocol:
 		writeInt32(writer, 56)
-	case *RgbLibErrorInvalidRecipientMap:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Version)
+	case *RgbLibErrorInvalidPsbt:
 		writeInt32(writer, 57)
-	case *RgbLibErrorInvalidRecipientNetwork:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidPubkey:
 		writeInt32(writer, 58)
-	case *RgbLibErrorInvalidRejectListUrl:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidRecipientData:
 		writeInt32(writer, 59)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidTicker:
+	case *RgbLibErrorInvalidRecipientId:
 		writeInt32(writer, 60)
+	case *RgbLibErrorInvalidRecipientMap:
+		writeInt32(writer, 61)
+	case *RgbLibErrorInvalidRecipientNetwork:
+		writeInt32(writer, 62)
+	case *RgbLibErrorInvalidRejectListUrl:
+		writeInt32(writer, 63)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidRightOutpoint:
+		writeInt32(writer, 64)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidTicker:
+		writeInt32(writer, 65)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
 	case *RgbLibErrorInvalidTransportEndpoint:
-		writeInt32(writer, 61)
+		writeInt32(writer, 66)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
 	case *RgbLibErrorInvalidTransportEndpoints:
-		writeInt32(writer, 62)
+		writeInt32(writer, 67)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
 	case *RgbLibErrorInvalidTxid:
-		writeInt32(writer, 63)
+		writeInt32(writer, 68)
 	case *RgbLibErrorInvalidVanillaKeychain:
-		writeInt32(writer, 64)
+		writeInt32(writer, 69)
 	case *RgbLibErrorInvalidWitnessVersion:
-		writeInt32(writer, 65)
+		writeInt32(writer, 70)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.WitnessVersion)
 	case *RgbLibErrorMaxFeeExceeded:
-		writeInt32(writer, 66)
+		writeInt32(writer, 71)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Txid)
 	case *RgbLibErrorMinFeeNotMet:
-		writeInt32(writer, 67)
+		writeInt32(writer, 72)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Txid)
 	case *RgbLibErrorMpcProvider:
-		writeInt32(writer, 68)
+		writeInt32(writer, 73)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
 	case *RgbLibErrorMultisigHubService:
-		writeInt32(writer, 69)
+		writeInt32(writer, 74)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
 	case *RgbLibErrorMultisigCannotMarkOperationProcessed:
-		writeInt32(writer, 70)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorMultisigCannotRespondToOperation:
-		writeInt32(writer, 71)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorMultisigOperationInProgress:
-		writeInt32(writer, 72)
-	case *RgbLibErrorMultisigOperationNotFound:
-		writeInt32(writer, 73)
-		FfiConverterInt32INSTANCE.Write(writer, variantValue.OperationIdx)
-	case *RgbLibErrorMultisigTransferStatusMismatch:
-		writeInt32(writer, 74)
-	case *RgbLibErrorMultisigUnexpectedData:
 		writeInt32(writer, 75)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorMissingBurnRecipient:
+	case *RgbLibErrorMultisigCannotRespondToOperation:
 		writeInt32(writer, 76)
-	case *RgbLibErrorMultisigUserNotCosigner:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorMultisigOperationInProgress:
 		writeInt32(writer, 77)
-	case *RgbLibErrorNetwork:
+	case *RgbLibErrorMultisigOperationNotFound:
 		writeInt32(writer, 78)
+		FfiConverterInt32INSTANCE.Write(writer, variantValue.OperationIdx)
+	case *RgbLibErrorMultisigTransferStatusMismatch:
+		writeInt32(writer, 79)
+	case *RgbLibErrorMultisigUnexpectedData:
+		writeInt32(writer, 80)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorMissingBurnRecipient:
+		writeInt32(writer, 81)
+	case *RgbLibErrorMultisigUserNotCosigner:
+		writeInt32(writer, 82)
+	case *RgbLibErrorNetwork:
+		writeInt32(writer, 83)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
 	case *RgbLibErrorNoConsignment:
-		writeInt32(writer, 79)
-	case *RgbLibErrorNoCosignersSupplied:
-		writeInt32(writer, 80)
-	case *RgbLibErrorNoBurnAmount:
-		writeInt32(writer, 81)
-	case *RgbLibErrorNoInflationAmounts:
-		writeInt32(writer, 82)
-	case *RgbLibErrorNoIssuanceAmounts:
-		writeInt32(writer, 83)
-	case *RgbLibErrorNoKeysSupplied:
 		writeInt32(writer, 84)
-	case *RgbLibErrorNoSupportedSchemas:
+	case *RgbLibErrorNoCosignersSupplied:
 		writeInt32(writer, 85)
-	case *RgbLibErrorNoValidTransportEndpoint:
+	case *RgbLibErrorNoBurnAmount:
 		writeInt32(writer, 86)
-	case *RgbLibErrorOffline:
+	case *RgbLibErrorNoInflationAmounts:
 		writeInt32(writer, 87)
-	case *RgbLibErrorOnlineNeeded:
+	case *RgbLibErrorNoIssuanceAmounts:
 		writeInt32(writer, 88)
-	case *RgbLibErrorOutputBelowDustLimit:
+	case *RgbLibErrorNoKeysSupplied:
 		writeInt32(writer, 89)
-	case *RgbLibErrorProxy:
+	case *RgbLibErrorNoMaxAllocationsPerUtxo:
 		writeInt32(writer, 90)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorPsbtInspection:
+	case *RgbLibErrorNoSupportedSchemas:
 		writeInt32(writer, 91)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorRecipientIdAlreadyUsed:
+	case *RgbLibErrorNoValidTransportEndpoint:
 		writeInt32(writer, 92)
-	case *RgbLibErrorRecipientIdDuplicated:
+	case *RgbLibErrorOffline:
 		writeInt32(writer, 93)
-	case *RgbLibErrorRejectListService:
+	case *RgbLibErrorOnlineNeeded:
 		writeInt32(writer, 94)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorRestClientBuild:
+	case *RgbLibErrorOutputBelowDustLimit:
 		writeInt32(writer, 95)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorRgbInspection:
+	case *RgbLibErrorProxy:
 		writeInt32(writer, 96)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorTooHighInflationAmounts:
+	case *RgbLibErrorPsbtInspection:
 		writeInt32(writer, 97)
-	case *RgbLibErrorTooHighIssuanceAmounts:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorRecipientIdAlreadyUsed:
 		writeInt32(writer, 98)
-	case *RgbLibErrorTooManyCosigners:
+	case *RgbLibErrorRecipientIdDuplicated:
 		writeInt32(writer, 99)
-	case *RgbLibErrorTooManySignaturesInPsbt:
+	case *RgbLibErrorRejectListService:
 		writeInt32(writer, 100)
-	case *RgbLibErrorUnknownRgbSchema:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorRestClientBuild:
 		writeInt32(writer, 101)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorRestoredBackupInconsistent:
+		writeInt32(writer, 102)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorRgbInspection:
+		writeInt32(writer, 103)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorTooHighInflationAmounts:
+		writeInt32(writer, 104)
+	case *RgbLibErrorTooHighIssuanceAmounts:
+		writeInt32(writer, 105)
+	case *RgbLibErrorTooManyCosigners:
+		writeInt32(writer, 106)
+	case *RgbLibErrorTooManySignaturesInPsbt:
+		writeInt32(writer, 107)
+	case *RgbLibErrorUnknownRgbSchema:
+		writeInt32(writer, 108)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.SchemaId)
 	case *RgbLibErrorUnknownTransfer:
-		writeInt32(writer, 102)
+		writeInt32(writer, 109)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Txid)
 	case *RgbLibErrorUnsupportedBackupVersion:
-		writeInt32(writer, 103)
+		writeInt32(writer, 110)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Version)
 	case *RgbLibErrorUnsupportedBurn:
-		writeInt32(writer, 104)
+		writeInt32(writer, 111)
 		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
 	case *RgbLibErrorInvalidEthRpcUrl:
-		writeInt32(writer, 105)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorNoBridgeRights:
-		writeInt32(writer, 106)
-	case *RgbLibErrorUnsupportedBridge:
-		writeInt32(writer, 107)
-		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
-	case *RgbLibErrorUnsupportedInflation:
-		writeInt32(writer, 108)
-		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
-	case *RgbLibErrorUnsupportedLayer1:
-		writeInt32(writer, 109)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Layer1)
-	case *RgbLibErrorUnsupportedSchema:
-		writeInt32(writer, 110)
-		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
-	case *RgbLibErrorUnsupportedTransportType:
-		writeInt32(writer, 111)
-	case *RgbLibErrorVssAuth:
 		writeInt32(writer, 112)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorVssBackupNotFound:
+	case *RgbLibErrorNoBridgeRights:
 		writeInt32(writer, 113)
-	case *RgbLibErrorVssError:
+	case *RgbLibErrorUnsupportedBridge:
 		writeInt32(writer, 114)
+		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
+	case *RgbLibErrorUnsupportedInflation:
+		writeInt32(writer, 115)
+		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
+	case *RgbLibErrorUnsupportedLayer1:
+		writeInt32(writer, 116)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Layer1)
+	case *RgbLibErrorUnsupportedSchema:
+		writeInt32(writer, 117)
+		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
+	case *RgbLibErrorUnsupportedTransportType:
+		writeInt32(writer, 118)
+	case *RgbLibErrorUnsupportedWalletManifestVersion:
+		writeInt32(writer, 119)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Version)
+	case *RgbLibErrorVssAuth:
+		writeInt32(writer, 120)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorVssBackupNotFound:
+		writeInt32(writer, 121)
+	case *RgbLibErrorVssError:
+		writeInt32(writer, 122)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
 	case *RgbLibErrorVssVersionConflict:
-		writeInt32(writer, 115)
+		writeInt32(writer, 123)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
 	case *RgbLibErrorWalletDirAlreadyExists:
-		writeInt32(writer, 116)
+		writeInt32(writer, 124)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Path)
+	case *RgbLibErrorWalletSettingMismatch:
+		writeInt32(writer, 125)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Setting)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Expected)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Provided)
 	case *RgbLibErrorWatchOnly:
-		writeInt32(writer, 117)
+		writeInt32(writer, 126)
 	case *RgbLibErrorWrongPassword:
-		writeInt32(writer, 118)
+		writeInt32(writer, 127)
 	default:
 		_ = variantValue
 		panic(fmt.Sprintf("invalid error value `%v` in FfiConverterRgbLibError.Write", value))
@@ -12494,9 +13020,13 @@ func (_ FfiDestroyerRgbLibError) Destroy(value *RgbLibError) {
 		variantValue.destroy()
 	case RgbLibErrorCannotAbortPendingVanillaTx:
 		variantValue.destroy()
+	case RgbLibErrorCannotProvideOutOfBandAck:
+		variantValue.destroy()
 	case RgbLibErrorCannotChangeOnline:
 		variantValue.destroy()
 	case RgbLibErrorCannotCombinePsbts:
+		variantValue.destroy()
+	case RgbLibErrorCannotProvideOutOfBandConsignment:
 		variantValue.destroy()
 	case RgbLibErrorCannotDeleteBatchTransfer:
 		variantValue.destroy()
@@ -12530,6 +13060,8 @@ func (_ FfiDestroyerRgbLibError) Destroy(value *RgbLibError) {
 		variantValue.destroy()
 	case RgbLibErrorInexistentDataDir:
 		variantValue.destroy()
+	case RgbLibErrorInexistentWalletManifest:
+		variantValue.destroy()
 	case RgbLibErrorInsufficientAllocationSlots:
 		variantValue.destroy()
 	case RgbLibErrorInsufficientAssignments:
@@ -12555,6 +13087,8 @@ func (_ FfiDestroyerRgbLibError) Destroy(value *RgbLibError) {
 	case RgbLibErrorInvalidColoringInfo:
 		variantValue.destroy()
 	case RgbLibErrorInvalidConsignment:
+		variantValue.destroy()
+	case RgbLibErrorInvalidContractLink:
 		variantValue.destroy()
 	case RgbLibErrorInvalidCosigner:
 		variantValue.destroy()
@@ -12599,6 +13133,8 @@ func (_ FfiDestroyerRgbLibError) Destroy(value *RgbLibError) {
 	case RgbLibErrorInvalidRecipientNetwork:
 		variantValue.destroy()
 	case RgbLibErrorInvalidRejectListUrl:
+		variantValue.destroy()
+	case RgbLibErrorInvalidRightOutpoint:
 		variantValue.destroy()
 	case RgbLibErrorInvalidTicker:
 		variantValue.destroy()
@@ -12650,6 +13186,8 @@ func (_ FfiDestroyerRgbLibError) Destroy(value *RgbLibError) {
 		variantValue.destroy()
 	case RgbLibErrorNoKeysSupplied:
 		variantValue.destroy()
+	case RgbLibErrorNoMaxAllocationsPerUtxo:
+		variantValue.destroy()
 	case RgbLibErrorNoSupportedSchemas:
 		variantValue.destroy()
 	case RgbLibErrorNoValidTransportEndpoint:
@@ -12671,6 +13209,8 @@ func (_ FfiDestroyerRgbLibError) Destroy(value *RgbLibError) {
 	case RgbLibErrorRejectListService:
 		variantValue.destroy()
 	case RgbLibErrorRestClientBuild:
+		variantValue.destroy()
+	case RgbLibErrorRestoredBackupInconsistent:
 		variantValue.destroy()
 	case RgbLibErrorRgbInspection:
 		variantValue.destroy()
@@ -12704,6 +13244,8 @@ func (_ FfiDestroyerRgbLibError) Destroy(value *RgbLibError) {
 		variantValue.destroy()
 	case RgbLibErrorUnsupportedTransportType:
 		variantValue.destroy()
+	case RgbLibErrorUnsupportedWalletManifestVersion:
+		variantValue.destroy()
 	case RgbLibErrorVssAuth:
 		variantValue.destroy()
 	case RgbLibErrorVssBackupNotFound:
@@ -12713,6 +13255,8 @@ func (_ FfiDestroyerRgbLibError) Destroy(value *RgbLibError) {
 	case RgbLibErrorVssVersionConflict:
 		variantValue.destroy()
 	case RgbLibErrorWalletDirAlreadyExists:
+		variantValue.destroy()
+	case RgbLibErrorWalletSettingMismatch:
 		variantValue.destroy()
 	case RgbLibErrorWatchOnly:
 		variantValue.destroy()
@@ -12874,6 +13418,7 @@ const (
 	TransferKindSend           TransferKind = 4
 	TransferKindInflation      TransferKind = 5
 	TransferKindBurn           TransferKind = 6
+	TransferKindLink           TransferKind = 7
 )
 
 type FfiConverterTransferKind struct{}
@@ -12908,12 +13453,13 @@ func (_ FfiDestroyerTransferKind) Destroy(value TransferKind) {
 type TransferStatus uint
 
 const (
-	TransferStatusWaitingCounterparty  TransferStatus = 1
-	TransferStatusWaitingSafeHeight    TransferStatus = 2
-	TransferStatusWaitingConfirmations TransferStatus = 3
-	TransferStatusSettled              TransferStatus = 4
-	TransferStatusFailed               TransferStatus = 5
-	TransferStatusInitiated            TransferStatus = 6
+	TransferStatusInitiated            TransferStatus = 1
+	TransferStatusWaitingCounterparty  TransferStatus = 2
+	TransferStatusWaitingSafeHeight    TransferStatus = 3
+	TransferStatusWaitingBroadcast     TransferStatus = 4
+	TransferStatusWaitingConfirmations TransferStatus = 5
+	TransferStatusSettled              TransferStatus = 6
+	TransferStatusFailed               TransferStatus = 7
 )
 
 type FfiConverterTransferStatus struct{}
@@ -12987,6 +13533,7 @@ const (
 	TypeOfTransitionTransfer TypeOfTransition = 2
 	TypeOfTransitionBurn     TypeOfTransition = 3
 	TypeOfTransitionBridge   TypeOfTransition = 4
+	TypeOfTransitionLink     TypeOfTransition = 5
 )
 
 type FfiConverterTypeOfTransition struct{}
@@ -13652,6 +14199,47 @@ type FfiDestroyerOptionalOperationInfo struct{}
 func (_ FfiDestroyerOptionalOperationInfo) Destroy(value *OperationInfo) {
 	if value != nil {
 		FfiDestroyerOperationInfo{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalOperationResult struct{}
+
+var FfiConverterOptionalOperationResultINSTANCE = FfiConverterOptionalOperationResult{}
+
+func (c FfiConverterOptionalOperationResult) Lift(rb RustBufferI) *OperationResult {
+	return LiftFromRustBuffer[*OperationResult](c, rb)
+}
+
+func (_ FfiConverterOptionalOperationResult) Read(reader io.Reader) *OperationResult {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterOperationResultINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalOperationResult) Lower(value *OperationResult) C.RustBuffer {
+	return LowerIntoRustBuffer[*OperationResult](c, value)
+}
+
+func (c FfiConverterOptionalOperationResult) LowerExternal(value *OperationResult) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*OperationResult](c, value))
+}
+
+func (_ FfiConverterOptionalOperationResult) Write(writer io.Writer, value *OperationResult) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterOperationResultINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalOperationResult struct{}
+
+func (_ FfiDestroyerOptionalOperationResult) Destroy(value *OperationResult) {
+	if value != nil {
+		FfiDestroyerOperationResult{}.Destroy(*value)
 	}
 }
 
@@ -15579,6 +16167,54 @@ func (_ FfiDestroyerMapInt32RefreshedTransfer) Destroy(mapValue map[int32]Refres
 	for key, value := range mapValue {
 		FfiDestroyerInt32{}.Destroy(key)
 		FfiDestroyerRefreshedTransfer{}.Destroy(value)
+	}
+}
+
+type FfiConverterMapStringString struct{}
+
+var FfiConverterMapStringStringINSTANCE = FfiConverterMapStringString{}
+
+func (c FfiConverterMapStringString) Lift(rb RustBufferI) map[string]string {
+	return LiftFromRustBuffer[map[string]string](c, rb)
+}
+
+func (_ FfiConverterMapStringString) Read(reader io.Reader) map[string]string {
+	result := make(map[string]string)
+	length := readInt32(reader)
+	for i := int32(0); i < length; i++ {
+		key := FfiConverterStringINSTANCE.Read(reader)
+		value := FfiConverterStringINSTANCE.Read(reader)
+		result[key] = value
+	}
+	return result
+}
+
+func (c FfiConverterMapStringString) Lower(value map[string]string) C.RustBuffer {
+	return LowerIntoRustBuffer[map[string]string](c, value)
+}
+
+func (c FfiConverterMapStringString) LowerExternal(value map[string]string) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[map[string]string](c, value))
+}
+
+func (_ FfiConverterMapStringString) Write(writer io.Writer, mapValue map[string]string) {
+	if len(mapValue) > math.MaxInt32 {
+		panic("map[string]string is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(mapValue)))
+	for key, value := range mapValue {
+		FfiConverterStringINSTANCE.Write(writer, key)
+		FfiConverterStringINSTANCE.Write(writer, value)
+	}
+}
+
+type FfiDestroyerMapStringString struct{}
+
+func (_ FfiDestroyerMapStringString) Destroy(mapValue map[string]string) {
+	for key, value := range mapValue {
+		FfiDestroyerString{}.Destroy(key)
+		FfiDestroyerString{}.Destroy(value)
 	}
 }
 
