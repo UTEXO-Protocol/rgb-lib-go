@@ -20,6 +20,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  CARGO_NET_GIT_FETCH_WITH_CLI: "true"
   # rgb-lib builds on uniffi 0.32; NordSecurity has no matching release yet, so the
   # generator comes from their open PR #98 (a 0.31 bindgen produces bindings the
   # 0.32 library rejects at load with "UniFFI API checksum mismatch").
@@ -73,6 +74,46 @@ jobs:
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
+
+      # rgb-lib's [patch.crates-io] pulls three private BFA mirrors via HTTPS.
+      # Set up per-repo SSH aliases (IdentitiesOnly yes) so Cargo can fetch them
+      # without credential ambiguity, then rewrite the HTTPS URLs to SSH.
+      - name: Set up SSH for private BFA deps
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+          printf '%s\n' "${{ secrets.RGB_CONSENSUS_BFA_DEPLOY_KEY }}" > ~/.ssh/key_consensus
+          printf '%s\n' "${{ secrets.RGB_OPS_BFA_DEPLOY_KEY }}"       > ~/.ssh/key_ops
+          printf '%s\n' "${{ secrets.RGB_SCHEMAS_BFA_DEPLOY_KEY }}"   > ~/.ssh/key_schemas
+          chmod 600 ~/.ssh/key_*
+          cat >> ~/.ssh/config << 'SSHCONF'
+          Host github-rgb-consensus
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/key_consensus
+            IdentitiesOnly yes
+          Host github-rgb-ops
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/key_ops
+            IdentitiesOnly yes
+          Host github-rgb-schemas
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/key_schemas
+            IdentitiesOnly yes
+          SSHCONF
+          chmod 600 ~/.ssh/config
+          git config --global \
+            "url.ssh://git@github-rgb-consensus/UTEXO-Protocol/rgb-consensus-s-bfa.insteadOf" \
+            "https://github.com/UTEXO-Protocol/rgb-consensus-s-bfa"
+          git config --global \
+            "url.ssh://git@github-rgb-ops/UTEXO-Protocol/rgb-ops-s-bfa.insteadOf" \
+            "https://github.com/UTEXO-Protocol/rgb-ops-s-bfa"
+          git config --global \
+            "url.ssh://git@github-rgb-schemas/UTEXO-Protocol/rgb-schemas-s-bfa.insteadOf" \
+            "https://github.com/UTEXO-Protocol/rgb-schemas-s-bfa"
+        shell: bash
 
       - name: Install uniffi-bindgen-go
         run: |
