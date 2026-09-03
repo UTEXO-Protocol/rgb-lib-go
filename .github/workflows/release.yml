@@ -12,6 +12,11 @@ on:
         description: 'rgb-lib version to use (e.g., v0.3.0-beta.4)'
         required: true
         type: string
+      branch:
+        description: 'Branch to commit bindings to (default: main)'
+        required: false
+        default: 'main'
+        type: string
 
 env:
   CARGO_TERM_COLOR: always
@@ -24,8 +29,22 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Resolve target branch
+        id: target
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+            BRANCH="${{ github.event.client_payload.branch }}"
+          else
+            BRANCH="${{ inputs.branch }}"
+          fi
+          echo "branch=${BRANCH:-main}" >> $GITHUB_OUTPUT
+          echo "Target branch: ${BRANCH:-main}"
+
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.target.outputs.branch }}
 
       - name: Get rgb-lib version
         id: rgb_lib_version
@@ -134,7 +153,7 @@ jobs:
             echo "No changes, skipping commit"
           else
             git commit -m "Auto-generate Go bindings and update native libs from rgb-lib ${{ steps.rgb_lib_version.outputs.version }}"
-            git push
+            git push origin HEAD:${{ steps.target.outputs.branch }}
           fi
         shell: bash
 
@@ -160,10 +179,21 @@ jobs:
             lib_name: librgblibuniffi.dylib
 
     steps:
+      - name: Resolve target branch
+        id: target
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+            BRANCH="${{ github.event.client_payload.branch }}"
+          else
+            BRANCH="${{ inputs.branch }}"
+          fi
+          echo "branch=${BRANCH:-main}" >> $GITHUB_OUTPUT
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ steps.target.outputs.branch }}
 
       - name: Get rgb-lib version
         id: rgb_lib_version
