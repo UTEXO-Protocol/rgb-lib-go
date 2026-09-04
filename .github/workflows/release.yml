@@ -143,17 +143,19 @@ jobs:
           cp "$H_FILE" $GITHUB_WORKSPACE/rgb_lib.h
         shell: bash
 
-      - name: Add CGo header
+      # cgo only reads the comment directly above `import "C"`, so the LDFLAGS
+      # go into the preamble bindgen emits, not above `package`.
+      - name: Add CGo LDFLAGS to the preamble
         run: |
-          HEADER='/*
-          #cgo LDFLAGS: -lrgblibuniffi -L${SRCDIR}/lib -Wl,-rpath,${SRCDIR}/lib
-          */
-          // #include <rgb_lib.h>'
-
-          TEMP=$(mktemp)
-          echo "$HEADER" > "$TEMP"
-          cat rgb_lib.go >> "$TEMP"
-          mv "$TEMP" rgb_lib.go
+          python3 - <<'PY'
+          import pathlib
+          p = pathlib.Path("rgb_lib.go"); s = p.read_text()
+          old = '// #include <rgb_lib.h>\nimport "C"'
+          new = ('/*\n#cgo LDFLAGS: -lrgblibuniffi -L${SRCDIR}/lib -Wl,-rpath,${SRCDIR}/lib\n'
+                 '#include <rgb_lib.h>\n*/\nimport "C"')
+          assert s.count(old) == 1, "unexpected cgo preamble in generated rgb_lib.go"
+          p.write_text(s.replace(old, new))
+          PY
         shell: bash
 
       - name: Download native libraries
