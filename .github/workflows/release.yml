@@ -20,7 +20,12 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  UNIFFI_BINDGEN_GO_TAG: "v0.7.0+v0.31.0"
+  CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+  # rgb-lib builds on uniffi 0.32; NordSecurity has no matching release yet, so the
+  # generator comes from their open PR #98 (a 0.31 bindgen produces bindings the
+  # 0.32 library rejects at load with "UniFFI API checksum mismatch").
+  UNIFFI_BINDGEN_GO_GIT: "https://github.com/kixelated/uniffi-bindgen-go.git"
+  UNIFFI_BINDGEN_GO_REV: "4f79e52bd8f518e5fa4d7acff9e586aee21e12a0"
 
 jobs:
   generate:
@@ -70,10 +75,50 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
 
+      # rgb-lib's [patch.crates-io] pulls three private BFA mirrors via HTTPS.
+      # Set up per-repo SSH aliases (IdentitiesOnly yes) so Cargo can fetch them
+      # without credential ambiguity, then rewrite the HTTPS URLs to SSH.
+      - name: Set up SSH for private BFA deps
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+          printf '%s\n' "${{ secrets.RGB_CONSENSUS_BFA_DEPLOY_KEY }}" > ~/.ssh/key_consensus
+          printf '%s\n' "${{ secrets.RGB_OPS_BFA_DEPLOY_KEY }}"       > ~/.ssh/key_ops
+          printf '%s\n' "${{ secrets.RGB_SCHEMAS_BFA_DEPLOY_KEY }}"   > ~/.ssh/key_schemas
+          chmod 600 ~/.ssh/key_*
+          cat >> ~/.ssh/config << 'SSHCONF'
+          Host github-rgb-consensus
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/key_consensus
+            IdentitiesOnly yes
+          Host github-rgb-ops
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/key_ops
+            IdentitiesOnly yes
+          Host github-rgb-schemas
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/key_schemas
+            IdentitiesOnly yes
+          SSHCONF
+          chmod 600 ~/.ssh/config
+          git config --global \
+            "url.ssh://git@github-rgb-consensus/UTEXO-Protocol/rgb-consensus-s-bfa.insteadOf" \
+            "https://github.com/UTEXO-Protocol/rgb-consensus-s-bfa"
+          git config --global \
+            "url.ssh://git@github-rgb-ops/UTEXO-Protocol/rgb-ops-s-bfa.insteadOf" \
+            "https://github.com/UTEXO-Protocol/rgb-ops-s-bfa"
+          git config --global \
+            "url.ssh://git@github-rgb-schemas/UTEXO-Protocol/rgb-schemas-s-bfa.insteadOf" \
+            "https://github.com/UTEXO-Protocol/rgb-schemas-s-bfa"
+        shell: bash
+
       - name: Install uniffi-bindgen-go
         run: |
-          cargo install --git https://github.com/NordSecurity/uniffi-bindgen-go \
-            --tag "${{ env.UNIFFI_BINDGEN_GO_TAG }}" uniffi-bindgen-go
+          cargo install --git "${{ env.UNIFFI_BINDGEN_GO_GIT }}" \
+            --rev "${{ env.UNIFFI_BINDGEN_GO_REV }}" uniffi-bindgen-go
         shell: bash
 
       - name: Generate bindings
@@ -98,17 +143,19 @@ jobs:
           cp "$H_FILE" $GITHUB_WORKSPACE/rgb_lib.h
         shell: bash
 
-      - name: Add CGo header
+      # cgo only reads the comment directly above `import "C"`, so the LDFLAGS
+      # go into the preamble bindgen emits, not above `package`.
+      - name: Add CGo LDFLAGS to the preamble
         run: |
-          HEADER='/*
-          #cgo LDFLAGS: -lrgblibuniffi -L${SRCDIR}/lib -Wl,-rpath,${SRCDIR}/lib
-          */
-          // #include <rgb_lib.h>'
-
-          TEMP=$(mktemp)
-          echo "$HEADER" > "$TEMP"
-          cat rgb_lib.go >> "$TEMP"
-          mv "$TEMP" rgb_lib.go
+          python3 - <<'PY'
+          import pathlib
+          p = pathlib.Path("rgb_lib.go"); s = p.read_text()
+          old = '// #include <rgb_lib.h>\nimport "C"'
+          new = ('/*\n#cgo LDFLAGS: -lrgblibuniffi -L${SRCDIR}/lib -Wl,-rpath,${SRCDIR}/lib\n'
+                 '#include <rgb_lib.h>\n*/\nimport "C"')
+          assert s.count(old) == 1, "unexpected cgo preamble in generated rgb_lib.go"
+          p.write_text(s.replace(old, new))
+          PY
         shell: bash
 
       - name: Download native libraries
