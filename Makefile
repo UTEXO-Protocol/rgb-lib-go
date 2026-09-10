@@ -30,7 +30,7 @@ generate: build-lib
 	@echo "==> Installing uniffi-bindgen-go..."
 	cargo install --git $(UNIFFI_BINDGEN_GO_GIT) --rev $(UNIFFI_BINDGEN_GO_REV) uniffi-bindgen-go
 	@echo "==> Generating Go bindings..."
-	uniffi-bindgen-go rgb-lib/bindings/uniffi/src/rgb-lib.udl --out-dir /tmp/go-bindings
+	(cd rgb-lib/bindings/uniffi && uniffi-bindgen-go src/rgb-lib.udl --out-dir /tmp/go-bindings)
 	cp $$(find /tmp/go-bindings -name "rgb_lib.go" | head -1) rgb_lib.go
 	cp $$(find /tmp/go-bindings -name "rgb_lib.h"  | head -1) rgb_lib.h
 	python3 - <<'PY'
