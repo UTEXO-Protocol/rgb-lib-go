@@ -475,6 +475,16 @@ RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_blind_receive(uint64_t p
 RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_bridge_init(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer recipient, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BRIDGE_INIT_BEGIN
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BRIDGE_INIT_BEGIN
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_bridge_init_begin(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer recipient, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BRIDGE_INIT_END
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BRIDGE_INIT_END
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_bridge_init_end(uint64_t ptr, RustBuffer online, RustBuffer psbt, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BURN_INIT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_BURN_INIT
 RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_burn_init(uint64_t ptr, RustBuffer online, RustBuffer asset_id, uint64_t amount, RustBuffer burn_recipient, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
@@ -1472,6 +1482,18 @@ uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_blind_receive(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_BRIDGE_INIT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_BRIDGE_INIT
 uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_bridge_init(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_BRIDGE_INIT_BEGIN
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_BRIDGE_INIT_BEGIN
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_bridge_init_begin(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_BRIDGE_INIT_END
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_BRIDGE_INIT_END
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_bridge_init_end(void
     
 );
 #endif

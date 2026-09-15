@@ -509,6 +509,24 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_bridge_init_begin()
+		})
+		if checksum != 25836 {
+			// If this happens try cleaning and rebuilding your project
+			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_bridge_init_begin: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_bridge_init_end()
+		})
+		if checksum != 41497 {
+			// If this happens try cleaning and rebuilding your project
+			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_bridge_init_end: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_burn_init()
 		})
 		if checksum != 46517 {
@@ -2193,6 +2211,8 @@ type MultisigWalletInterface interface {
 	BackupInfo() (bool, error)
 	BlindReceive(online Online, assetId *string, assignment Assignment, expirationTimestamp uint64, transportEndpoints []string, minConfirmations uint8) (ReceiveData, error)
 	BridgeInit(online Online, assetId string, recipient Recipient, feeRate uint64, minConfirmations uint8) (BridgeInitResult, error)
+	BridgeInitBegin(online Online, assetId string, recipient Recipient, feeRate uint64, minConfirmations uint8) (BridgeBeginResult, error)
+	BridgeInitEnd(online Online, psbt string) (InitOperationResult, error)
 	BurnInit(online Online, assetId string, amount uint64, burnRecipient *[]uint8, feeRate uint64, minConfirmations uint8) (InitOperationResult, error)
 	ConfigureVssBackup(config VssBackupConfig) error
 	CreateUtxosInit(online Online, upTo bool, num *uint8, size *uint32, feeRate uint64, skipSync bool) (InitOperationResult, error)
@@ -2309,6 +2329,40 @@ func (_self *MultisigWallet) BridgeInit(online Online, assetId string, recipient
 		return _uniffiDefaultValue, _uniffiErr
 	} else {
 		return FfiConverterBridgeInitResultINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+func (_self *MultisigWallet) BridgeInitBegin(online Online, assetId string, recipient Recipient, feeRate uint64, minConfirmations uint8) (BridgeBeginResult, error) {
+	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_bridge_init_begin(
+				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(assetId), FfiConverterRecipientINSTANCE.Lower(recipient), FfiConverterUint64INSTANCE.Lower(feeRate), FfiConverterUint8INSTANCE.Lower(minConfirmations), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue BridgeBeginResult
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterBridgeBeginResultINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+func (_self *MultisigWallet) BridgeInitEnd(online Online, psbt string) (InitOperationResult, error) {
+	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_bridge_init_end(
+				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(psbt), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue InitOperationResult
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterInitOperationResultINSTANCE.Lift(_uniffiRV), nil
 	}
 }
 
