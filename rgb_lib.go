@@ -13697,6 +13697,7 @@ const (
 	WalletTransactionTypeCreateUtxos WalletTransactionType = 1
 	WalletTransactionTypeDrain       WalletTransactionType = 2
 	WalletTransactionTypeSendBtc     WalletTransactionType = 3
+	WalletTransactionTypeRgbTransfer WalletTransactionType = 4
 )
 
 type FfiConverterWalletTransactionType struct{}
