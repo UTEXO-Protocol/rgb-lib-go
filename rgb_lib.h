@@ -835,6 +835,11 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_burn_end(uint64_t ptr, RustBuffe
 void uniffi_rgblibuniffi_fn_method_wallet_configure_vss_backup(uint64_t ptr, RustBuffer config, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CONTRACT_ASSIGNMENTS_FOR_OUTPOINTS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CONTRACT_ASSIGNMENTS_FOR_OUTPOINTS
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_contract_assignments_for_outpoints(uint64_t ptr, RustBuffer asset_id, RustBuffer outpoints, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CREATE_UTXOS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_CREATE_UTXOS
 uint8_t uniffi_rgblibuniffi_fn_method_wallet_create_utxos(uint64_t ptr, RustBuffer online, int8_t up_to, RustBuffer num, RustBuffer size, uint64_t fee_rate, int8_t skip_sync, RustCallStatus *out_status
@@ -878,6 +883,11 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_drain_to_end(uint64_t ptr, RustB
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_FAIL_TRANSFERS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_FAIL_TRANSFERS
 int8_t uniffi_rgblibuniffi_fn_method_wallet_fail_transfers(uint64_t ptr, RustBuffer online, RustBuffer batch_transfer_idx, int8_t no_asset_only, int8_t skip_sync, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_FETCH_AND_ACCEPT_TRANSFER_BY_RECIPIENT_ID
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_FETCH_AND_ACCEPT_TRANSFER_BY_RECIPIENT_ID
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_fetch_and_accept_transfer_by_recipient_id(uint64_t ptr, RustBuffer online, RustBuffer proxy_recipient_id, RustBuffer witness_recipient_id, RustBuffer consignment_endpoint, uint64_t blinding, uint8_t min_confirmations, RustBuffer expected, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_FINALIZE_PSBT
@@ -1030,6 +1040,26 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_provide_out_of_band_ack(uint64_t
 RustBuffer uniffi_rgblibuniffi_fn_method_wallet_provide_out_of_band_consignment(uint64_t ptr, RustBuffer online, RustBuffer consignment_path, RustBuffer media_file_paths, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_PSBT_OP_ABORT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_PSBT_OP_ABORT
+void uniffi_rgblibuniffi_fn_method_wallet_psbt_op_abort(uint64_t ptr, RustBuffer online, RustBuffer operation_id, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_PSBT_OP_APPLY
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_PSBT_OP_APPLY
+void uniffi_rgblibuniffi_fn_method_wallet_psbt_op_apply(uint64_t ptr, RustBuffer online, RustBuffer operation_id, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_PSBT_OP_PREPARE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_PSBT_OP_PREPARE
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_psbt_op_prepare(uint64_t ptr, RustBuffer psbt, RustBuffer coloring_info, RustBuffer input_outpoints, uint8_t min_confirmations, uint64_t expiration_timestamp, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_PSBT_OP_RECONCILE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_PSBT_OP_RECONCILE
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_psbt_op_reconcile(uint64_t ptr, RustBuffer operation_id, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_REFRESH
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_REFRESH
 RustBuffer uniffi_rgblibuniffi_fn_method_wallet_refresh(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer filter, int8_t skip_sync, RustCallStatus *out_status
@@ -1123,6 +1153,11 @@ RustBuffer uniffi_rgblibuniffi_fn_func_restore_from_vss(RustBuffer config, RustB
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_RESTORE_KEYS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_RESTORE_KEYS
 RustBuffer uniffi_rgblibuniffi_fn_func_restore_keys(RustBuffer bitcoin_network, RustBuffer mnemonic, RustBuffer witness_version, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_SCRIPT_HEX_FROM_RECIPIENT_ID
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_SCRIPT_HEX_FROM_RECIPIENT_ID
+RustBuffer uniffi_rgblibuniffi_fn_func_script_hex_from_recipient_id(RustBuffer recipient_id, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_VALIDATE_CONSIGNMENT
@@ -1422,6 +1457,12 @@ uint16_t uniffi_rgblibuniffi_checksum_func_restore_from_vss(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_RESTORE_KEYS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_RESTORE_KEYS
 uint16_t uniffi_rgblibuniffi_checksum_func_restore_keys(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_SCRIPT_HEX_FROM_RECIPIENT_ID
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_SCRIPT_HEX_FROM_RECIPIENT_ID
+uint16_t uniffi_rgblibuniffi_checksum_func_script_hex_from_recipient_id(void
     
 );
 #endif
@@ -1839,6 +1880,12 @@ uint16_t uniffi_rgblibuniffi_checksum_method_wallet_configure_vss_backup(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_CONTRACT_ASSIGNMENTS_FOR_OUTPOINTS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_CONTRACT_ASSIGNMENTS_FOR_OUTPOINTS
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_contract_assignments_for_outpoints(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_CREATE_UTXOS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_CREATE_UTXOS
 uint16_t uniffi_rgblibuniffi_checksum_method_wallet_create_utxos(void
@@ -1890,6 +1937,12 @@ uint16_t uniffi_rgblibuniffi_checksum_method_wallet_drain_to_end(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_FAIL_TRANSFERS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_FAIL_TRANSFERS
 uint16_t uniffi_rgblibuniffi_checksum_method_wallet_fail_transfers(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_FETCH_AND_ACCEPT_TRANSFER_BY_RECIPIENT_ID
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_FETCH_AND_ACCEPT_TRANSFER_BY_RECIPIENT_ID
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_fetch_and_accept_transfer_by_recipient_id(void
     
 );
 #endif
@@ -2070,6 +2123,30 @@ uint16_t uniffi_rgblibuniffi_checksum_method_wallet_provide_out_of_band_ack(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PROVIDE_OUT_OF_BAND_CONSIGNMENT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PROVIDE_OUT_OF_BAND_CONSIGNMENT
 uint16_t uniffi_rgblibuniffi_checksum_method_wallet_provide_out_of_band_consignment(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PSBT_OP_ABORT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PSBT_OP_ABORT
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_psbt_op_abort(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PSBT_OP_APPLY
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PSBT_OP_APPLY
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_psbt_op_apply(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PSBT_OP_PREPARE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PSBT_OP_PREPARE
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_psbt_op_prepare(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PSBT_OP_RECONCILE
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_PSBT_OP_RECONCILE
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_psbt_op_reconcile(void
     
 );
 #endif
