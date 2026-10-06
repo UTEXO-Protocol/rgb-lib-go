@@ -5,6 +5,8 @@ on:
     workflows: ["Build and Release"]
     types:
       - completed
+    branches:
+      - 'release/*'
 
   workflow_dispatch:
     inputs:

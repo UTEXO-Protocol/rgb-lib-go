@@ -6,6 +6,8 @@ on:
     workflows: ["Build and Release"]
     types:
       - completed
+    branches:
+      - 'release/*'
 
   # Manual trigger
   workflow_dispatch:
@@ -49,10 +51,18 @@ jobs:
             lib_name: librgblibuniffi.dylib
 
     steps:
-      - name: Checkout release/upstream
+      - name: Resolve branch to test
+        id: meta
+        run: |
+          # On workflow_run: use the branch that triggered the build
+          # Otherwise: use current branch
+          BRANCH="${{ github.event.workflow_run.head_branch || github.ref_name }}"
+          echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout branch
         uses: actions/checkout@v4
         with:
-          ref: release/upstream
+          ref: ${{ steps.meta.outputs.branch }}
 
       - name: Setup Go
         uses: actions/setup-go@v5
