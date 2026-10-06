@@ -49,10 +49,10 @@ jobs:
             lib_name: librgblibuniffi.dylib
 
     steps:
-      - name: Checkout feat/submodule-build
+      - name: Checkout release/upstream
         uses: actions/checkout@v4
         with:
-          ref: feat/submodule-build
+          ref: release/upstream
 
       - name: Setup Go
         uses: actions/setup-go@v5

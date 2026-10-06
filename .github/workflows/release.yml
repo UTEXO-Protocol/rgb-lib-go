@@ -4,7 +4,7 @@ on:
   # Rebuild when submodule pointer is updated on this branch
   push:
     branches:
-      - feat/submodule-build
+      - release/upstream
     paths:
       - '.gitmodules'
       - 'rgb-lib'
@@ -15,7 +15,7 @@ on:
       branch:
         description: 'Branch to commit bindings to'
         required: false
-        default: 'feat/submodule-build'
+        default: 'release/upstream'
         type: string
 
 env:
@@ -39,7 +39,7 @@ jobs:
       - name: Resolve target branch
         id: meta
         run: |
-          BRANCH="${{ inputs.branch || 'feat/submodule-build' }}"
+          BRANCH="${{ inputs.branch || 'release/upstream' }}"
           echo "target_branch=${BRANCH}" >> "$GITHUB_OUTPUT"
 
       - name: Checkout with submodules

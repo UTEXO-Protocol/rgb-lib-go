@@ -1,7 +1,7 @@
 name: Watch upstream rgb-lib
 
 # Scheduled workflows only fire from the default branch (main).
-# Until feat/submodule-build merges, trigger manually via workflow_dispatch.
+# Until release/upstream merges, trigger manually via workflow_dispatch.
 on:
   schedule:
     # Check every 6 hours so a new upstream release is picked up within hours.
@@ -15,10 +15,10 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout feat/submodule-build with submodules
+      - name: Checkout release/upstream with submodules
         uses: actions/checkout@v4
         with:
-          ref: feat/submodule-build
+          ref: release/upstream
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -57,13 +57,13 @@ jobs:
           git -C rgb-lib checkout "tags/$TAG"
           git add rgb-lib
 
-      - name: Commit and push to feat/submodule-build
+      - name: Commit and push to release/upstream
         if: steps.check.outputs.skip == 'false'
         run: |
           TAG="${{ steps.upstream.outputs.tag }}"
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git commit -m "chore: bump rgb-lib submodule to upstream $TAG"
-          git push origin HEAD:feat/submodule-build
-          # The push updates rgb-lib on feat/submodule-build, which triggers
-          # release.yml to rebuild bindings and native libs for all platforms.
+          git push origin HEAD:release/upstream
+          # The push triggers release.yml to rebuild bindings and native libs
+          # for all platforms and publish a GitHub Release.
