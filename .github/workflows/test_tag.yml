@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "rgb-lib-go tag to test (e.g., v0.3.0-beta.16-rc1). Leave empty for latest."
+        description: "rgb-lib-go tag to test (e.g., v0.3.0-beta.7). Leave empty for latest."
         required: false
         type: string
 
@@ -17,20 +17,28 @@ jobs:
   test:
     name: Test tag (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
+    # Only run when the upstream build succeeded
+    if: >
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
     strategy:
       fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
+            goos: linux
+            goarch: amd64
             lib_name: librgblibuniffi.so
           - os: macos-latest
-            target: aarch64-apple-darwin
+            goos: darwin
+            goarch: arm64
             lib_name: librgblibuniffi.dylib
 
     steps:
-      - name: Checkout repository
+      - name: Checkout release/upstream
         uses: actions/checkout@v4
+        with:
+          ref: release/upstream
 
       - name: Setup Go
         uses: actions/setup-go@v5
@@ -39,48 +47,40 @@ jobs:
 
       - name: Get rgb-lib-go version to test
         id: go_version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ -n "${{ inputs.version }}" ]; then
-            echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+            VERSION="${{ inputs.version }}"
           else
-            VERSION=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              https://api.github.com/repos/UTEXO-Protocol/rgb-lib-go/releases | jq -r '.[0].tag_name')
-            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            VERSION=$(gh api repos/${{ github.repository }}/releases \
+              --jq '[.[] | select(.draft == false)] | .[0].tag_name')
           fi
-          echo "Testing rgb-lib-go version: $(cat $GITHUB_OUTPUT | grep version | cut -d= -f2)"
-        shell: bash
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Testing rgb-lib-go version: ${VERSION}"
 
-      - name: Get latest rgb-lib version
-        id: rgb_lib_version
+      - name: Download native library from rgb-lib-go release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/UTEXO-Protocol/rgb-lib/releases | jq -r '.[0].tag_name')
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Using rgb-lib version: $VERSION"
-        shell: bash
+          VERSION="${{ steps.go_version.outputs.version }}"
+          ASSET="rgb-lib-go-${{ matrix.goos }}-${{ matrix.goarch }}.zip"
 
-      - name: Download rgb-lib uniffi library
-        run: |
+          gh release download "$VERSION" \
+            --repo "${{ github.repository }}" \
+            --pattern "$ASSET" \
+            --output /tmp/rgb-lib-go.zip
+
           mkdir -p lib
-          DOWNLOAD_URL="https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}/rgb-lib-uniffi-${{ matrix.target }}.zip"
-          echo "Downloading from: $DOWNLOAD_URL"
-          curl -L -o rgb-lib-uniffi.zip "$DOWNLOAD_URL"
-          unzip -o rgb-lib-uniffi.zip -d lib/
-          ls -la lib/
-        shell: bash
+          unzip -o /tmp/rgb-lib-go.zip "lib/${{ matrix.lib_name }}" -d /tmp/extracted
+          cp /tmp/extracted/lib/${{ matrix.lib_name }} lib/
+          file lib/${{ matrix.lib_name }}
 
-      - name: Fix library path (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          install_name_tool -id @rpath/librgblibuniffi.dylib lib/librgblibuniffi.dylib
-
-      - name: Build Go package (workspace)
+      - name: Build Go package
         run: |
           export CGO_ENABLED=1
-          export CGO_LDFLAGS="-L$(pwd)/lib -lrgblibuniffi"
           go mod tidy
           go build ./...
-        shell: bash
 
       - name: Use tagged rgb-lib-go for testing
         working-directory: lib_test
@@ -93,7 +93,6 @@ jobs:
           sed -i.bak '/github.com\/UTEXO-Protocol\/rgb-lib-go/d' go.sum
           go get github.com/UTEXO-Protocol/rgb-lib-go@${{ steps.go_version.outputs.version }}
           go mod tidy
-        shell: bash
 
       - name: Run lib_test
         working-directory: lib_test
