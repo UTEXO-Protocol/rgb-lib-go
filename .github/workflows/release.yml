@@ -9,11 +9,11 @@ on:
       - '.gitmodules'
       - 'rgb-lib'
 
-  # Allow manual trigger from any branch
+  # Manual trigger — select a release/* branch from the branch dropdown in the UI
   workflow_dispatch:
     inputs:
       branch:
-        description: 'Branch to build (leave empty = current branch)'
+        description: 'Branch to build (default: current branch)'
         required: false
         default: ''
         type: string
