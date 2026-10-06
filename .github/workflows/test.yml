@@ -1,11 +1,7 @@
 name: Test Library
 
 on:
-  # Trigger from rgb-lib repository after release
-  repository_dispatch:
-    types: [rgb-lib-release]
-
-  # Trigger after release workflow completes
+  # Trigger after the full release pipeline (including publish) completes
   workflow_run:
     workflows: ["Build and Release"]
     types:
@@ -39,64 +35,49 @@ jobs:
   test:
     name: Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
+    # Only run when the upstream build succeeded (not on failed runs)
+    if: >
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
     strategy:
       fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
             lib_name: librgblibuniffi.so
           - os: macos-latest
-            target: aarch64-apple-darwin
             lib_name: librgblibuniffi.dylib
 
     steps:
-      - name: Checkout repository
+      - name: Checkout feat/submodule-build
         uses: actions/checkout@v4
+        with:
+          ref: feat/submodule-build
 
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.22'
 
-      - name: Get latest rgb-lib version
-        id: rgb_lib_version
+      - name: Verify native library is present
         run: |
-          VERSION=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/UTEXO-Protocol/rgb-lib/releases | jq -r '.[0].tag_name')
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Using rgb-lib version: $VERSION"
-        shell: bash
-
-      - name: Download rgb-lib uniffi library
-        run: |
-          mkdir -p lib
-          DOWNLOAD_URL="https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}/rgb-lib-uniffi-${{ matrix.target }}.zip"
-          echo "Downloading from: $DOWNLOAD_URL"
-          curl -L -o rgb-lib-uniffi.zip "$DOWNLOAD_URL"
-          unzip -o rgb-lib-uniffi.zip -d lib/
-          ls -la lib/
-        shell: bash
-
-      - name: Fix library path (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          install_name_tool -id @rpath/librgblibuniffi.dylib lib/librgblibuniffi.dylib
+          if [ ! -f "lib/${{ matrix.lib_name }}" ]; then
+            echo "ERROR: lib/${{ matrix.lib_name }} not found — publish job may not have run yet"
+            exit 1
+          fi
+          file lib/${{ matrix.lib_name }}
 
       - name: Build Go package
         run: |
           export CGO_ENABLED=1
-          export CGO_LDFLAGS="-L$(pwd)/lib -lrgblibuniffi"
           go mod tidy
           go build ./...
-        shell: bash
 
       - name: Use local rgb-lib-go for testing
         working-directory: lib_test
         run: |
           go mod edit -replace github.com/UTEXO-Protocol/rgb-lib-go=../
           go mod tidy
-        shell: bash
 
       - name: Run lib_test
         working-directory: lib_test
@@ -112,4 +93,3 @@ jobs:
           CGO_ENABLED: 1
           CGO_LDFLAGS: -L${{ github.workspace }}/lib -lrgblibuniffi
         run: make run
-
