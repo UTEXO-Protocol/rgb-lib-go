@@ -1,0 +1,82 @@
+name: Watch upstream rgb-lib
+
+# Scheduled workflows only fire from the default branch (main).
+# Use workflow_dispatch to run manually from any release/* branch.
+on:
+  schedule:
+    # Check every 6 hours so a new upstream release is picked up within hours.
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      target_branch:
+        description: 'Branch to update (default: release/upstream)'
+        required: false
+        default: 'release/upstream'
+        type: string
+
+jobs:
+  bump-submodule:
+    name: Bump rgb-lib submodule to latest upstream release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Resolve target branch
+        id: meta
+        run: |
+          BRANCH="${{ inputs.target_branch || 'release/upstream' }}"
+          echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout target branch with submodules
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.meta.outputs.branch }}
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get latest upstream release tag
+        id: upstream
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=$(gh api repos/RGB-Tools/rgb-lib/releases \
+            --jq '[.[] | select(.draft == false)] | .[0].tag_name')
+          if [ -z "$TAG" ] || [ "$TAG" = "null" ]; then
+            echo "No releases found upstream, nothing to do"
+            exit 0
+          fi
+          echo "Latest upstream release: $TAG"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Check if submodule is already at this tag
+        id: check
+        run: |
+          TAG="${{ steps.upstream.outputs.tag }}"
+          CURRENT=$(git -C rgb-lib describe --tags --exact-match 2>/dev/null || echo "")
+          if [ "$CURRENT" = "$TAG" ]; then
+            echo "Already at $TAG — nothing to do"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Current: ${CURRENT:-<untagged>}  →  target: $TAG"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update submodule pointer to upstream tag
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          TAG="${{ steps.upstream.outputs.tag }}"
+          git -C rgb-lib fetch --tags
+          git -C rgb-lib checkout "tags/$TAG"
+          git add rgb-lib
+
+      - name: Commit and push
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          TAG="${{ steps.upstream.outputs.tag }}"
+          BRANCH="${{ steps.meta.outputs.branch }}"
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: bump rgb-lib submodule to upstream $TAG"
+          git push origin HEAD:$BRANCH
+          # The push triggers release.yml to rebuild bindings and native libs
+          # for all platforms and publish a GitHub Release.

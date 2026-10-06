@@ -1,21 +1,21 @@
 name: Build and Release
 
 on:
-  # Rebuild when submodule pointer is updated on this branch
+  # Rebuild when submodule pointer is updated on any release/* branch
   push:
     branches:
-      - feat/submodule-build
+      - 'release/*'
     paths:
       - '.gitmodules'
       - 'rgb-lib'
 
-  # Allow manual trigger
+  # Allow manual trigger from any branch
   workflow_dispatch:
     inputs:
       branch:
-        description: 'Branch to commit bindings to'
+        description: 'Branch to build (leave empty = current branch)'
         required: false
-        default: 'feat/submodule-build'
+        default: ''
         type: string
 
 env:
@@ -32,13 +32,14 @@ jobs:
     permissions:
       contents: write
     outputs:
-      submodule_sha: ${{ steps.meta.outputs.submodule_sha }}
+      submodule_sha: ${{ steps.submodule.outputs.sha }}
+      upstream_tag: ${{ steps.submodule.outputs.tag }}
       target_branch: ${{ steps.meta.outputs.target_branch }}
     steps:
       - name: Resolve target branch
         id: meta
         run: |
-          BRANCH="${{ inputs.branch || 'feat/submodule-build' }}"
+          BRANCH="${{ inputs.branch || github.ref_name }}"
           echo "target_branch=${BRANCH}" >> "$GITHUB_OUTPUT"
 
       - name: Checkout with submodules
@@ -47,12 +48,14 @@ jobs:
           ref: ${{ steps.meta.outputs.target_branch }}
           submodules: recursive
 
-      - name: Record submodule SHA
-        id: sha
+      - name: Record submodule metadata
+        id: submodule
         run: |
           SHA=$(git -C rgb-lib rev-parse --short HEAD)
-          echo "submodule_sha=${SHA}" >> "$GITHUB_OUTPUT"
-          echo "Building rgb-lib @ ${SHA}"
+          TAG=$(git -C rgb-lib describe --tags --exact-match 2>/dev/null || echo "")
+          echo "sha=${SHA}" >> "$GITHUB_OUTPUT"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "Building rgb-lib @ ${SHA} (upstream tag: ${TAG:-<untagged>})"
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -111,7 +114,7 @@ jobs:
 
       - name: Commit bindings and linux/amd64 library
         run: |
-          SHA="${{ steps.sha.outputs.submodule_sha }}"
+          SHA="${{ steps.submodule.outputs.sha }}"
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add rgb_lib.go rgb_lib.h lib/librgblibuniffi.so
@@ -219,3 +222,84 @@ jobs:
           name: rgb-lib-go-${{ matrix.goos }}-${{ matrix.goarch }}
           path: rgb-lib-go-${{ matrix.goos }}-${{ matrix.goarch }}.zip
           retention-days: 5
+
+  publish:
+    name: Commit all platform libs and publish GitHub Release
+    needs: [generate, build-native]
+    # Only when the submodule is pinned to a tagged upstream release
+    if: needs.generate.outputs.upstream_tag != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.generate.outputs.target_branch }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download all native library artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/artifacts
+
+      - name: Commit arm64 and darwin libs to branch
+        run: |
+          git pull --rebase origin ${{ needs.generate.outputs.target_branch }}
+          mkdir -p lib
+
+          unzip -o /tmp/artifacts/rgb-lib-go-linux-arm64/rgb-lib-go-linux-arm64.zip \
+            'lib/librgblibuniffi_arm64.so' -d /tmp/extracted-arm64
+          unzip -o /tmp/artifacts/rgb-lib-go-darwin-arm64/rgb-lib-go-darwin-arm64.zip \
+            'lib/librgblibuniffi.dylib' -d /tmp/extracted-darwin
+
+          cp /tmp/extracted-arm64/lib/librgblibuniffi_arm64.so lib/
+          cp /tmp/extracted-darwin/lib/librgblibuniffi.dylib   lib/
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add lib/librgblibuniffi_arm64.so lib/librgblibuniffi.dylib
+          if git diff --cached --quiet; then
+            echo "libs already up to date"
+          else
+            UPSTREAM_TAG="${{ needs.generate.outputs.upstream_tag }}"
+            git commit -m "chore: add arm64/darwin native libs from rgb-lib ${UPSTREAM_TAG}"
+            git push origin HEAD:${{ needs.generate.outputs.target_branch }}
+          fi
+
+      - name: Skip if release already exists
+        id: release_check
+        run: |
+          TAG="v${{ needs.generate.outputs.upstream_tag }}"
+          if gh release view "$TAG" --repo "${{ github.repository }}" &>/dev/null; then
+            echo "Release $TAG already exists, skipping"
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create git tag and GitHub Release
+        if: steps.release_check.outputs.exists == 'false'
+        run: |
+          UPSTREAM_TAG="${{ needs.generate.outputs.upstream_tag }}"
+          TAG="v${UPSTREAM_TAG}"
+
+          git pull --rebase origin ${{ needs.generate.outputs.target_branch }}
+          git tag -a "$TAG" -m "rgb-lib-go built from upstream RGB-Tools/rgb-lib ${UPSTREAM_TAG}"
+          git push origin "$TAG"
+
+          gh release create "$TAG" \
+            --title "rgb-lib-go ${TAG}" \
+            --notes "Go bindings for [RGB-Tools/rgb-lib ${UPSTREAM_TAG}](https://github.com/RGB-Tools/rgb-lib/releases/tag/${UPSTREAM_TAG}).
+
+**Platforms:**
+- \`linux/amd64\` — \`librgblibuniffi.so\`
+- \`linux/arm64\` — \`librgblibuniffi_arm64.so\`
+- \`darwin/arm64\` — \`librgblibuniffi.dylib\`" \
+            --prerelease \
+            /tmp/artifacts/rgb-lib-go-linux-amd64/rgb-lib-go-linux-amd64.zip \
+            /tmp/artifacts/rgb-lib-go-linux-arm64/rgb-lib-go-linux-arm64.zip \
+            /tmp/artifacts/rgb-lib-go-darwin-arm64/rgb-lib-go-darwin-arm64.zip
