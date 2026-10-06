@@ -291,14 +291,18 @@ jobs:
           git tag -a "$TAG" -m "rgb-lib-go built from upstream RGB-Tools/rgb-lib ${UPSTREAM_TAG}"
           git push origin "$TAG"
 
+          {
+            echo "Go bindings for [RGB-Tools/rgb-lib ${UPSTREAM_TAG}](https://github.com/RGB-Tools/rgb-lib/releases/tag/${UPSTREAM_TAG})."
+            echo ""
+            echo "**Platforms:**"
+            echo "- \`linux/amd64\` — \`librgblibuniffi.so\`"
+            echo "- \`linux/arm64\` — \`librgblibuniffi_arm64.so\`"
+            echo "- \`darwin/arm64\` — \`librgblibuniffi.dylib\`"
+          } > /tmp/release-notes.md
+
           gh release create "$TAG" \
             --title "rgb-lib-go ${TAG}" \
-            --notes "Go bindings for [RGB-Tools/rgb-lib ${UPSTREAM_TAG}](https://github.com/RGB-Tools/rgb-lib/releases/tag/${UPSTREAM_TAG}).
-
-**Platforms:**
-- \`linux/amd64\` — \`librgblibuniffi.so\`
-- \`linux/arm64\` — \`librgblibuniffi_arm64.so\`
-- \`darwin/arm64\` — \`librgblibuniffi.dylib\`" \
+            --notes-file /tmp/release-notes.md \
             --prerelease \
             /tmp/artifacts/rgb-lib-go-linux-amd64/rgb-lib-go-linux-amd64.zip \
             /tmp/artifacts/rgb-lib-go-linux-arm64/rgb-lib-go-linux-arm64.zip \
