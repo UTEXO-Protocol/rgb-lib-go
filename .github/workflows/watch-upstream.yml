@@ -20,6 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Resolve target branch
         id: meta
@@ -27,17 +29,8 @@ jobs:
           BRANCH="${{ inputs.target_branch || 'release/upstream' }}"
           echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
 
-      - name: Checkout target branch with submodules
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ steps.meta.outputs.branch }}
-          submodules: recursive
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get latest upstream release tag
+      - name: Get latest upstream release tag and commit SHA
         id: upstream
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG=$(gh api repos/RGB-Tools/rgb-lib/releases \
             --jq '[.[] | select(.draft == false)] | .[0].tag_name')
@@ -46,18 +39,36 @@ jobs:
             exit 0
           fi
           echo "Latest upstream release: $TAG"
+
+          # Resolve tag to commit SHA (handles both lightweight and annotated tags)
+          REF=$(gh api "repos/RGB-Tools/rgb-lib/git/refs/tags/$TAG" --jq '.object | {sha, type}')
+          SHA=$(echo "$REF" | jq -r '.sha')
+          TYPE=$(echo "$REF" | jq -r '.type')
+          if [ "$TYPE" = "tag" ]; then
+            SHA=$(gh api "repos/RGB-Tools/rgb-lib/git/tags/$SHA" --jq '.object.sha')
+          fi
+
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "Resolved $TAG → $SHA"
+
+      - name: Checkout target branch with submodules
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.meta.outputs.branch }}
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check if submodule is already at this tag
         id: check
         run: |
-          TAG="${{ steps.upstream.outputs.tag }}"
-          CURRENT=$(git -C rgb-lib describe --tags --exact-match 2>/dev/null || echo "")
-          if [ "$CURRENT" = "$TAG" ]; then
-            echo "Already at $TAG — nothing to do"
+          TARGET_SHA="${{ steps.upstream.outputs.sha }}"
+          CURRENT_SHA=$(git -C rgb-lib rev-parse HEAD)
+          if [ "$CURRENT_SHA" = "$TARGET_SHA" ]; then
+            echo "Already at ${{ steps.upstream.outputs.tag }} ($CURRENT_SHA) — nothing to do"
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
-            echo "Current: ${CURRENT:-<untagged>}  →  target: $TAG"
+            echo "Current: ${CURRENT_SHA:0:8}  →  target: ${{ steps.upstream.outputs.tag }} (${TARGET_SHA:0:8})"
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -76,7 +87,9 @@ jobs:
           BRANCH="${{ steps.meta.outputs.branch }}"
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore: bump rgb-lib submodule to upstream $TAG"
-          git push origin HEAD:$BRANCH
-          # The push triggers release.yml to rebuild bindings and native libs
-          # for all platforms and publish a GitHub Release.
+          if git diff --cached --quiet; then
+            echo "Submodule pointer unchanged — nothing to push"
+          else
+            git commit -m "chore: bump rgb-lib submodule to upstream $TAG"
+            git push origin HEAD:$BRANCH
+          fi
