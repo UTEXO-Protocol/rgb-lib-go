@@ -1238,6 +1238,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_received_mint()
+		})
+		if checksum != 7410 {
+			// If this happens try cleaning and rebuilding your project
+			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_get_received_mint: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_get_wallet_data()
 		})
 		if checksum != 6456 {
@@ -3448,6 +3457,7 @@ type WalletInterface interface {
 	GetFeeEstimation(online Online, blocks uint16) (float64, error)
 	GetKeys() SinglesigKeys
 	GetMediaDir() string
+	GetReceivedMint(recipientId string) (*ReceivedMint, error)
 	GetWalletData() WalletData
 	GetWalletDir() string
 	GoOnline(onlineOptions OnlineOptions) (Online, error)
@@ -3985,6 +3995,23 @@ func (_self *Wallet) GetMediaDir() string {
 				_pointer, _uniffiStatus),
 		}
 	}))
+}
+
+func (_self *Wallet) GetReceivedMint(recipientId string) (*ReceivedMint, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Wallet")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_rgblibuniffi_fn_method_wallet_get_received_mint(
+				_pointer, FfiConverterStringINSTANCE.Lower(recipientId), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *ReceivedMint
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterOptionalReceivedMintINSTANCE.Lift(_uniffiRV), nil
+	}
 }
 
 func (_self *Wallet) GetWalletData() WalletData {
@@ -7081,6 +7108,54 @@ func (c FfiConverterReceiveData) Write(writer io.Writer, value ReceiveData) {
 type FfiDestroyerReceiveData struct{}
 
 func (_ FfiDestroyerReceiveData) Destroy(value ReceiveData) {
+	value.Destroy()
+}
+
+type ReceivedMint struct {
+	Opid            string
+	Amount          uint64
+	ContractAddress string
+}
+
+func (r *ReceivedMint) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Opid)
+	FfiDestroyerUint64{}.Destroy(r.Amount)
+	FfiDestroyerString{}.Destroy(r.ContractAddress)
+}
+
+type FfiConverterReceivedMint struct{}
+
+var FfiConverterReceivedMintINSTANCE = FfiConverterReceivedMint{}
+
+func (c FfiConverterReceivedMint) Lift(rb RustBufferI) ReceivedMint {
+	return LiftFromRustBuffer[ReceivedMint](c, rb)
+}
+
+func (c FfiConverterReceivedMint) Read(reader io.Reader) ReceivedMint {
+	return ReceivedMint{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterReceivedMint) Lower(value ReceivedMint) C.RustBuffer {
+	return LowerIntoRustBuffer[ReceivedMint](c, value)
+}
+
+func (c FfiConverterReceivedMint) LowerExternal(value ReceivedMint) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ReceivedMint](c, value))
+}
+
+func (c FfiConverterReceivedMint) Write(writer io.Writer, value ReceivedMint) {
+	FfiConverterStringINSTANCE.Write(writer, value.Opid)
+	FfiConverterUint64INSTANCE.Write(writer, value.Amount)
+	FfiConverterStringINSTANCE.Write(writer, value.ContractAddress)
+}
+
+type FfiDestroyerReceivedMint struct{}
+
+func (_ FfiDestroyerReceivedMint) Destroy(value ReceivedMint) {
 	value.Destroy()
 }
 
@@ -15138,6 +15213,47 @@ type FfiDestroyerOptionalProofOfReserves struct{}
 func (_ FfiDestroyerOptionalProofOfReserves) Destroy(value *ProofOfReserves) {
 	if value != nil {
 		FfiDestroyerProofOfReserves{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalReceivedMint struct{}
+
+var FfiConverterOptionalReceivedMintINSTANCE = FfiConverterOptionalReceivedMint{}
+
+func (c FfiConverterOptionalReceivedMint) Lift(rb RustBufferI) *ReceivedMint {
+	return LiftFromRustBuffer[*ReceivedMint](c, rb)
+}
+
+func (_ FfiConverterOptionalReceivedMint) Read(reader io.Reader) *ReceivedMint {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterReceivedMintINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalReceivedMint) Lower(value *ReceivedMint) C.RustBuffer {
+	return LowerIntoRustBuffer[*ReceivedMint](c, value)
+}
+
+func (c FfiConverterOptionalReceivedMint) LowerExternal(value *ReceivedMint) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*ReceivedMint](c, value))
+}
+
+func (_ FfiConverterOptionalReceivedMint) Write(writer io.Writer, value *ReceivedMint) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterReceivedMintINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalReceivedMint struct{}
+
+func (_ FfiDestroyerOptionalReceivedMint) Destroy(value *ReceivedMint) {
+	if value != nil {
+		FfiDestroyerReceivedMint{}.Destroy(*value)
 	}
 }
 

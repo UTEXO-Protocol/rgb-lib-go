@@ -940,6 +940,11 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_keys(uint64_t ptr, RustCallS
 RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_media_dir(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_RECEIVED_MINT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_RECEIVED_MINT
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_received_mint(uint64_t ptr, RustBuffer recipient_id, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_WALLET_DATA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_GET_WALLET_DATA
 RustBuffer uniffi_rgblibuniffi_fn_method_wallet_get_wallet_data(uint64_t ptr, RustCallStatus *out_status
@@ -2003,6 +2008,12 @@ uint16_t uniffi_rgblibuniffi_checksum_method_wallet_get_keys(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_GET_MEDIA_DIR
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_GET_MEDIA_DIR
 uint16_t uniffi_rgblibuniffi_checksum_method_wallet_get_media_dir(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_GET_RECEIVED_MINT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_GET_RECEIVED_MINT
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_get_received_mint(void
     
 );
 #endif
