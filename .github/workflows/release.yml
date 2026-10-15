@@ -1,9 +1,9 @@
 name: Build and Release
 
 on:
-  # Trigger from rgb-lib repository via repository_dispatch
+  # Triggered by rgb-lib or rgb-lib-bfa via repository_dispatch
   repository_dispatch:
-    types: [rgb-lib-release]
+    types: [rgb-lib-release, rgb-lib-bfa-release]
 
   # Allow manual trigger
   workflow_dispatch:
@@ -12,10 +12,17 @@ on:
         description: 'rgb-lib version to use (e.g., v0.3.0-beta.4)'
         required: true
         type: string
-      branch:
-        description: 'Branch to commit bindings to (default: release/custom-bfa)'
+      source_repo:
+        description: 'Source repository'
         required: false
-        default: 'release/custom-bfa'
+        default: 'rgb-lib'
+        type: choice
+        options:
+          - rgb-lib
+          - rgb-lib-bfa
+      branch:
+        description: 'Branch to commit bindings to (auto-selected if empty)'
+        required: false
         type: string
 
 env:
@@ -35,52 +42,54 @@ jobs:
       contents: write
     outputs:
       sha: ${{ steps.commit.outputs.sha }}
+      source_repo: ${{ steps.ctx.outputs.source_repo }}
+      version: ${{ steps.ctx.outputs.version }}
     steps:
-      - name: Resolve target branch
-        id: target
+      - name: Resolve build context
+        id: ctx
         shell: bash
         run: |
           if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
-            BRANCH="${{ github.event.client_payload.branch }}"
+            SOURCE_REPO="${{ github.event.client_payload.source_repo }}"
+            SOURCE_REPO="${SOURCE_REPO:-rgb-lib}"
+            VERSION="${{ github.event.client_payload.version }}"
+            PAYLOAD_BRANCH="${{ github.event.client_payload.branch }}"
           else
-            BRANCH="${{ inputs.branch }}"
+            SOURCE_REPO="${{ inputs.source_repo }}"
+            SOURCE_REPO="${SOURCE_REPO:-rgb-lib}"
+            VERSION="${{ inputs.rgb_lib_version }}"
+            PAYLOAD_BRANCH="${{ inputs.branch }}"
           fi
-          echo "branch=${BRANCH:-release/custom-bfa}" >> $GITHUB_OUTPUT
-          echo "Target branch: ${BRANCH:-release/custom-bfa}"
+
+          if [ "$SOURCE_REPO" == "rgb-lib-bfa" ]; then
+            DEFAULT_BRANCH="release/bfa"
+          else
+            DEFAULT_BRANCH="release/custom-bfa"
+          fi
+          BRANCH="${PAYLOAD_BRANCH:-$DEFAULT_BRANCH}"
+
+          VERSION="${VERSION#v}"
+          VERSION="v${VERSION}"
+
+          echo "source_repo=$SOURCE_REPO" >> $GITHUB_OUTPUT
+          echo "version=$VERSION"         >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH"           >> $GITHUB_OUTPUT
+          echo "Source: $SOURCE_REPO  Version: $VERSION  Branch: $BRANCH"
 
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.target.outputs.branch }}
+          ref: ${{ steps.ctx.outputs.branch }}
 
-      - name: Get rgb-lib version
-        id: rgb_lib_version
+      - name: Clone source rgb-lib at release tag
         run: |
-          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
-            RAW_VERSION="${{ github.event.client_payload.version }}"
-          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            RAW_VERSION="${{ inputs.rgb_lib_version }}"
-          fi
-          # Ensure v prefix for Go module compatibility
-          VERSION="${RAW_VERSION#v}"
-          VERSION="v${VERSION}"
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Using rgb-lib version: $VERSION"
+          git clone --depth 1 --branch ${{ steps.ctx.outputs.version }} \
+            https://github.com/UTEXO-Protocol/${{ steps.ctx.outputs.source_repo }}.git /tmp/rgb-lib-src
         shell: bash
 
-      - name: Clone rgb-lib at release tag
-        run: |
-          git clone --depth 1 --branch ${{ steps.rgb_lib_version.outputs.version }} \
-            https://github.com/UTEXO-Protocol/rgb-lib.git /tmp/rgb-lib
-        shell: bash
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-
-      # rgb-lib's [patch.crates-io] pulls three private BFA mirrors via HTTPS.
-      # Set up per-repo SSH aliases (IdentitiesOnly yes) so Cargo can fetch them
-      # without credential ambiguity, then rewrite the HTTPS URLs to SSH.
+      # Only needed when building from rgb-lib (private BFA deps via [patch.crates-io])
       - name: Set up SSH for private BFA deps
+        if: steps.ctx.outputs.source_repo == 'rgb-lib'
         run: |
           mkdir -p ~/.ssh && chmod 700 ~/.ssh
           ssh-keyscan -H github.com >> ~/.ssh/known_hosts
@@ -117,6 +126,9 @@ jobs:
             "https://github.com/UTEXO-Protocol/rgb-schemas-s-bfa"
         shell: bash
 
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
       - name: Install uniffi-bindgen-go
         run: |
           cargo install --git "${{ env.UNIFFI_BINDGEN_GO_GIT }}" \
@@ -124,11 +136,16 @@ jobs:
         shell: bash
 
       - name: Generate bindings
-        working-directory: /tmp/rgb-lib
+        working-directory: /tmp/rgb-lib-src
         run: |
+          CONFIG_FLAG=""
+          if [ -f bindings/uniffi/uniffi.toml ]; then
+            CONFIG_FLAG="--config bindings/uniffi/uniffi.toml"
+          fi
+
           uniffi-bindgen-go bindings/uniffi/src/rgb-lib.udl \
             --out-dir /tmp/go-bindings \
-            --config bindings/uniffi/uniffi.toml
+            $CONFIG_FLAG
 
           echo "Generated files:"
           find /tmp/go-bindings -type f
@@ -165,7 +182,7 @@ jobs:
           mkdir -p lib
           rm -f lib/librgblibuniffi*
 
-          RELEASE_BASE="https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}"
+          RELEASE_BASE="https://github.com/UTEXO-Protocol/${{ steps.ctx.outputs.source_repo }}/releases/download/${{ steps.ctx.outputs.version }}"
 
           # Linux x86_64
           curl -L --fail -o /tmp/linux-x64.zip \
@@ -202,8 +219,8 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes, skipping commit"
           else
-            git commit -m "Auto-generate Go bindings and update native libs from rgb-lib ${{ steps.rgb_lib_version.outputs.version }}"
-            git push origin HEAD:${{ steps.target.outputs.branch }}
+            git commit -m "Auto-generate Go bindings and update native libs from ${{ steps.ctx.outputs.source_repo }} ${{ steps.ctx.outputs.version }}"
+            git push origin HEAD:${{ steps.ctx.outputs.branch }}
           fi
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
         shell: bash
@@ -216,13 +233,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Linux x64
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-latest
             goos: linux
             goarch: amd64
             lib_name: librgblibuniffi.so
-          # macOS ARM64 (Apple Silicon M1/M2/M3)
           - target: aarch64-apple-darwin
             os: macos-latest
             goos: darwin
@@ -230,31 +245,10 @@ jobs:
             lib_name: librgblibuniffi.dylib
 
     steps:
-      - name: Resolve target branch
-        id: target
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
-            BRANCH="${{ github.event.client_payload.branch }}"
-          else
-            BRANCH="${{ inputs.branch }}"
-          fi
-          echo "branch=${BRANCH:-release/custom-bfa}" >> $GITHUB_OUTPUT
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.target.outputs.branch }}
-
-      - name: Get rgb-lib version
-        id: rgb_lib_version
-        run: |
-          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
-            echo "version=${{ github.event.client_payload.version }}" >> $GITHUB_OUTPUT
-          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "version=${{ inputs.rgb_lib_version }}" >> $GITHUB_OUTPUT
-          fi
-        shell: bash
+          ref: ${{ needs.generate.outputs.sha }}
 
       - name: Setup Go
         uses: actions/setup-go@v5
@@ -264,7 +258,7 @@ jobs:
       - name: Download rgb-lib uniffi library
         run: |
           mkdir -p lib
-          DOWNLOAD_URL="https://github.com/UTEXO-Protocol/rgb-lib/releases/download/${{ steps.rgb_lib_version.outputs.version }}/rgb-lib-uniffi-${{ matrix.target }}.zip"
+          DOWNLOAD_URL="https://github.com/UTEXO-Protocol/${{ needs.generate.outputs.source_repo }}/releases/download/${{ needs.generate.outputs.version }}/rgb-lib-uniffi-${{ matrix.target }}.zip"
           echo "Downloading from: $DOWNLOAD_URL"
           curl -L -o rgb-lib-uniffi.zip "$DOWNLOAD_URL"
           unzip -o rgb-lib-uniffi.zip -d lib/
@@ -313,18 +307,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Get version info
-        id: version
-        run: |
-          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
-            RGB_LIB_VERSION="${{ github.event.client_payload.version }}"
-          else
-            RGB_LIB_VERSION="${{ inputs.rgb_lib_version }}"
-          fi
-          echo "rgb_lib_version=$RGB_LIB_VERSION" >> $GITHUB_OUTPUT
-          echo "go_version=$RGB_LIB_VERSION" >> $GITHUB_OUTPUT
-        shell: bash
-
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
@@ -339,31 +321,30 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.version.outputs.go_version }}
-          name: Release ${{ steps.version.outputs.go_version }}
+          tag_name: ${{ needs.generate.outputs.version }}
+          name: Release ${{ needs.generate.outputs.version }}
           target_commitish: ${{ needs.generate.outputs.sha }}
           body: |
-            ## Go bindings for rgb-lib
-            
-            Based on rgb-lib ${{ steps.version.outputs.rgb_lib_version }}
-            
+            ## Go bindings for ${{ needs.generate.outputs.source_repo }}
+
+            Based on ${{ needs.generate.outputs.source_repo }} ${{ needs.generate.outputs.version }}
+
             ### Installation
-            
+
             ```go
-            go get github.com/UTEXO-Protocol/rgb-lib-go@${{ steps.version.outputs.go_version }}
+            go get github.com/UTEXO-Protocol/rgb-lib-go@${{ needs.generate.outputs.version }}
             ```
-            
+
             ### Platforms
-            
+
             - Linux x64 (`linux-amd64`)
             - macOS ARM64 / Apple Silicon (`darwin-arm64`)
-            
+
             ### Changes
-            
-            See [rgb-lib release notes](https://github.com/UTEXO-Protocol/rgb-lib/releases/tag/${{ steps.version.outputs.rgb_lib_version }})
+
+            See [${{ needs.generate.outputs.source_repo }} release notes](https://github.com/UTEXO-Protocol/${{ needs.generate.outputs.source_repo }}/releases/tag/${{ needs.generate.outputs.version }})
           draft: false
-          prerelease: ${{ contains(steps.version.outputs.go_version, 'alpha') || contains(steps.version.outputs.go_version, 'beta') || contains(steps.version.outputs.go_version, 'rc') }}
+          prerelease: ${{ contains(needs.generate.outputs.version, 'alpha') || contains(needs.generate.outputs.version, 'beta') || contains(needs.generate.outputs.version, 'rc') }}
           files: release-assets/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
