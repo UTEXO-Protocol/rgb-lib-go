@@ -81,6 +81,26 @@ jobs:
         with:
           ref: ${{ steps.ctx.outputs.branch }}
 
+      - name: Set up SSH for rgb-lib-bfa (private repo)
+        if: steps.ctx.outputs.source_repo == 'rgb-lib-bfa'
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+          printf '%s\n' "${{ secrets.RGB_LIB_BFA_DEPLOY_KEY }}" > ~/.ssh/rgb_lib_bfa_key
+          chmod 600 ~/.ssh/rgb_lib_bfa_key
+          cat >> ~/.ssh/config << 'SSHCONF'
+          Host github-rgb-lib-bfa
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/rgb_lib_bfa_key
+            IdentitiesOnly yes
+          SSHCONF
+          chmod 600 ~/.ssh/config
+          git config --global \
+            "url.ssh://git@github-rgb-lib-bfa/UTEXO-Protocol/rgb-lib-bfa.insteadOf" \
+            "https://github.com/UTEXO-Protocol/rgb-lib-bfa"
+        shell: bash
+
       - name: Clone source rgb-lib at release tag
         run: |
           git clone --depth 1 --branch ${{ steps.ctx.outputs.version }} \
