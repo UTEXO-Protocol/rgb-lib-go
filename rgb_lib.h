@@ -1015,6 +1015,11 @@ RustBuffer uniffi_rgblibuniffi_fn_func_check_indexer_url(RustBuffer indexer_url,
 RustBuffer uniffi_rgblibuniffi_fn_func_generate_keys(RustBuffer bitcoin_network, RustBuffer witness_version, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_INSPECT_CONSIGNMENT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_INSPECT_CONSIGNMENT
+RustBuffer uniffi_rgblibuniffi_fn_func_inspect_consignment(RustBuffer consignment_path, RustBuffer bundle_filter, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_RESTORE_BACKUP
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_RESTORE_BACKUP
 void uniffi_rgblibuniffi_fn_func_restore_backup(RustBuffer backup_path, RustBuffer password, RustBuffer data_dir, RustCallStatus *out_status
@@ -1023,6 +1028,11 @@ void uniffi_rgblibuniffi_fn_func_restore_backup(RustBuffer backup_path, RustBuff
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_RESTORE_KEYS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_RESTORE_KEYS
 RustBuffer uniffi_rgblibuniffi_fn_func_restore_keys(RustBuffer bitcoin_network, RustBuffer mnemonic, RustBuffer witness_version, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_VALIDATE_CONSIGNMENT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_VALIDATE_CONSIGNMENT
+RustBuffer uniffi_rgblibuniffi_fn_func_validate_consignment(RustBuffer consignment_path, RustBuffer indexer_config, RustBuffer min_confirmations, RustBuffer options, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_FFI_RGBLIBUNIFFI_RUSTBUFFER_ALLOC
@@ -1297,6 +1307,12 @@ uint16_t uniffi_rgblibuniffi_checksum_func_generate_keys(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_INSPECT_CONSIGNMENT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_INSPECT_CONSIGNMENT
+uint16_t uniffi_rgblibuniffi_checksum_func_inspect_consignment(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_RESTORE_BACKUP
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_RESTORE_BACKUP
 uint16_t uniffi_rgblibuniffi_checksum_func_restore_backup(void
@@ -1306,6 +1322,12 @@ uint16_t uniffi_rgblibuniffi_checksum_func_restore_backup(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_RESTORE_KEYS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_RESTORE_KEYS
 uint16_t uniffi_rgblibuniffi_checksum_func_restore_keys(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_VALIDATE_CONSIGNMENT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_VALIDATE_CONSIGNMENT
+uint16_t uniffi_rgblibuniffi_checksum_func_validate_consignment(void
     
 );
 #endif
