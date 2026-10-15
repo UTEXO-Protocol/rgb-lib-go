@@ -37,7 +37,7 @@ env:
 jobs:
   generate:
     name: Generate Go bindings
-    runs-on: ubuntu-latest
+    runs-on: warp-ubuntu-latest-x64-4x
     permissions:
       contents: write
     outputs:
@@ -234,12 +234,12 @@ jobs:
       matrix:
         include:
           - target: x86_64-unknown-linux-gnu
-            os: ubuntu-latest
+            os: warp-ubuntu-latest-x64-4x
             goos: linux
             goarch: amd64
             lib_name: librgblibuniffi.so
           - target: aarch64-apple-darwin
-            os: macos-latest
+            os: warp-macos-26-arm64-6x
             goos: darwin
             goarch: arm64
             lib_name: librgblibuniffi.dylib
@@ -299,7 +299,7 @@ jobs:
   release:
     name: Create Release
     needs: [generate, build]
-    runs-on: ubuntu-latest
+    runs-on: warp-ubuntu-latest-x64-4x
     permissions:
       contents: write
 
