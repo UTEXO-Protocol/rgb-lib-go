@@ -198,27 +198,30 @@ jobs:
         shell: bash
 
       - name: Download native libraries
+        env:
+          GH_TOKEN: ${{ secrets.RGB_LIB_BFA_READ_PAT }}
         run: |
           mkdir -p lib
           rm -f lib/librgblibuniffi*
 
-          RELEASE_BASE="https://github.com/UTEXO-Protocol/${{ steps.ctx.outputs.source_repo }}/releases/download/${{ steps.ctx.outputs.version }}"
+          REPO="UTEXO-Protocol/${{ steps.ctx.outputs.source_repo }}"
+          TAG="${{ steps.ctx.outputs.version }}"
 
-          # Linux x86_64
-          curl -L --fail -o /tmp/linux-x64.zip \
-            "${RELEASE_BASE}/rgb-lib-uniffi-x86_64-unknown-linux-gnu.zip"
+          gh release download "$TAG" --repo "$REPO" \
+            --pattern "rgb-lib-uniffi-x86_64-unknown-linux-gnu.zip" \
+            --output /tmp/linux-x64.zip
           unzip -o /tmp/linux-x64.zip -d /tmp/linux-x64
           cp /tmp/linux-x64/librgblibuniffi.so lib/librgblibuniffi.so
 
-          # Linux aarch64
-          curl -L --fail -o /tmp/linux-arm64.zip \
-            "${RELEASE_BASE}/rgb-lib-uniffi-aarch64-unknown-linux-gnu.zip"
+          gh release download "$TAG" --repo "$REPO" \
+            --pattern "rgb-lib-uniffi-aarch64-unknown-linux-gnu.zip" \
+            --output /tmp/linux-arm64.zip
           unzip -o /tmp/linux-arm64.zip -d /tmp/linux-arm64
           cp /tmp/linux-arm64/librgblibuniffi.so lib/librgblibuniffi_arm64.so
 
-          # macOS arm64
-          curl -L --fail -o /tmp/macos-arm64.zip \
-            "${RELEASE_BASE}/rgb-lib-uniffi-aarch64-apple-darwin.zip"
+          gh release download "$TAG" --repo "$REPO" \
+            --pattern "rgb-lib-uniffi-aarch64-apple-darwin.zip" \
+            --output /tmp/macos-arm64.zip
           unzip -o /tmp/macos-arm64.zip -d /tmp/macos-arm64
           cp /tmp/macos-arm64/librgblibuniffi.dylib lib/librgblibuniffi.dylib
 
@@ -276,11 +279,14 @@ jobs:
           go-version: '1.22'
 
       - name: Download rgb-lib uniffi library
+        env:
+          GH_TOKEN: ${{ secrets.RGB_LIB_BFA_READ_PAT }}
         run: |
           mkdir -p lib
-          DOWNLOAD_URL="https://github.com/UTEXO-Protocol/${{ needs.generate.outputs.source_repo }}/releases/download/${{ needs.generate.outputs.version }}/rgb-lib-uniffi-${{ matrix.target }}.zip"
-          echo "Downloading from: $DOWNLOAD_URL"
-          curl -L -o rgb-lib-uniffi.zip "$DOWNLOAD_URL"
+          gh release download "${{ needs.generate.outputs.version }}" \
+            --repo "UTEXO-Protocol/${{ needs.generate.outputs.source_repo }}" \
+            --pattern "rgb-lib-uniffi-${{ matrix.target }}.zip" \
+            --output rgb-lib-uniffi.zip
           unzip -o rgb-lib-uniffi.zip -d lib/
           ls -la lib/
         shell: bash
