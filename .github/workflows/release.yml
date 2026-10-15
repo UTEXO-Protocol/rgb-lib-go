@@ -1,100 +1,170 @@
 name: Build and Release
 
 on:
-  # Rebuild when submodule pointer is updated on any release/* branch
-  push:
-    branches:
-      - 'release/*'
-    paths:
-      - '.gitmodules'
-      - 'rgb-lib'
+  # Triggered by rgb-lib or rgb-lib-bfa via repository_dispatch
+  repository_dispatch:
+    types: [rgb-lib-release, rgb-lib-bfa-release]
 
-  # Manual trigger — select a release/* branch from the branch dropdown in the UI
+  # Allow manual trigger
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'Branch to build (default: current branch)'
+      rgb_lib_version:
+        description: 'rgb-lib version to use (e.g., v0.3.0-beta.4)'
+        required: true
+        type: string
+      source_repo:
+        description: 'Source repository'
         required: false
-        default: ''
+        default: 'rgb-lib'
+        type: choice
+        options:
+          - rgb-lib
+          - rgb-lib-bfa
+      branch:
+        description: 'Branch to commit bindings to (auto-selected if empty)'
+        required: false
         type: string
 
 env:
   CARGO_TERM_COLOR: always
   CARGO_NET_GIT_FETCH_WITH_CLI: "true"
-  # uniffi-bindgen-go compatible with uniffi 0.32
+  # rgb-lib builds on uniffi 0.32; NordSecurity has no matching release yet, so the
+  # generator comes from their open PR #98 (a 0.31 bindgen produces bindings the
+  # 0.32 library rejects at load with "UniFFI API checksum mismatch").
   UNIFFI_BINDGEN_GO_GIT: "https://github.com/kixelated/uniffi-bindgen-go.git"
   UNIFFI_BINDGEN_GO_REV: "4f79e52bd8f518e5fa4d7acff9e586aee21e12a0"
 
 jobs:
   generate:
-    name: Generate Go bindings (linux/amd64)
-    runs-on: ubuntu-latest
+    name: Generate Go bindings
+    runs-on: warp-ubuntu-latest-x64-4x
     permissions:
       contents: write
     outputs:
-      submodule_sha: ${{ steps.submodule.outputs.sha }}
-      upstream_tag: ${{ steps.submodule.outputs.tag }}
-      target_branch: ${{ steps.meta.outputs.target_branch }}
+      sha: ${{ steps.commit.outputs.sha }}
+      source_repo: ${{ steps.ctx.outputs.source_repo }}
+      version: ${{ steps.ctx.outputs.version }}
     steps:
-      - name: Resolve target branch
-        id: meta
+      - name: Resolve build context
+        id: ctx
+        shell: bash
         run: |
-          BRANCH="${{ inputs.branch || github.ref_name }}"
-          echo "target_branch=${BRANCH}" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+            SOURCE_REPO="${{ github.event.client_payload.source_repo }}"
+            SOURCE_REPO="${SOURCE_REPO:-rgb-lib}"
+            VERSION="${{ github.event.client_payload.version }}"
+            PAYLOAD_BRANCH="${{ github.event.client_payload.branch }}"
+          else
+            SOURCE_REPO="${{ inputs.source_repo }}"
+            SOURCE_REPO="${SOURCE_REPO:-rgb-lib}"
+            VERSION="${{ inputs.rgb_lib_version }}"
+            PAYLOAD_BRANCH="${{ inputs.branch }}"
+          fi
 
-      - name: Checkout with submodules
+          if [ "$SOURCE_REPO" == "rgb-lib-bfa" ]; then
+            DEFAULT_BRANCH="release/bfa"
+          else
+            DEFAULT_BRANCH="release/custom-bfa"
+          fi
+          BRANCH="${PAYLOAD_BRANCH:-$DEFAULT_BRANCH}"
+
+          VERSION="${VERSION#v}"
+          VERSION="v${VERSION}"
+
+          echo "source_repo=$SOURCE_REPO" >> $GITHUB_OUTPUT
+          echo "version=$VERSION"         >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH"           >> $GITHUB_OUTPUT
+          echo "Source: $SOURCE_REPO  Version: $VERSION  Branch: $BRANCH"
+
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.meta.outputs.target_branch }}
-          submodules: recursive
+          ref: ${{ steps.ctx.outputs.branch }}
 
-      - name: Record submodule metadata
-        id: submodule
+      - name: Clone source rgb-lib at release tag
         run: |
-          SHA=$(git -C rgb-lib rev-parse --short HEAD)
-          TAG=$(git -C rgb-lib describe --tags --exact-match 2>/dev/null || echo "")
-          echo "sha=${SHA}" >> "$GITHUB_OUTPUT"
-          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
-          echo "Building rgb-lib @ ${SHA} (upstream tag: ${TAG:-<untagged>})"
+          git clone --depth 1 --branch ${{ steps.ctx.outputs.version }} \
+            https://github.com/UTEXO-Protocol/${{ steps.ctx.outputs.source_repo }}.git /tmp/rgb-lib-src
+        shell: bash
+
+      # Only needed when building from rgb-lib (private BFA deps via [patch.crates-io])
+      - name: Set up SSH for private BFA deps
+        if: steps.ctx.outputs.source_repo == 'rgb-lib'
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+          printf '%s\n' "${{ secrets.RGB_CONSENSUS_BFA_DEPLOY_KEY }}" > ~/.ssh/key_consensus
+          printf '%s\n' "${{ secrets.RGB_OPS_BFA_DEPLOY_KEY }}"       > ~/.ssh/key_ops
+          printf '%s\n' "${{ secrets.RGB_SCHEMAS_BFA_DEPLOY_KEY }}"   > ~/.ssh/key_schemas
+          chmod 600 ~/.ssh/key_*
+          cat >> ~/.ssh/config << 'SSHCONF'
+          Host github-rgb-consensus
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/key_consensus
+            IdentitiesOnly yes
+          Host github-rgb-ops
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/key_ops
+            IdentitiesOnly yes
+          Host github-rgb-schemas
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/key_schemas
+            IdentitiesOnly yes
+          SSHCONF
+          chmod 600 ~/.ssh/config
+          git config --global \
+            "url.ssh://git@github-rgb-consensus/UTEXO-Protocol/rgb-consensus-s-bfa.insteadOf" \
+            "https://github.com/UTEXO-Protocol/rgb-consensus-s-bfa"
+          git config --global \
+            "url.ssh://git@github-rgb-ops/UTEXO-Protocol/rgb-ops-s-bfa.insteadOf" \
+            "https://github.com/UTEXO-Protocol/rgb-ops-s-bfa"
+          git config --global \
+            "url.ssh://git@github-rgb-schemas/UTEXO-Protocol/rgb-schemas-s-bfa.insteadOf" \
+            "https://github.com/UTEXO-Protocol/rgb-schemas-s-bfa"
+        shell: bash
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
-
-      - name: Cache Cargo
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            rgb-lib/bindings/uniffi/target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('rgb-lib/bindings/uniffi/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-cargo-
-
-      - name: Build rgb-lib uniffi (linux/amd64)
-        working-directory: rgb-lib/bindings/uniffi
-        run: cargo build --release
 
       - name: Install uniffi-bindgen-go
         run: |
           cargo install --git "${{ env.UNIFFI_BINDGEN_GO_GIT }}" \
             --rev "${{ env.UNIFFI_BINDGEN_GO_REV }}" uniffi-bindgen-go
+        shell: bash
 
-      - name: Generate Go bindings
+      - name: Generate bindings
+        working-directory: /tmp/rgb-lib-src
         run: |
-          (cd rgb-lib/bindings/uniffi && uniffi-bindgen-go src/rgb-lib.udl --out-dir /tmp/go-bindings)
+          CONFIG_FLAG=""
+          if [ -f bindings/uniffi/uniffi.toml ]; then
+            CONFIG_FLAG="--config bindings/uniffi/uniffi.toml"
+          fi
+
+          uniffi-bindgen-go bindings/uniffi/src/rgb-lib.udl \
+            --out-dir /tmp/go-bindings \
+            $CONFIG_FLAG
+
+          echo "Generated files:"
+          find /tmp/go-bindings -type f
 
           GO_FILE=$(find /tmp/go-bindings -name "rgb_lib.go" | head -1)
-          H_FILE=$(find /tmp/go-bindings  -name "rgb_lib.h"  | head -1)
+          H_FILE=$(find /tmp/go-bindings -name "rgb_lib.h" | head -1)
 
           if [ -z "$GO_FILE" ] || [ -z "$H_FILE" ]; then
             echo "ERROR: Generated files not found"
             exit 1
           fi
 
-          cp "$GO_FILE" rgb_lib.go
-          cp "$H_FILE"  rgb_lib.h
+          cp "$GO_FILE" $GITHUB_WORKSPACE/rgb_lib.go
+          cp "$H_FILE" $GITHUB_WORKSPACE/rgb_lib.h
+        shell: bash
 
-      - name: Add CGo LDFLAGS to preamble
+      # cgo only reads the comment directly above `import "C"`, so the LDFLAGS
+      # go into the preamble bindgen emits, not above `package`.
+      - name: Add CGo LDFLAGS to the preamble
         run: |
           python3 - <<'PY'
           import pathlib
@@ -102,31 +172,61 @@ jobs:
           old = '// #include <rgb_lib.h>\nimport "C"'
           new = ('/*\n#cgo LDFLAGS: -lrgblibuniffi -L${SRCDIR}/lib -Wl,-rpath,${SRCDIR}/lib\n'
                  '#include <rgb_lib.h>\n*/\nimport "C"')
-          assert s.count(old) == 1, f"unexpected cgo preamble:\n{s[:500]}"
+          assert s.count(old) == 1, "unexpected cgo preamble in generated rgb_lib.go"
           p.write_text(s.replace(old, new))
           PY
+        shell: bash
 
-      - name: Collect linux/amd64 native library
+      - name: Download native libraries
         run: |
           mkdir -p lib
-          cp rgb-lib/bindings/uniffi/target/release/librgblibuniffi.so lib/librgblibuniffi.so
-          file lib/librgblibuniffi.so
+          rm -f lib/librgblibuniffi*
 
-      - name: Commit bindings and linux/amd64 library
+          RELEASE_BASE="https://github.com/UTEXO-Protocol/${{ steps.ctx.outputs.source_repo }}/releases/download/${{ steps.ctx.outputs.version }}"
+
+          # Linux x86_64
+          curl -L --fail -o /tmp/linux-x64.zip \
+            "${RELEASE_BASE}/rgb-lib-uniffi-x86_64-unknown-linux-gnu.zip"
+          unzip -o /tmp/linux-x64.zip -d /tmp/linux-x64
+          cp /tmp/linux-x64/librgblibuniffi.so lib/librgblibuniffi.so
+
+          # Linux aarch64
+          curl -L --fail -o /tmp/linux-arm64.zip \
+            "${RELEASE_BASE}/rgb-lib-uniffi-aarch64-unknown-linux-gnu.zip"
+          unzip -o /tmp/linux-arm64.zip -d /tmp/linux-arm64
+          cp /tmp/linux-arm64/librgblibuniffi.so lib/librgblibuniffi_arm64.so
+
+          # macOS arm64
+          curl -L --fail -o /tmp/macos-arm64.zip \
+            "${RELEASE_BASE}/rgb-lib-uniffi-aarch64-apple-darwin.zip"
+          unzip -o /tmp/macos-arm64.zip -d /tmp/macos-arm64
+          cp /tmp/macos-arm64/librgblibuniffi.dylib lib/librgblibuniffi.dylib
+
+          echo "=== Verifying library architectures ==="
+          file lib/*
+          file lib/librgblibuniffi.so | grep -q "x86-64" || { echo "ERROR: librgblibuniffi.so is not x86-64"; exit 1; }
+          file lib/librgblibuniffi_arm64.so | grep -q "aarch64\|ARM aarch64" || { echo "ERROR: librgblibuniffi_arm64.so is not aarch64"; exit 1; }
+          file lib/librgblibuniffi.dylib | grep -q "arm64\|aarch64" || { echo "ERROR: librgblibuniffi.dylib is not arm64"; exit 1; }
+          echo "All libraries verified OK"
+        shell: bash
+
+      - name: Commit updated bindings and libraries
+        id: commit
         run: |
-          SHA="${{ steps.submodule.outputs.sha }}"
-          git config user.name  "github-actions[bot]"
+          git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add rgb_lib.go rgb_lib.h lib/librgblibuniffi.so
+          git add rgb_lib.go rgb_lib.h lib/
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "No changes, skipping commit"
           else
-            git commit -m "chore: bindings and linux/amd64 native lib from rgb-lib ${SHA}"
-            git push origin HEAD:${{ steps.meta.outputs.target_branch }}
+            git commit -m "Auto-generate Go bindings and update native libs from ${{ steps.ctx.outputs.source_repo }} ${{ steps.ctx.outputs.version }}"
+            git push origin HEAD:${{ steps.ctx.outputs.branch }}
           fi
+          echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+        shell: bash
 
-  build-native:
-    name: Build native (${{ matrix.target }})
+  build:
+    name: Build (${{ matrix.goos }}-${{ matrix.goarch }})
     needs: generate
     runs-on: ${{ matrix.os }}
     strategy:
@@ -134,87 +234,60 @@ jobs:
       matrix:
         include:
           - target: x86_64-unknown-linux-gnu
-            os: ubuntu-latest
+            os: warp-ubuntu-latest-x64-4x
             goos: linux
             goarch: amd64
             lib_name: librgblibuniffi.so
-          - target: aarch64-unknown-linux-gnu
-            os: ubuntu-latest
-            goos: linux
-            goarch: arm64
-            lib_name: librgblibuniffi_arm64.so
-            cross: true
           - target: aarch64-apple-darwin
-            os: macos-latest
+            os: warp-macos-26-arm64-6x
             goos: darwin
             goarch: arm64
             lib_name: librgblibuniffi.dylib
 
     steps:
-      - name: Checkout with submodules
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.generate.outputs.target_branch }}
-          submodules: recursive
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.target }}
-
-      - name: Install cross-compilation tools (linux arm64)
-        if: matrix.cross
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y gcc-aarch64-linux-gnu
-
-      - name: Cache Cargo
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            rgb-lib/bindings/uniffi/target
-          key: ${{ runner.os }}-${{ matrix.target }}-cargo-${{ hashFiles('rgb-lib/bindings/uniffi/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-${{ matrix.target }}-cargo-
-
-      - name: Build native library from source
-        working-directory: rgb-lib/bindings/uniffi
-        env:
-          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
-        run: cargo build --release --target ${{ matrix.target }}
-
-      - name: Collect native library
-        run: |
-          mkdir -p lib
-          SRC="rgb-lib/bindings/uniffi/target/${{ matrix.target }}/release"
-          if [ "${{ runner.os }}" = "macOS" ]; then
-            cp "${SRC}/librgblibuniffi.dylib" lib/
-            install_name_tool -id @rpath/librgblibuniffi.dylib lib/librgblibuniffi.dylib
-          elif [ "${{ matrix.target }}" = "aarch64-unknown-linux-gnu" ]; then
-            cp "${SRC}/librgblibuniffi.so" lib/librgblibuniffi_arm64.so
-          else
-            cp "${SRC}/librgblibuniffi.so" lib/librgblibuniffi.so
-          fi
-          file lib/${{ matrix.lib_name }}
+          ref: ${{ needs.generate.outputs.sha }}
 
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.22'
 
-      - name: Build Go package
-        if: "!matrix.cross"
+      - name: Download rgb-lib uniffi library
+        run: |
+          mkdir -p lib
+          DOWNLOAD_URL="https://github.com/UTEXO-Protocol/${{ needs.generate.outputs.source_repo }}/releases/download/${{ needs.generate.outputs.version }}/rgb-lib-uniffi-${{ matrix.target }}.zip"
+          echo "Downloading from: $DOWNLOAD_URL"
+          curl -L -o rgb-lib-uniffi.zip "$DOWNLOAD_URL"
+          unzip -o rgb-lib-uniffi.zip -d lib/
+          ls -la lib/
+        shell: bash
+
+      - name: Fix library path (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          install_name_tool -id @rpath/librgblibuniffi.dylib lib/librgblibuniffi.dylib
+
+      - name: Build and test Go package
         run: |
           export CGO_ENABLED=1
-          go build ./...
+          export CGO_LDFLAGS="-L$(pwd)/lib -lrgblibuniffi"
+          go mod tidy
+          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build ./...
+        shell: bash
 
-      - name: Package artifact
+      - name: Package artifacts
         run: |
           mkdir -p dist/lib
           cp lib/${{ matrix.lib_name }} dist/lib/
-          cp rgb_lib.go rgb_lib.h go.mod README.md dist/
+          cp rgb_lib.go dist/
+          cp rgb_lib.h dist/
+          cp go.mod dist/
+          cp README.md dist/
           cd dist && zip -r ../rgb-lib-go-${{ matrix.goos }}-${{ matrix.goarch }}.zip .
+        shell: bash
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -223,87 +296,55 @@ jobs:
           path: rgb-lib-go-${{ matrix.goos }}-${{ matrix.goarch }}.zip
           retention-days: 5
 
-  publish:
-    name: Commit all platform libs and publish GitHub Release
-    needs: [generate, build-native]
-    # Only when the submodule is pinned to a tagged upstream release
-    if: needs.generate.outputs.upstream_tag != ''
-    runs-on: ubuntu-latest
+  release:
+    name: Create Release
+    needs: [generate, build]
+    runs-on: warp-ubuntu-latest-x64-4x
     permissions:
       contents: write
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Checkout target branch
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.generate.outputs.target_branch }}
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Download all native library artifacts
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          path: /tmp/artifacts
+          path: artifacts
 
-      - name: Commit arm64 and darwin libs to branch
+      - name: Prepare release assets
         run: |
-          git pull --rebase origin ${{ needs.generate.outputs.target_branch }}
-          mkdir -p lib
+          mkdir -p release-assets
+          find artifacts -name "*.zip" -exec cp {} release-assets/ \;
+          ls -la release-assets/
 
-          unzip -o /tmp/artifacts/rgb-lib-go-linux-arm64/rgb-lib-go-linux-arm64.zip \
-            'lib/librgblibuniffi_arm64.so' -d /tmp/extracted-arm64
-          unzip -o /tmp/artifacts/rgb-lib-go-darwin-arm64/rgb-lib-go-darwin-arm64.zip \
-            'lib/librgblibuniffi.dylib' -d /tmp/extracted-darwin
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.generate.outputs.version }}
+          name: Release ${{ needs.generate.outputs.version }}
+          target_commitish: ${{ needs.generate.outputs.sha }}
+          body: |
+            ## Go bindings for ${{ needs.generate.outputs.source_repo }}
 
-          cp /tmp/extracted-arm64/lib/librgblibuniffi_arm64.so lib/
-          cp /tmp/extracted-darwin/lib/librgblibuniffi.dylib   lib/
+            Based on ${{ needs.generate.outputs.source_repo }} ${{ needs.generate.outputs.version }}
 
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add lib/librgblibuniffi_arm64.so lib/librgblibuniffi.dylib
-          if git diff --cached --quiet; then
-            echo "libs already up to date"
-          else
-            UPSTREAM_TAG="${{ needs.generate.outputs.upstream_tag }}"
-            git commit -m "chore: add arm64/darwin native libs from rgb-lib ${UPSTREAM_TAG}"
-            git push origin HEAD:${{ needs.generate.outputs.target_branch }}
-          fi
+            ### Installation
 
-      - name: Skip if release already exists
-        id: release_check
-        run: |
-          TAG="v${{ needs.generate.outputs.upstream_tag }}"
-          if gh release view "$TAG" --repo "${{ github.repository }}" &>/dev/null; then
-            echo "Release $TAG already exists, skipping"
-            echo "exists=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "exists=false" >> "$GITHUB_OUTPUT"
-          fi
+            ```go
+            go get github.com/UTEXO-Protocol/rgb-lib-go@${{ needs.generate.outputs.version }}
+            ```
 
-      - name: Create git tag and GitHub Release
-        if: steps.release_check.outputs.exists == 'false'
-        run: |
-          UPSTREAM_TAG="${{ needs.generate.outputs.upstream_tag }}"
-          TAG="v${UPSTREAM_TAG}"
+            ### Platforms
 
-          git pull --rebase origin ${{ needs.generate.outputs.target_branch }}
-          git tag -a "$TAG" -m "rgb-lib-go built from upstream RGB-Tools/rgb-lib ${UPSTREAM_TAG}"
-          git push origin "$TAG"
+            - Linux x64 (`linux-amd64`)
+            - macOS ARM64 / Apple Silicon (`darwin-arm64`)
 
-          {
-            echo "Go bindings for [RGB-Tools/rgb-lib ${UPSTREAM_TAG}](https://github.com/RGB-Tools/rgb-lib/releases/tag/${UPSTREAM_TAG})."
-            echo ""
-            echo "**Platforms:**"
-            echo "- \`linux/amd64\` — \`librgblibuniffi.so\`"
-            echo "- \`linux/arm64\` — \`librgblibuniffi_arm64.so\`"
-            echo "- \`darwin/arm64\` — \`librgblibuniffi.dylib\`"
-          } > /tmp/release-notes.md
+            ### Changes
 
-          gh release create "$TAG" \
-            --title "rgb-lib-go ${TAG}" \
-            --notes-file /tmp/release-notes.md \
-            --prerelease \
-            /tmp/artifacts/rgb-lib-go-linux-amd64/rgb-lib-go-linux-amd64.zip \
-            /tmp/artifacts/rgb-lib-go-linux-arm64/rgb-lib-go-linux-arm64.zip \
-            /tmp/artifacts/rgb-lib-go-darwin-arm64/rgb-lib-go-darwin-arm64.zip
+            See [${{ needs.generate.outputs.source_repo }} release notes](https://github.com/UTEXO-Protocol/${{ needs.generate.outputs.source_repo }}/releases/tag/${{ needs.generate.outputs.version }})
+          draft: false
+          prerelease: ${{ contains(needs.generate.outputs.version, 'alpha') || contains(needs.generate.outputs.version, 'beta') || contains(needs.generate.outputs.version, 'rc') }}
+          files: release-assets/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
