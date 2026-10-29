@@ -107,6 +107,21 @@ jobs:
             https://github.com/UTEXO-Protocol/${{ steps.ctx.outputs.source_repo }}.git /tmp/rgb-lib-src
         shell: bash
 
+      # When source is rgb-lib-bfa, uniffi-bindgen-go runs cargo metadata on the
+      # cloned repo, which tries to fetch [patch.crates-io] deps from private
+      # rgb-tools-devs SSH URLs → rewrite them to HTTPS+PAT.
+      - name: Configure private RGB upstream access (rgb-lib-bfa)
+        if: steps.ctx.outputs.source_repo == 'rgb-lib-bfa'
+        env:
+          RGB_UPSTREAM_TOKEN: ${{ secrets.RGB_UPSTREAM_TOKEN }}
+        run: |
+          for r in rgb-consensus rgb-ops rgb-api rgb-schemas; do
+            git config --global \
+              url."https://x-access-token:${RGB_UPSTREAM_TOKEN}@github.com/UTEXO-Protocol/${r}-s-bfa.git".insteadOf \
+              "ssh://git@github.com/rgb-tools-devs/${r}.git"
+          done
+        shell: bash
+
       # Only needed when building from rgb-lib (private BFA deps via [patch.crates-io])
       - name: Set up SSH for private BFA deps
         if: steps.ctx.outputs.source_repo == 'rgb-lib'
