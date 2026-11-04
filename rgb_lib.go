@@ -745,7 +745,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transfers()
 		})
-		if checksum != 15678 {
+		if checksum != 11469 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_multisigwallet_list_transfers: UniFFI API checksum mismatch")
 		}
@@ -1249,7 +1249,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_method_wallet_list_transfers()
 		})
-		if checksum != 429 {
+		if checksum != 21434 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_list_transfers: UniFFI API checksum mismatch")
 		}
@@ -2103,7 +2103,7 @@ type MultisigWalletInterface interface {
 	IssueAssetUda(online Online, ticker string, name string, details *string, precision uint8, mediaFilePath *string, attachmentsFilePaths []string) (AssetUda, error)
 	ListAssets(filterAssetSchemas []AssetSchema) (Assets, error)
 	ListTransactions(online *Online, skipSync bool) ([]Transaction, error)
-	ListTransfers(assetFilter AssetFilter, txid *string) ([]Transfer, error)
+	ListTransfers(assetFilter AssetFilter, scope TransferScope) ([]Transfer, error)
 	ListUnspents(online *Online, settledOnly bool, skipSync bool) ([]Unspent, error)
 	Refresh(online Online, assetId *string, filter []RefreshFilter, skipSync bool) (map[int32]RefreshedTransfer, error)
 	RespondToOperation(online Online, operationIdx int32, respondToOperation RespondToOperation) (OperationInfo, error)
@@ -2610,13 +2610,13 @@ func (_self *MultisigWallet) ListTransactions(online *Online, skipSync bool) ([]
 	}
 }
 
-func (_self *MultisigWallet) ListTransfers(assetFilter AssetFilter, txid *string) ([]Transfer, error) {
+func (_self *MultisigWallet) ListTransfers(assetFilter AssetFilter, scope TransferScope) ([]Transfer, error) {
 	_pointer := _self.ffiObject.incrementPointer("*MultisigWallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_multisigwallet_list_transfers(
-				_pointer, FfiConverterAssetFilterINSTANCE.Lower(assetFilter), FfiConverterOptionalStringINSTANCE.Lower(txid), _uniffiStatus),
+				_pointer, FfiConverterAssetFilterINSTANCE.Lower(assetFilter), FfiConverterTransferScopeINSTANCE.Lower(scope), _uniffiStatus),
 		}
 	})
 	if _uniffiErr != nil {
@@ -3039,7 +3039,7 @@ type WalletInterface interface {
 	ListAssets(filterAssetSchemas []AssetSchema) (Assets, error)
 	ListPendingVanillaTxs() ([]PendingVanillaTx, error)
 	ListTransactions(online *Online, skipSync bool) ([]Transaction, error)
-	ListTransfers(assetFilter AssetFilter, txid *string) ([]Transfer, error)
+	ListTransfers(assetFilter AssetFilter, scope TransferScope) ([]Transfer, error)
 	ListUnspents(online *Online, settledOnly bool, skipSync bool) ([]Unspent, error)
 	MintBegin(online Online, assetId string, recipient Recipient, beforeBlock uint64, feeRate uint64, minConfirmations uint8, senderTransportEndpoint string) (MintBeginResult, error)
 	MintEnd(online Online, signedPsbt string) (OperationResult, error)
@@ -3778,13 +3778,13 @@ func (_self *Wallet) ListTransactions(online *Online, skipSync bool) ([]Transact
 	}
 }
 
-func (_self *Wallet) ListTransfers(assetFilter AssetFilter, txid *string) ([]Transfer, error) {
+func (_self *Wallet) ListTransfers(assetFilter AssetFilter, scope TransferScope) ([]Transfer, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Wallet")
 	defer _self.ffiObject.decrementPointer()
 	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_rgblibuniffi_fn_method_wallet_list_transfers(
-				_pointer, FfiConverterAssetFilterINSTANCE.Lower(assetFilter), FfiConverterOptionalStringINSTANCE.Lower(txid), _uniffiStatus),
+				_pointer, FfiConverterAssetFilterINSTANCE.Lower(assetFilter), FfiConverterTransferScopeINSTANCE.Lower(scope), _uniffiStatus),
 		}
 	})
 	if _uniffiErr != nil {
@@ -4100,17 +4100,18 @@ func (_ FfiDestroyerWallet) Destroy(value *Wallet) {
 }
 
 type AssetBfa struct {
-	AssetId       string
-	Ticker        string
-	Name          string
-	Details       *string
-	Precision     uint8
-	InitialSupply uint64
-	Timestamp     int64
-	AddedAt       int64
-	Balance       Balance
-	Media         *Media
-	RejectListUrl *string
+	AssetId                string
+	Ticker                 string
+	Name                   string
+	Details                *string
+	Precision              uint8
+	InitialSupply          uint64
+	KnownCirculatingSupply uint64
+	Timestamp              int64
+	AddedAt                int64
+	Balance                Balance
+	Media                  *Media
+	RejectListUrl          *string
 }
 
 func (r *AssetBfa) Destroy() {
@@ -4120,6 +4121,7 @@ func (r *AssetBfa) Destroy() {
 	FfiDestroyerOptionalString{}.Destroy(r.Details)
 	FfiDestroyerUint8{}.Destroy(r.Precision)
 	FfiDestroyerUint64{}.Destroy(r.InitialSupply)
+	FfiDestroyerUint64{}.Destroy(r.KnownCirculatingSupply)
 	FfiDestroyerInt64{}.Destroy(r.Timestamp)
 	FfiDestroyerInt64{}.Destroy(r.AddedAt)
 	FfiDestroyerBalance{}.Destroy(r.Balance)
@@ -4142,6 +4144,7 @@ func (c FfiConverterAssetBfa) Read(reader io.Reader) AssetBfa {
 		FfiConverterStringINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterUint8INSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
 		FfiConverterUint64INSTANCE.Read(reader),
 		FfiConverterInt64INSTANCE.Read(reader),
 		FfiConverterInt64INSTANCE.Read(reader),
@@ -4166,6 +4169,7 @@ func (c FfiConverterAssetBfa) Write(writer io.Writer, value AssetBfa) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Details)
 	FfiConverterUint8INSTANCE.Write(writer, value.Precision)
 	FfiConverterUint64INSTANCE.Write(writer, value.InitialSupply)
+	FfiConverterUint64INSTANCE.Write(writer, value.KnownCirculatingSupply)
 	FfiConverterInt64INSTANCE.Write(writer, value.Timestamp)
 	FfiConverterInt64INSTANCE.Write(writer, value.AddedAt)
 	FfiConverterBalanceINSTANCE.Write(writer, value.Balance)
@@ -5063,6 +5067,54 @@ func (_ FfiDestroyerEmbeddedMedia) Destroy(value EmbeddedMedia) {
 	value.Destroy()
 }
 
+type EvmChain struct {
+	RpcUrl            string
+	MinMintLockBlocks uint64
+	MaxMintLockBlocks uint64
+}
+
+func (r *EvmChain) Destroy() {
+	FfiDestroyerString{}.Destroy(r.RpcUrl)
+	FfiDestroyerUint64{}.Destroy(r.MinMintLockBlocks)
+	FfiDestroyerUint64{}.Destroy(r.MaxMintLockBlocks)
+}
+
+type FfiConverterEvmChain struct{}
+
+var FfiConverterEvmChainINSTANCE = FfiConverterEvmChain{}
+
+func (c FfiConverterEvmChain) Lift(rb RustBufferI) EvmChain {
+	return LiftFromRustBuffer[EvmChain](c, rb)
+}
+
+func (c FfiConverterEvmChain) Read(reader io.Reader) EvmChain {
+	return EvmChain{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterEvmChain) Lower(value EvmChain) C.RustBuffer {
+	return LowerIntoRustBuffer[EvmChain](c, value)
+}
+
+func (c FfiConverterEvmChain) LowerExternal(value EvmChain) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[EvmChain](c, value))
+}
+
+func (c FfiConverterEvmChain) Write(writer io.Writer, value EvmChain) {
+	FfiConverterStringINSTANCE.Write(writer, value.RpcUrl)
+	FfiConverterUint64INSTANCE.Write(writer, value.MinMintLockBlocks)
+	FfiConverterUint64INSTANCE.Write(writer, value.MaxMintLockBlocks)
+}
+
+type FfiDestroyerEvmChain struct{}
+
+func (_ FfiDestroyerEvmChain) Destroy(value EvmChain) {
+	value.Destroy()
+}
+
 type HubInfo struct {
 	MinRgbLibVersion string
 	MaxRgbLibVersion string
@@ -5921,7 +5973,7 @@ type OnlineOptions struct {
 	VanillaSyncLookback           uint32
 	FailedWitnessReceiveGraceSecs uint32
 	ProxyAuthKeys                 map[string]string
-	EvmRpcUrls                    map[uint64]string
+	EvmChains                     map[uint64]EvmChain
 }
 
 func (r *OnlineOptions) Destroy() {
@@ -5930,7 +5982,7 @@ func (r *OnlineOptions) Destroy() {
 	FfiDestroyerUint32{}.Destroy(r.VanillaSyncLookback)
 	FfiDestroyerUint32{}.Destroy(r.FailedWitnessReceiveGraceSecs)
 	FfiDestroyerMapStringString{}.Destroy(r.ProxyAuthKeys)
-	FfiDestroyerMapUint64String{}.Destroy(r.EvmRpcUrls)
+	FfiDestroyerMapUint64EvmChain{}.Destroy(r.EvmChains)
 }
 
 type FfiConverterOnlineOptions struct{}
@@ -5948,7 +6000,7 @@ func (c FfiConverterOnlineOptions) Read(reader io.Reader) OnlineOptions {
 		FfiConverterUint32INSTANCE.Read(reader),
 		FfiConverterUint32INSTANCE.Read(reader),
 		FfiConverterMapStringStringINSTANCE.Read(reader),
-		FfiConverterMapUint64StringINSTANCE.Read(reader),
+		FfiConverterMapUint64EvmChainINSTANCE.Read(reader),
 	}
 }
 
@@ -5966,7 +6018,7 @@ func (c FfiConverterOnlineOptions) Write(writer io.Writer, value OnlineOptions) 
 	FfiConverterUint32INSTANCE.Write(writer, value.VanillaSyncLookback)
 	FfiConverterUint32INSTANCE.Write(writer, value.FailedWitnessReceiveGraceSecs)
 	FfiConverterMapStringStringINSTANCE.Write(writer, value.ProxyAuthKeys)
-	FfiConverterMapUint64StringINSTANCE.Write(writer, value.EvmRpcUrls)
+	FfiConverterMapUint64EvmChainINSTANCE.Write(writer, value.EvmChains)
 }
 
 type FfiDestroyerOnlineOptions struct{}
@@ -6433,6 +6485,7 @@ func (_ FfiDestroyerReceiveData) Destroy(value ReceiveData) {
 
 type ReceivedMint struct {
 	Opid           string
+	LockId         string
 	Amount         uint64
 	BeforeBlock    uint64
 	EvmChainId     uint64
@@ -6441,6 +6494,7 @@ type ReceivedMint struct {
 
 func (r *ReceivedMint) Destroy() {
 	FfiDestroyerString{}.Destroy(r.Opid)
+	FfiDestroyerString{}.Destroy(r.LockId)
 	FfiDestroyerUint64{}.Destroy(r.Amount)
 	FfiDestroyerUint64{}.Destroy(r.BeforeBlock)
 	FfiDestroyerUint64{}.Destroy(r.EvmChainId)
@@ -6457,6 +6511,7 @@ func (c FfiConverterReceivedMint) Lift(rb RustBufferI) ReceivedMint {
 
 func (c FfiConverterReceivedMint) Read(reader io.Reader) ReceivedMint {
 	return ReceivedMint{
+		FfiConverterStringINSTANCE.Read(reader),
 		FfiConverterStringINSTANCE.Read(reader),
 		FfiConverterUint64INSTANCE.Read(reader),
 		FfiConverterUint64INSTANCE.Read(reader),
@@ -6475,6 +6530,7 @@ func (c FfiConverterReceivedMint) LowerExternal(value ReceivedMint) ExternalCRus
 
 func (c FfiConverterReceivedMint) Write(writer io.Writer, value ReceivedMint) {
 	FfiConverterStringINSTANCE.Write(writer, value.Opid)
+	FfiConverterStringINSTANCE.Write(writer, value.LockId)
 	FfiConverterUint64INSTANCE.Write(writer, value.Amount)
 	FfiConverterUint64INSTANCE.Write(writer, value.BeforeBlock)
 	FfiConverterUint64INSTANCE.Write(writer, value.EvmChainId)
@@ -6906,6 +6962,7 @@ func (_ FfiDestroyerRgbOperationInfo) Destroy(value RgbOperationInfo) {
 type RgbOutputInfo struct {
 	Txid        *string
 	Vout        *uint32
+	Blinding    *uint64
 	Assignment  Assignment
 	IsConcealed bool
 	RecipientId *string
@@ -6916,6 +6973,7 @@ type RgbOutputInfo struct {
 func (r *RgbOutputInfo) Destroy() {
 	FfiDestroyerOptionalString{}.Destroy(r.Txid)
 	FfiDestroyerOptionalUint32{}.Destroy(r.Vout)
+	FfiDestroyerOptionalUint64{}.Destroy(r.Blinding)
 	FfiDestroyerAssignment{}.Destroy(r.Assignment)
 	FfiDestroyerBool{}.Destroy(r.IsConcealed)
 	FfiDestroyerOptionalString{}.Destroy(r.RecipientId)
@@ -6935,6 +6993,7 @@ func (c FfiConverterRgbOutputInfo) Read(reader io.Reader) RgbOutputInfo {
 	return RgbOutputInfo{
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalUint32INSTANCE.Read(reader),
+		FfiConverterOptionalUint64INSTANCE.Read(reader),
 		FfiConverterAssignmentINSTANCE.Read(reader),
 		FfiConverterBoolINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
@@ -6954,6 +7013,7 @@ func (c FfiConverterRgbOutputInfo) LowerExternal(value RgbOutputInfo) ExternalCR
 func (c FfiConverterRgbOutputInfo) Write(writer io.Writer, value RgbOutputInfo) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Txid)
 	FfiConverterOptionalUint32INSTANCE.Write(writer, value.Vout)
+	FfiConverterOptionalUint64INSTANCE.Write(writer, value.Blinding)
 	FfiConverterAssignmentINSTANCE.Write(writer, value.Assignment)
 	FfiConverterBoolINSTANCE.Write(writer, value.IsConcealed)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.RecipientId)
@@ -7439,7 +7499,7 @@ type Transfer struct {
 	Txid                    *string
 	RecipientId             *string
 	ReceiveUtxo             *Outpoint
-	ChangeUtxo              *Outpoint
+	ChangeUtxos             []Outpoint
 	ExpirationTimestamp     *uint64
 	TransportEndpoints      []TransferTransportEndpoint
 	SenderTransportEndpoint *string
@@ -7460,7 +7520,7 @@ func (r *Transfer) Destroy() {
 	FfiDestroyerOptionalString{}.Destroy(r.Txid)
 	FfiDestroyerOptionalString{}.Destroy(r.RecipientId)
 	FfiDestroyerOptionalOutpoint{}.Destroy(r.ReceiveUtxo)
-	FfiDestroyerOptionalOutpoint{}.Destroy(r.ChangeUtxo)
+	FfiDestroyerSequenceOutpoint{}.Destroy(r.ChangeUtxos)
 	FfiDestroyerOptionalUint64{}.Destroy(r.ExpirationTimestamp)
 	FfiDestroyerSequenceTransferTransportEndpoint{}.Destroy(r.TransportEndpoints)
 	FfiDestroyerOptionalString{}.Destroy(r.SenderTransportEndpoint)
@@ -7490,7 +7550,7 @@ func (c FfiConverterTransfer) Read(reader io.Reader) Transfer {
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalOutpointINSTANCE.Read(reader),
-		FfiConverterOptionalOutpointINSTANCE.Read(reader),
+		FfiConverterSequenceOutpointINSTANCE.Read(reader),
 		FfiConverterOptionalUint64INSTANCE.Read(reader),
 		FfiConverterSequenceTransferTransportEndpointINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
@@ -7520,7 +7580,7 @@ func (c FfiConverterTransfer) Write(writer io.Writer, value Transfer) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Txid)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.RecipientId)
 	FfiConverterOptionalOutpointINSTANCE.Write(writer, value.ReceiveUtxo)
-	FfiConverterOptionalOutpointINSTANCE.Write(writer, value.ChangeUtxo)
+	FfiConverterSequenceOutpointINSTANCE.Write(writer, value.ChangeUtxos)
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.ExpirationTimestamp)
 	FfiConverterSequenceTransferTransportEndpointINSTANCE.Write(writer, value.TransportEndpoints)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.SenderTransportEndpoint)
@@ -9217,6 +9277,7 @@ var ErrRgbLibErrorCannotEndTransfer = fmt.Errorf("RgbLibErrorCannotEndTransfer")
 var ErrRgbLibErrorCannotEstimateFees = fmt.Errorf("RgbLibErrorCannotEstimateFees")
 var ErrRgbLibErrorCannotFailBatchTransfer = fmt.Errorf("RgbLibErrorCannotFailBatchTransfer")
 var ErrRgbLibErrorCannotFinalizePsbt = fmt.Errorf("RgbLibErrorCannotFinalizePsbt")
+var ErrRgbLibErrorCannotLinkToItself = fmt.Errorf("RgbLibErrorCannotLinkToItself")
 var ErrRgbLibErrorCannotProvideOutOfBandAck = fmt.Errorf("RgbLibErrorCannotProvideOutOfBandAck")
 var ErrRgbLibErrorCannotProvideOutOfBandConsignment = fmt.Errorf("RgbLibErrorCannotProvideOutOfBandConsignment")
 var ErrRgbLibErrorCannotUseSchemaOnMainnet = fmt.Errorf("RgbLibErrorCannotUseSchemaOnMainnet")
@@ -9260,6 +9321,7 @@ var ErrRgbLibErrorInvalidElectrum = fmt.Errorf("RgbLibErrorInvalidElectrum")
 var ErrRgbLibErrorInvalidEncryptedBlob = fmt.Errorf("RgbLibErrorInvalidEncryptedBlob")
 var ErrRgbLibErrorInvalidEndpointAuthSignature = fmt.Errorf("RgbLibErrorInvalidEndpointAuthSignature")
 var ErrRgbLibErrorInvalidEstimationBlocks = fmt.Errorf("RgbLibErrorInvalidEstimationBlocks")
+var ErrRgbLibErrorInvalidEvmChain = fmt.Errorf("RgbLibErrorInvalidEvmChain")
 var ErrRgbLibErrorInvalidEvmContractAddress = fmt.Errorf("RgbLibErrorInvalidEvmContractAddress")
 var ErrRgbLibErrorInvalidEvmRpcUrl = fmt.Errorf("RgbLibErrorInvalidEvmRpcUrl")
 var ErrRgbLibErrorInvalidExpiration = fmt.Errorf("RgbLibErrorInvalidExpiration")
@@ -9294,8 +9356,8 @@ var ErrRgbLibErrorInvoiceQuotaExceeded = fmt.Errorf("RgbLibErrorInvoiceQuotaExce
 var ErrRgbLibErrorLastMintRight = fmt.Errorf("RgbLibErrorLastMintRight")
 var ErrRgbLibErrorMaxFeeExceeded = fmt.Errorf("RgbLibErrorMaxFeeExceeded")
 var ErrRgbLibErrorMinFeeNotMet = fmt.Errorf("RgbLibErrorMinFeeNotMet")
-var ErrRgbLibErrorMintEventExpired = fmt.Errorf("RgbLibErrorMintEventExpired")
-var ErrRgbLibErrorMintEventNotFound = fmt.Errorf("RgbLibErrorMintEventNotFound")
+var ErrRgbLibErrorMintLockExpired = fmt.Errorf("RgbLibErrorMintLockExpired")
+var ErrRgbLibErrorMintLockNotFound = fmt.Errorf("RgbLibErrorMintLockNotFound")
 var ErrRgbLibErrorMultisigCannotMarkOperationProcessed = fmt.Errorf("RgbLibErrorMultisigCannotMarkOperationProcessed")
 var ErrRgbLibErrorMultisigCannotRespondToOperation = fmt.Errorf("RgbLibErrorMultisigCannotRespondToOperation")
 var ErrRgbLibErrorMultisigHubService = fmt.Errorf("RgbLibErrorMultisigHubService")
@@ -9306,7 +9368,7 @@ var ErrRgbLibErrorMultisigTransferStatusMismatch = fmt.Errorf("RgbLibErrorMultis
 var ErrRgbLibErrorMultisigUnexpectedData = fmt.Errorf("RgbLibErrorMultisigUnexpectedData")
 var ErrRgbLibErrorMultisigUserNotCosigner = fmt.Errorf("RgbLibErrorMultisigUserNotCosigner")
 var ErrRgbLibErrorNetwork = fmt.Errorf("RgbLibErrorNetwork")
-var ErrRgbLibErrorNoAnchorResolver = fmt.Errorf("RgbLibErrorNoAnchorResolver")
+var ErrRgbLibErrorNoClaimResolver = fmt.Errorf("RgbLibErrorNoClaimResolver")
 var ErrRgbLibErrorNoBurnAmount = fmt.Errorf("RgbLibErrorNoBurnAmount")
 var ErrRgbLibErrorNoConsignment = fmt.Errorf("RgbLibErrorNoConsignment")
 var ErrRgbLibErrorNoCosignersSupplied = fmt.Errorf("RgbLibErrorNoCosignersSupplied")
@@ -9332,7 +9394,6 @@ var ErrRgbLibErrorProxyDraining = fmt.Errorf("RgbLibErrorProxyDraining")
 var ErrRgbLibErrorProxyTooManyMedia = fmt.Errorf("RgbLibErrorProxyTooManyMedia")
 var ErrRgbLibErrorProxyTxAlreadyReleased = fmt.Errorf("RgbLibErrorProxyTxAlreadyReleased")
 var ErrRgbLibErrorPsbtInspection = fmt.Errorf("RgbLibErrorPsbtInspection")
-var ErrRgbLibErrorPsbtTooLarge = fmt.Errorf("RgbLibErrorPsbtTooLarge")
 var ErrRgbLibErrorRecipientIdAlreadyUsed = fmt.Errorf("RgbLibErrorRecipientIdAlreadyUsed")
 var ErrRgbLibErrorRecipientIdDuplicated = fmt.Errorf("RgbLibErrorRecipientIdDuplicated")
 var ErrRgbLibErrorRejectListService = fmt.Errorf("RgbLibErrorRejectListService")
@@ -9608,6 +9669,24 @@ func (err RgbLibErrorCannotFinalizePsbt) Error() string {
 
 func (self RgbLibErrorCannotFinalizePsbt) Is(target error) bool {
 	return target == ErrRgbLibErrorCannotFinalizePsbt
+}
+
+type RgbLibErrorCannotLinkToItself struct {
+}
+
+func NewRgbLibErrorCannotLinkToItself() *RgbLibError {
+	return &RgbLibError{err: &RgbLibErrorCannotLinkToItself{}}
+}
+
+func (e RgbLibErrorCannotLinkToItself) destroy() {
+}
+
+func (err RgbLibErrorCannotLinkToItself) Error() string {
+	return fmt.Sprint("CannotLinkToItself")
+}
+
+func (self RgbLibErrorCannotLinkToItself) Is(target error) bool {
+	return target == ErrRgbLibErrorCannotLinkToItself
 }
 
 type RgbLibErrorCannotProvideOutOfBandAck struct {
@@ -10715,6 +10794,34 @@ func (self RgbLibErrorInvalidEstimationBlocks) Is(target error) bool {
 	return target == ErrRgbLibErrorInvalidEstimationBlocks
 }
 
+type RgbLibErrorInvalidEvmChain struct {
+	Details string
+}
+
+func NewRgbLibErrorInvalidEvmChain(
+	details string,
+) *RgbLibError {
+	return &RgbLibError{err: &RgbLibErrorInvalidEvmChain{
+		Details: details}}
+}
+
+func (e RgbLibErrorInvalidEvmChain) destroy() {
+	FfiDestroyerString{}.Destroy(e.Details)
+}
+
+func (err RgbLibErrorInvalidEvmChain) Error() string {
+	return fmt.Sprint("InvalidEvmChain",
+		": ",
+
+		"Details=",
+		err.Details,
+	)
+}
+
+func (self RgbLibErrorInvalidEvmChain) Is(target error) bool {
+	return target == ErrRgbLibErrorInvalidEvmChain
+}
+
 type RgbLibErrorInvalidEvmContractAddress struct {
 	Details string
 }
@@ -11554,27 +11661,27 @@ func (self RgbLibErrorMinFeeNotMet) Is(target error) bool {
 	return target == ErrRgbLibErrorMinFeeNotMet
 }
 
-type RgbLibErrorMintEventExpired struct {
+type RgbLibErrorMintLockExpired struct {
 	Opid        string
 	BeforeBlock uint64
 }
 
-func NewRgbLibErrorMintEventExpired(
+func NewRgbLibErrorMintLockExpired(
 	opid string,
 	beforeBlock uint64,
 ) *RgbLibError {
-	return &RgbLibError{err: &RgbLibErrorMintEventExpired{
+	return &RgbLibError{err: &RgbLibErrorMintLockExpired{
 		Opid:        opid,
 		BeforeBlock: beforeBlock}}
 }
 
-func (e RgbLibErrorMintEventExpired) destroy() {
+func (e RgbLibErrorMintLockExpired) destroy() {
 	FfiDestroyerString{}.Destroy(e.Opid)
 	FfiDestroyerUint64{}.Destroy(e.BeforeBlock)
 }
 
-func (err RgbLibErrorMintEventExpired) Error() string {
-	return fmt.Sprint("MintEventExpired",
+func (err RgbLibErrorMintLockExpired) Error() string {
+	return fmt.Sprint("MintLockExpired",
 		": ",
 
 		"Opid=",
@@ -11585,27 +11692,27 @@ func (err RgbLibErrorMintEventExpired) Error() string {
 	)
 }
 
-func (self RgbLibErrorMintEventExpired) Is(target error) bool {
-	return target == ErrRgbLibErrorMintEventExpired
+func (self RgbLibErrorMintLockExpired) Is(target error) bool {
+	return target == ErrRgbLibErrorMintLockExpired
 }
 
-type RgbLibErrorMintEventNotFound struct {
+type RgbLibErrorMintLockNotFound struct {
 	Opid string
 }
 
-func NewRgbLibErrorMintEventNotFound(
+func NewRgbLibErrorMintLockNotFound(
 	opid string,
 ) *RgbLibError {
-	return &RgbLibError{err: &RgbLibErrorMintEventNotFound{
+	return &RgbLibError{err: &RgbLibErrorMintLockNotFound{
 		Opid: opid}}
 }
 
-func (e RgbLibErrorMintEventNotFound) destroy() {
+func (e RgbLibErrorMintLockNotFound) destroy() {
 	FfiDestroyerString{}.Destroy(e.Opid)
 }
 
-func (err RgbLibErrorMintEventNotFound) Error() string {
-	return fmt.Sprint("MintEventNotFound",
+func (err RgbLibErrorMintLockNotFound) Error() string {
+	return fmt.Sprint("MintLockNotFound",
 		": ",
 
 		"Opid=",
@@ -11613,8 +11720,8 @@ func (err RgbLibErrorMintEventNotFound) Error() string {
 	)
 }
 
-func (self RgbLibErrorMintEventNotFound) Is(target error) bool {
-	return target == ErrRgbLibErrorMintEventNotFound
+func (self RgbLibErrorMintLockNotFound) Is(target error) bool {
+	return target == ErrRgbLibErrorMintLockNotFound
 }
 
 type RgbLibErrorMultisigCannotMarkOperationProcessed struct {
@@ -11867,22 +11974,22 @@ func (self RgbLibErrorNetwork) Is(target error) bool {
 	return target == ErrRgbLibErrorNetwork
 }
 
-type RgbLibErrorNoAnchorResolver struct {
+type RgbLibErrorNoClaimResolver struct {
 }
 
-func NewRgbLibErrorNoAnchorResolver() *RgbLibError {
-	return &RgbLibError{err: &RgbLibErrorNoAnchorResolver{}}
+func NewRgbLibErrorNoClaimResolver() *RgbLibError {
+	return &RgbLibError{err: &RgbLibErrorNoClaimResolver{}}
 }
 
-func (e RgbLibErrorNoAnchorResolver) destroy() {
+func (e RgbLibErrorNoClaimResolver) destroy() {
 }
 
-func (err RgbLibErrorNoAnchorResolver) Error() string {
-	return fmt.Sprint("NoAnchorResolver")
+func (err RgbLibErrorNoClaimResolver) Error() string {
+	return fmt.Sprint("NoClaimResolver")
 }
 
-func (self RgbLibErrorNoAnchorResolver) Is(target error) bool {
-	return target == ErrRgbLibErrorNoAnchorResolver
+func (self RgbLibErrorNoClaimResolver) Is(target error) bool {
+	return target == ErrRgbLibErrorNoClaimResolver
 }
 
 type RgbLibErrorNoBurnAmount struct {
@@ -12383,24 +12490,6 @@ func (err RgbLibErrorPsbtInspection) Error() string {
 
 func (self RgbLibErrorPsbtInspection) Is(target error) bool {
 	return target == ErrRgbLibErrorPsbtInspection
-}
-
-type RgbLibErrorPsbtTooLarge struct {
-}
-
-func NewRgbLibErrorPsbtTooLarge() *RgbLibError {
-	return &RgbLibError{err: &RgbLibErrorPsbtTooLarge{}}
-}
-
-func (e RgbLibErrorPsbtTooLarge) destroy() {
-}
-
-func (err RgbLibErrorPsbtTooLarge) Error() string {
-	return fmt.Sprint("PsbtTooLarge")
-}
-
-func (self RgbLibErrorPsbtTooLarge) Is(target error) bool {
-	return target == ErrRgbLibErrorPsbtTooLarge
 }
 
 type RgbLibErrorRecipientIdAlreadyUsed struct {
@@ -13150,467 +13239,471 @@ func (c FfiConverterRgbLibError) Read(reader io.Reader) *RgbLibError {
 	case 12:
 		return &RgbLibError{&RgbLibErrorCannotFinalizePsbt{}}
 	case 13:
+		return &RgbLibError{&RgbLibErrorCannotLinkToItself{}}
+	case 14:
 		return &RgbLibError{&RgbLibErrorCannotProvideOutOfBandAck{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 14:
+	case 15:
 		return &RgbLibError{&RgbLibErrorCannotProvideOutOfBandConsignment{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 15:
+	case 16:
 		return &RgbLibError{&RgbLibErrorCannotUseSchemaOnMainnet{
 			AssetSchema: FfiConverterAssetSchemaINSTANCE.Read(reader),
 		}}
-	case 16:
+	case 17:
 		return &RgbLibError{&RgbLibErrorConsignmentRejected{
 			Opouts: FfiConverterSequenceStringINSTANCE.Read(reader),
 		}}
-	case 17:
+	case 18:
 		return &RgbLibError{&RgbLibErrorConsignmentValidationFailed{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 18:
+	case 19:
 		return &RgbLibError{&RgbLibErrorDatabase{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 19:
+	case 20:
 		return &RgbLibError{&RgbLibErrorDuplicateProxyAuthKey{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 20:
+	case 21:
 		return &RgbLibError{&RgbLibErrorEmptyFile{
 			FilePath: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 21:
+	case 22:
 		return &RgbLibError{&RgbLibErrorEvmChainIdMismatch{
 			Expected: FfiConverterUint64INSTANCE.Read(reader),
 			Actual:   FfiConverterUint64INSTANCE.Read(reader),
 		}}
-	case 22:
-		return &RgbLibError{&RgbLibErrorExpirationInvalid{}}
 	case 23:
+		return &RgbLibError{&RgbLibErrorExpirationInvalid{}}
+	case 24:
 		return &RgbLibError{&RgbLibErrorFailedBdkSync{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 24:
+	case 25:
 		return &RgbLibError{&RgbLibErrorFailedBroadcast{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 25:
+	case 26:
 		return &RgbLibError{&RgbLibErrorFailedIssuance{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 26:
+	case 27:
 		return &RgbLibError{&RgbLibErrorFileAlreadyExists{
 			Path: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 27:
-		return &RgbLibError{&RgbLibErrorFingerprintMismatch{}}
 	case 28:
-		return &RgbLibError{&RgbLibErrorHashMismatch{}}
+		return &RgbLibError{&RgbLibErrorFingerprintMismatch{}}
 	case 29:
+		return &RgbLibError{&RgbLibErrorHashMismatch{}}
+	case 30:
 		return &RgbLibError{&RgbLibErrorIo{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 30:
+	case 31:
 		return &RgbLibError{&RgbLibErrorInconsistency{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 31:
+	case 32:
 		return &RgbLibError{&RgbLibErrorIndexer{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 32:
-		return &RgbLibError{&RgbLibErrorInexistentDataDir{}}
 	case 33:
+		return &RgbLibError{&RgbLibErrorInexistentDataDir{}}
+	case 34:
 		return &RgbLibError{&RgbLibErrorInexistentWalletManifest{
 			Path: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 34:
-		return &RgbLibError{&RgbLibErrorInsufficientAllocationSlots{}}
 	case 35:
+		return &RgbLibError{&RgbLibErrorInsufficientAllocationSlots{}}
+	case 36:
 		return &RgbLibError{&RgbLibErrorInsufficientAssignments{
 			AssetId:   FfiConverterStringINSTANCE.Read(reader),
 			Available: FfiConverterAssignmentsCollectionINSTANCE.Read(reader),
 		}}
-	case 36:
+	case 37:
 		return &RgbLibError{&RgbLibErrorInsufficientBitcoins{
 			Needed:    FfiConverterUint64INSTANCE.Read(reader),
 			Available: FfiConverterUint64INSTANCE.Read(reader),
 		}}
-	case 37:
+	case 38:
 		return &RgbLibError{&RgbLibErrorInternal{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 38:
+	case 39:
 		return &RgbLibError{&RgbLibErrorInvalidAddress{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 39:
-		return &RgbLibError{&RgbLibErrorInvalidAmountZero{}}
 	case 40:
-		return &RgbLibError{&RgbLibErrorInvalidAssignment{}}
+		return &RgbLibError{&RgbLibErrorInvalidAmountZero{}}
 	case 41:
+		return &RgbLibError{&RgbLibErrorInvalidAssignment{}}
+	case 42:
 		return &RgbLibError{&RgbLibErrorInvalidAttachments{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 42:
+	case 43:
 		return &RgbLibError{&RgbLibErrorInvalidBeforeBlock{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 43:
-		return &RgbLibError{&RgbLibErrorInvalidBitcoinKeys{}}
 	case 44:
+		return &RgbLibError{&RgbLibErrorInvalidBitcoinKeys{}}
+	case 45:
 		return &RgbLibError{&RgbLibErrorInvalidBitcoinNetwork{
 			Network: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 45:
+	case 46:
 		return &RgbLibError{&RgbLibErrorInvalidBurnReason{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 46:
+	case 47:
 		return &RgbLibError{&RgbLibErrorInvalidColoringInfo{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 47:
-		return &RgbLibError{&RgbLibErrorInvalidConsignment{}}
 	case 48:
-		return &RgbLibError{&RgbLibErrorInvalidContentSignature{}}
+		return &RgbLibError{&RgbLibErrorInvalidConsignment{}}
 	case 49:
+		return &RgbLibError{&RgbLibErrorInvalidContentSignature{}}
+	case 50:
 		return &RgbLibError{&RgbLibErrorInvalidContractId{
 			ContractId: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 50:
+	case 51:
 		return &RgbLibError{&RgbLibErrorInvalidCosigner{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 51:
+	case 52:
 		return &RgbLibError{&RgbLibErrorInvalidDetails{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 52:
+	case 53:
 		return &RgbLibError{&RgbLibErrorInvalidElectrum{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 53:
+	case 54:
 		return &RgbLibError{&RgbLibErrorInvalidEncryptedBlob{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 54:
-		return &RgbLibError{&RgbLibErrorInvalidEndpointAuthSignature{}}
 	case 55:
-		return &RgbLibError{&RgbLibErrorInvalidEstimationBlocks{}}
+		return &RgbLibError{&RgbLibErrorInvalidEndpointAuthSignature{}}
 	case 56:
-		return &RgbLibError{&RgbLibErrorInvalidEvmContractAddress{
-			Details: FfiConverterStringINSTANCE.Read(reader),
-		}}
+		return &RgbLibError{&RgbLibErrorInvalidEstimationBlocks{}}
 	case 57:
-		return &RgbLibError{&RgbLibErrorInvalidEvmRpcUrl{
+		return &RgbLibError{&RgbLibErrorInvalidEvmChain{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
 	case 58:
-		return &RgbLibError{&RgbLibErrorInvalidExpiration{}}
+		return &RgbLibError{&RgbLibErrorInvalidEvmContractAddress{
+			Details: FfiConverterStringINSTANCE.Read(reader),
+		}}
 	case 59:
-		return &RgbLibError{&RgbLibErrorInvalidFeeRate{
+		return &RgbLibError{&RgbLibErrorInvalidEvmRpcUrl{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
 	case 60:
+		return &RgbLibError{&RgbLibErrorInvalidExpiration{}}
+	case 61:
+		return &RgbLibError{&RgbLibErrorInvalidFeeRate{
+			Details: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 62:
 		return &RgbLibError{&RgbLibErrorInvalidFilePath{
 			FilePath: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 61:
+	case 63:
 		return &RgbLibError{&RgbLibErrorInvalidFingerprint{}}
-	case 62:
+	case 64:
 		return &RgbLibError{&RgbLibErrorInvalidIndexer{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 63:
+	case 65:
 		return &RgbLibError{&RgbLibErrorInvalidInvoice{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 64:
+	case 66:
 		return &RgbLibError{&RgbLibErrorInvalidMnemonic{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 65:
+	case 67:
 		return &RgbLibError{&RgbLibErrorInvalidMultisigThreshold{
 			Required: FfiConverterUint8INSTANCE.Read(reader),
 			Total:    FfiConverterUint8INSTANCE.Read(reader),
 		}}
-	case 66:
+	case 68:
 		return &RgbLibError{&RgbLibErrorInvalidName{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 67:
+	case 69:
 		return &RgbLibError{&RgbLibErrorInvalidPrecision{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 68:
+	case 70:
 		return &RgbLibError{&RgbLibErrorInvalidProxyAuthKey{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 69:
+	case 71:
 		return &RgbLibError{&RgbLibErrorInvalidProxyAuthSignature{}}
-	case 70:
+	case 72:
 		return &RgbLibError{&RgbLibErrorInvalidProxyProtocol{
 			Version: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 71:
+	case 73:
 		return &RgbLibError{&RgbLibErrorInvalidPsbt{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 72:
+	case 74:
 		return &RgbLibError{&RgbLibErrorInvalidPubkey{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 73:
+	case 75:
 		return &RgbLibError{&RgbLibErrorInvalidRecipientData{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 74:
-		return &RgbLibError{&RgbLibErrorInvalidRecipientId{}}
-	case 75:
-		return &RgbLibError{&RgbLibErrorInvalidRecipientMap{}}
 	case 76:
-		return &RgbLibError{&RgbLibErrorInvalidRecipientNetwork{}}
+		return &RgbLibError{&RgbLibErrorInvalidRecipientId{}}
 	case 77:
+		return &RgbLibError{&RgbLibErrorInvalidRecipientMap{}}
+	case 78:
+		return &RgbLibError{&RgbLibErrorInvalidRecipientNetwork{}}
+	case 79:
 		return &RgbLibError{&RgbLibErrorInvalidRejectListUrl{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 78:
+	case 80:
 		return &RgbLibError{&RgbLibErrorInvalidTicker{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 79:
+	case 81:
 		return &RgbLibError{&RgbLibErrorInvalidTransportEndpoint{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 80:
+	case 82:
 		return &RgbLibError{&RgbLibErrorInvalidTransportEndpoints{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 81:
-		return &RgbLibError{&RgbLibErrorInvalidTxid{}}
-	case 82:
-		return &RgbLibError{&RgbLibErrorInvalidVanillaKeychain{}}
 	case 83:
+		return &RgbLibError{&RgbLibErrorInvalidTxid{}}
+	case 84:
+		return &RgbLibError{&RgbLibErrorInvalidVanillaKeychain{}}
+	case 85:
 		return &RgbLibError{&RgbLibErrorInvalidWitnessVersion{
 			WitnessVersion: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 84:
-		return &RgbLibError{&RgbLibErrorInvoiceExpired{}}
-	case 85:
-		return &RgbLibError{&RgbLibErrorInvoiceNotReserved{}}
 	case 86:
-		return &RgbLibError{&RgbLibErrorInvoiceQuotaExceeded{}}
+		return &RgbLibError{&RgbLibErrorInvoiceExpired{}}
 	case 87:
-		return &RgbLibError{&RgbLibErrorLastMintRight{}}
+		return &RgbLibError{&RgbLibErrorInvoiceNotReserved{}}
 	case 88:
+		return &RgbLibError{&RgbLibErrorInvoiceQuotaExceeded{}}
+	case 89:
+		return &RgbLibError{&RgbLibErrorLastMintRight{}}
+	case 90:
 		return &RgbLibError{&RgbLibErrorMaxFeeExceeded{
 			Txid: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 89:
+	case 91:
 		return &RgbLibError{&RgbLibErrorMinFeeNotMet{
 			Txid: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 90:
-		return &RgbLibError{&RgbLibErrorMintEventExpired{
+	case 92:
+		return &RgbLibError{&RgbLibErrorMintLockExpired{
 			Opid:        FfiConverterStringINSTANCE.Read(reader),
 			BeforeBlock: FfiConverterUint64INSTANCE.Read(reader),
 		}}
-	case 91:
-		return &RgbLibError{&RgbLibErrorMintEventNotFound{
+	case 93:
+		return &RgbLibError{&RgbLibErrorMintLockNotFound{
 			Opid: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 92:
+	case 94:
 		return &RgbLibError{&RgbLibErrorMultisigCannotMarkOperationProcessed{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 93:
+	case 95:
 		return &RgbLibError{&RgbLibErrorMultisigCannotRespondToOperation{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 94:
+	case 96:
 		return &RgbLibError{&RgbLibErrorMultisigHubService{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 95:
+	case 97:
 		return &RgbLibError{&RgbLibErrorMultisigLegacyOperation{
 			OperationIdx: FfiConverterInt32INSTANCE.Read(reader),
 		}}
-	case 96:
+	case 98:
 		return &RgbLibError{&RgbLibErrorMultisigOperationInProgress{}}
-	case 97:
+	case 99:
 		return &RgbLibError{&RgbLibErrorMultisigOperationNotFound{
 			OperationIdx: FfiConverterInt32INSTANCE.Read(reader),
 		}}
-	case 98:
+	case 100:
 		return &RgbLibError{&RgbLibErrorMultisigTransferStatusMismatch{}}
-	case 99:
+	case 101:
 		return &RgbLibError{&RgbLibErrorMultisigUnexpectedData{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 100:
+	case 102:
 		return &RgbLibError{&RgbLibErrorMultisigUserNotCosigner{}}
-	case 101:
+	case 103:
 		return &RgbLibError{&RgbLibErrorNetwork{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 102:
-		return &RgbLibError{&RgbLibErrorNoAnchorResolver{}}
-	case 103:
-		return &RgbLibError{&RgbLibErrorNoBurnAmount{}}
 	case 104:
-		return &RgbLibError{&RgbLibErrorNoConsignment{}}
+		return &RgbLibError{&RgbLibErrorNoClaimResolver{}}
 	case 105:
-		return &RgbLibError{&RgbLibErrorNoCosignersSupplied{}}
+		return &RgbLibError{&RgbLibErrorNoBurnAmount{}}
 	case 106:
+		return &RgbLibError{&RgbLibErrorNoConsignment{}}
+	case 107:
+		return &RgbLibError{&RgbLibErrorNoCosignersSupplied{}}
+	case 108:
 		return &RgbLibError{&RgbLibErrorNoEvmRpcUrl{
 			ChainId: FfiConverterUint64INSTANCE.Read(reader),
 		}}
-	case 107:
-		return &RgbLibError{&RgbLibErrorNoInflationAmounts{}}
-	case 108:
-		return &RgbLibError{&RgbLibErrorNoIssuanceAmounts{}}
 	case 109:
-		return &RgbLibError{&RgbLibErrorNoKeysSupplied{}}
+		return &RgbLibError{&RgbLibErrorNoInflationAmounts{}}
 	case 110:
-		return &RgbLibError{&RgbLibErrorNoMaxAllocationsPerUtxo{}}
+		return &RgbLibError{&RgbLibErrorNoIssuanceAmounts{}}
 	case 111:
-		return &RgbLibError{&RgbLibErrorNoMedia{}}
+		return &RgbLibError{&RgbLibErrorNoKeysSupplied{}}
 	case 112:
-		return &RgbLibError{&RgbLibErrorNoMintRights{}}
+		return &RgbLibError{&RgbLibErrorNoMaxAllocationsPerUtxo{}}
 	case 113:
-		return &RgbLibError{&RgbLibErrorNoRejectListResolver{}}
+		return &RgbLibError{&RgbLibErrorNoMedia{}}
 	case 114:
-		return &RgbLibError{&RgbLibErrorNoSupportedSchemas{}}
+		return &RgbLibError{&RgbLibErrorNoMintRights{}}
 	case 115:
-		return &RgbLibError{&RgbLibErrorNoValidTransportEndpoint{}}
+		return &RgbLibError{&RgbLibErrorNoRejectListResolver{}}
 	case 116:
-		return &RgbLibError{&RgbLibErrorOffline{}}
+		return &RgbLibError{&RgbLibErrorNoSupportedSchemas{}}
 	case 117:
+		return &RgbLibError{&RgbLibErrorNoValidTransportEndpoint{}}
+	case 118:
+		return &RgbLibError{&RgbLibErrorOffline{}}
+	case 119:
 		return &RgbLibError{&RgbLibErrorOffchainTxidNotFound{
 			Txid: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 118:
-		return &RgbLibError{&RgbLibErrorOnlineNeeded{}}
-	case 119:
-		return &RgbLibError{&RgbLibErrorOperationExpired{}}
 	case 120:
-		return &RgbLibError{&RgbLibErrorOperationNotFound{}}
+		return &RgbLibError{&RgbLibErrorOnlineNeeded{}}
 	case 121:
-		return &RgbLibError{&RgbLibErrorOutputBelowDustLimit{}}
+		return &RgbLibError{&RgbLibErrorOperationExpired{}}
 	case 122:
+		return &RgbLibError{&RgbLibErrorOperationNotFound{}}
+	case 123:
+		return &RgbLibError{&RgbLibErrorOutputBelowDustLimit{}}
+	case 124:
 		return &RgbLibError{&RgbLibErrorProxy{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 123:
+	case 125:
 		return &RgbLibError{&RgbLibErrorProxyCannotChange{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 124:
-		return &RgbLibError{&RgbLibErrorProxyDraining{}}
-	case 125:
-		return &RgbLibError{&RgbLibErrorProxyTooManyMedia{}}
 	case 126:
-		return &RgbLibError{&RgbLibErrorProxyTxAlreadyReleased{}}
+		return &RgbLibError{&RgbLibErrorProxyDraining{}}
 	case 127:
+		return &RgbLibError{&RgbLibErrorProxyTooManyMedia{}}
+	case 128:
+		return &RgbLibError{&RgbLibErrorProxyTxAlreadyReleased{}}
+	case 129:
 		return &RgbLibError{&RgbLibErrorPsbtInspection{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 128:
-		return &RgbLibError{&RgbLibErrorPsbtTooLarge{}}
-	case 129:
-		return &RgbLibError{&RgbLibErrorRecipientIdAlreadyUsed{}}
 	case 130:
-		return &RgbLibError{&RgbLibErrorRecipientIdDuplicated{}}
+		return &RgbLibError{&RgbLibErrorRecipientIdAlreadyUsed{}}
 	case 131:
+		return &RgbLibError{&RgbLibErrorRecipientIdDuplicated{}}
+	case 132:
 		return &RgbLibError{&RgbLibErrorRejectListService{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 132:
+	case 133:
 		return &RgbLibError{&RgbLibErrorRestClientBuild{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 133:
+	case 134:
 		return &RgbLibError{&RgbLibErrorRgbInspection{
 			Details: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 134:
-		return &RgbLibError{&RgbLibErrorSignedTxCleared{}}
 	case 135:
-		return &RgbLibError{&RgbLibErrorTooHighInflationAmounts{}}
+		return &RgbLibError{&RgbLibErrorSignedTxCleared{}}
 	case 136:
-		return &RgbLibError{&RgbLibErrorTooHighIssuanceAmounts{}}
+		return &RgbLibError{&RgbLibErrorTooHighInflationAmounts{}}
 	case 137:
-		return &RgbLibError{&RgbLibErrorTooManyCosigners{}}
+		return &RgbLibError{&RgbLibErrorTooHighIssuanceAmounts{}}
 	case 138:
-		return &RgbLibError{&RgbLibErrorTooManySignaturesInPsbt{}}
+		return &RgbLibError{&RgbLibErrorTooManyCosigners{}}
 	case 139:
-		return &RgbLibError{&RgbLibErrorTransferExpired{}}
+		return &RgbLibError{&RgbLibErrorTooManySignaturesInPsbt{}}
 	case 140:
-		return &RgbLibError{&RgbLibErrorTransferIdDeleted{}}
+		return &RgbLibError{&RgbLibErrorTransferExpired{}}
 	case 141:
-		return &RgbLibError{&RgbLibErrorTransferIdInUse{}}
+		return &RgbLibError{&RgbLibErrorTransferIdDeleted{}}
 	case 142:
+		return &RgbLibError{&RgbLibErrorTransferIdInUse{}}
+	case 143:
 		return &RgbLibError{&RgbLibErrorUnknownRgbSchema{
 			SchemaId: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 143:
+	case 144:
 		return &RgbLibError{&RgbLibErrorUnknownTransfer{
 			Txid: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 144:
+	case 145:
 		return &RgbLibError{&RgbLibErrorUnsupportedBackupVersion{
 			Version: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 145:
+	case 146:
 		return &RgbLibError{&RgbLibErrorUnsupportedBurn{
 			AssetSchema: FfiConverterAssetSchemaINSTANCE.Read(reader),
 		}}
-	case 146:
+	case 147:
 		return &RgbLibError{&RgbLibErrorUnsupportedInflation{
 			AssetSchema: FfiConverterAssetSchemaINSTANCE.Read(reader),
 		}}
-	case 147:
+	case 148:
 		return &RgbLibError{&RgbLibErrorUnsupportedLayer1{
 			Layer1: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 148:
+	case 149:
 		return &RgbLibError{&RgbLibErrorUnsupportedLink{
 			AssetSchema: FfiConverterAssetSchemaINSTANCE.Read(reader),
 		}}
-	case 149:
+	case 150:
 		return &RgbLibError{&RgbLibErrorUnsupportedMint{
 			AssetSchema: FfiConverterAssetSchemaINSTANCE.Read(reader),
 		}}
-	case 150:
+	case 151:
 		return &RgbLibError{&RgbLibErrorUnsupportedSchema{
 			AssetSchema: FfiConverterAssetSchemaINSTANCE.Read(reader),
 		}}
-	case 151:
-		return &RgbLibError{&RgbLibErrorUnsupportedTransportType{}}
 	case 152:
+		return &RgbLibError{&RgbLibErrorUnsupportedTransportType{}}
+	case 153:
 		return &RgbLibError{&RgbLibErrorUnsupportedWalletManifestVersion{
 			Version: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 153:
+	case 154:
 		return &RgbLibError{&RgbLibErrorWalletDirAlreadyExists{
 			Path: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 154:
+	case 155:
 		return &RgbLibError{&RgbLibErrorWalletSettingMismatch{
 			Setting:  FfiConverterStringINSTANCE.Read(reader),
 			Expected: FfiConverterStringINSTANCE.Read(reader),
 			Provided: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 155:
-		return &RgbLibError{&RgbLibErrorWatchOnly{}}
 	case 156:
+		return &RgbLibError{&RgbLibErrorWatchOnly{}}
+	case 157:
 		return &RgbLibError{&RgbLibErrorWrongOperation{
 			Txid: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 157:
+	case 158:
 		return &RgbLibError{&RgbLibErrorWrongPassword{}}
 	default:
 		panic(fmt.Sprintf("Unknown error code %d in FfiConverterRgbLibError.Read()", errorID))
@@ -13646,386 +13739,389 @@ func (c FfiConverterRgbLibError) Write(writer io.Writer, value *RgbLibError) {
 		writeInt32(writer, 11)
 	case *RgbLibErrorCannotFinalizePsbt:
 		writeInt32(writer, 12)
-	case *RgbLibErrorCannotProvideOutOfBandAck:
+	case *RgbLibErrorCannotLinkToItself:
 		writeInt32(writer, 13)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorCannotProvideOutOfBandConsignment:
+	case *RgbLibErrorCannotProvideOutOfBandAck:
 		writeInt32(writer, 14)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorCannotUseSchemaOnMainnet:
+	case *RgbLibErrorCannotProvideOutOfBandConsignment:
 		writeInt32(writer, 15)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorCannotUseSchemaOnMainnet:
+		writeInt32(writer, 16)
 		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
 	case *RgbLibErrorConsignmentRejected:
-		writeInt32(writer, 16)
+		writeInt32(writer, 17)
 		FfiConverterSequenceStringINSTANCE.Write(writer, variantValue.Opouts)
 	case *RgbLibErrorConsignmentValidationFailed:
-		writeInt32(writer, 17)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorDatabase:
 		writeInt32(writer, 18)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorDuplicateProxyAuthKey:
+	case *RgbLibErrorDatabase:
 		writeInt32(writer, 19)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorEmptyFile:
+	case *RgbLibErrorDuplicateProxyAuthKey:
 		writeInt32(writer, 20)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorEmptyFile:
+		writeInt32(writer, 21)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.FilePath)
 	case *RgbLibErrorEvmChainIdMismatch:
-		writeInt32(writer, 21)
+		writeInt32(writer, 22)
 		FfiConverterUint64INSTANCE.Write(writer, variantValue.Expected)
 		FfiConverterUint64INSTANCE.Write(writer, variantValue.Actual)
 	case *RgbLibErrorExpirationInvalid:
-		writeInt32(writer, 22)
-	case *RgbLibErrorFailedBdkSync:
 		writeInt32(writer, 23)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorFailedBroadcast:
+	case *RgbLibErrorFailedBdkSync:
 		writeInt32(writer, 24)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorFailedIssuance:
+	case *RgbLibErrorFailedBroadcast:
 		writeInt32(writer, 25)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorFileAlreadyExists:
+	case *RgbLibErrorFailedIssuance:
 		writeInt32(writer, 26)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorFileAlreadyExists:
+		writeInt32(writer, 27)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Path)
 	case *RgbLibErrorFingerprintMismatch:
-		writeInt32(writer, 27)
-	case *RgbLibErrorHashMismatch:
 		writeInt32(writer, 28)
-	case *RgbLibErrorIo:
+	case *RgbLibErrorHashMismatch:
 		writeInt32(writer, 29)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInconsistency:
+	case *RgbLibErrorIo:
 		writeInt32(writer, 30)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorIndexer:
+	case *RgbLibErrorInconsistency:
 		writeInt32(writer, 31)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInexistentDataDir:
+	case *RgbLibErrorIndexer:
 		writeInt32(writer, 32)
-	case *RgbLibErrorInexistentWalletManifest:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInexistentDataDir:
 		writeInt32(writer, 33)
+	case *RgbLibErrorInexistentWalletManifest:
+		writeInt32(writer, 34)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Path)
 	case *RgbLibErrorInsufficientAllocationSlots:
-		writeInt32(writer, 34)
-	case *RgbLibErrorInsufficientAssignments:
 		writeInt32(writer, 35)
+	case *RgbLibErrorInsufficientAssignments:
+		writeInt32(writer, 36)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.AssetId)
 		FfiConverterAssignmentsCollectionINSTANCE.Write(writer, variantValue.Available)
 	case *RgbLibErrorInsufficientBitcoins:
-		writeInt32(writer, 36)
+		writeInt32(writer, 37)
 		FfiConverterUint64INSTANCE.Write(writer, variantValue.Needed)
 		FfiConverterUint64INSTANCE.Write(writer, variantValue.Available)
 	case *RgbLibErrorInternal:
-		writeInt32(writer, 37)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidAddress:
 		writeInt32(writer, 38)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidAmountZero:
+	case *RgbLibErrorInvalidAddress:
 		writeInt32(writer, 39)
-	case *RgbLibErrorInvalidAssignment:
-		writeInt32(writer, 40)
-	case *RgbLibErrorInvalidAttachments:
-		writeInt32(writer, 41)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidBeforeBlock:
+	case *RgbLibErrorInvalidAmountZero:
+		writeInt32(writer, 40)
+	case *RgbLibErrorInvalidAssignment:
+		writeInt32(writer, 41)
+	case *RgbLibErrorInvalidAttachments:
 		writeInt32(writer, 42)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidBitcoinKeys:
+	case *RgbLibErrorInvalidBeforeBlock:
 		writeInt32(writer, 43)
-	case *RgbLibErrorInvalidBitcoinNetwork:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidBitcoinKeys:
 		writeInt32(writer, 44)
+	case *RgbLibErrorInvalidBitcoinNetwork:
+		writeInt32(writer, 45)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Network)
 	case *RgbLibErrorInvalidBurnReason:
-		writeInt32(writer, 45)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidColoringInfo:
 		writeInt32(writer, 46)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidConsignment:
+	case *RgbLibErrorInvalidColoringInfo:
 		writeInt32(writer, 47)
-	case *RgbLibErrorInvalidContentSignature:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidConsignment:
 		writeInt32(writer, 48)
-	case *RgbLibErrorInvalidContractId:
+	case *RgbLibErrorInvalidContentSignature:
 		writeInt32(writer, 49)
+	case *RgbLibErrorInvalidContractId:
+		writeInt32(writer, 50)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.ContractId)
 	case *RgbLibErrorInvalidCosigner:
-		writeInt32(writer, 50)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidDetails:
 		writeInt32(writer, 51)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidElectrum:
+	case *RgbLibErrorInvalidDetails:
 		writeInt32(writer, 52)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidEncryptedBlob:
+	case *RgbLibErrorInvalidElectrum:
 		writeInt32(writer, 53)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidEndpointAuthSignature:
+	case *RgbLibErrorInvalidEncryptedBlob:
 		writeInt32(writer, 54)
-	case *RgbLibErrorInvalidEstimationBlocks:
-		writeInt32(writer, 55)
-	case *RgbLibErrorInvalidEvmContractAddress:
-		writeInt32(writer, 56)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidEvmRpcUrl:
+	case *RgbLibErrorInvalidEndpointAuthSignature:
+		writeInt32(writer, 55)
+	case *RgbLibErrorInvalidEstimationBlocks:
+		writeInt32(writer, 56)
+	case *RgbLibErrorInvalidEvmChain:
 		writeInt32(writer, 57)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidExpiration:
+	case *RgbLibErrorInvalidEvmContractAddress:
 		writeInt32(writer, 58)
-	case *RgbLibErrorInvalidFeeRate:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidEvmRpcUrl:
 		writeInt32(writer, 59)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidFilePath:
+	case *RgbLibErrorInvalidExpiration:
 		writeInt32(writer, 60)
+	case *RgbLibErrorInvalidFeeRate:
+		writeInt32(writer, 61)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidFilePath:
+		writeInt32(writer, 62)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.FilePath)
 	case *RgbLibErrorInvalidFingerprint:
-		writeInt32(writer, 61)
-	case *RgbLibErrorInvalidIndexer:
-		writeInt32(writer, 62)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidInvoice:
 		writeInt32(writer, 63)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidMnemonic:
+	case *RgbLibErrorInvalidIndexer:
 		writeInt32(writer, 64)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidMultisigThreshold:
+	case *RgbLibErrorInvalidInvoice:
 		writeInt32(writer, 65)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidMnemonic:
+		writeInt32(writer, 66)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidMultisigThreshold:
+		writeInt32(writer, 67)
 		FfiConverterUint8INSTANCE.Write(writer, variantValue.Required)
 		FfiConverterUint8INSTANCE.Write(writer, variantValue.Total)
 	case *RgbLibErrorInvalidName:
-		writeInt32(writer, 66)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidPrecision:
-		writeInt32(writer, 67)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidProxyAuthKey:
 		writeInt32(writer, 68)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidProxyAuthSignature:
+	case *RgbLibErrorInvalidPrecision:
 		writeInt32(writer, 69)
-	case *RgbLibErrorInvalidProxyProtocol:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidProxyAuthKey:
 		writeInt32(writer, 70)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidProxyAuthSignature:
+		writeInt32(writer, 71)
+	case *RgbLibErrorInvalidProxyProtocol:
+		writeInt32(writer, 72)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Version)
 	case *RgbLibErrorInvalidPsbt:
-		writeInt32(writer, 71)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidPubkey:
-		writeInt32(writer, 72)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidRecipientData:
 		writeInt32(writer, 73)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidRecipientId:
+	case *RgbLibErrorInvalidPubkey:
 		writeInt32(writer, 74)
-	case *RgbLibErrorInvalidRecipientMap:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidRecipientData:
 		writeInt32(writer, 75)
-	case *RgbLibErrorInvalidRecipientNetwork:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidRecipientId:
 		writeInt32(writer, 76)
-	case *RgbLibErrorInvalidRejectListUrl:
+	case *RgbLibErrorInvalidRecipientMap:
 		writeInt32(writer, 77)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidTicker:
+	case *RgbLibErrorInvalidRecipientNetwork:
 		writeInt32(writer, 78)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidTransportEndpoint:
+	case *RgbLibErrorInvalidRejectListUrl:
 		writeInt32(writer, 79)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidTransportEndpoints:
+	case *RgbLibErrorInvalidTicker:
 		writeInt32(writer, 80)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorInvalidTxid:
+	case *RgbLibErrorInvalidTransportEndpoint:
 		writeInt32(writer, 81)
-	case *RgbLibErrorInvalidVanillaKeychain:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidTransportEndpoints:
 		writeInt32(writer, 82)
-	case *RgbLibErrorInvalidWitnessVersion:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorInvalidTxid:
 		writeInt32(writer, 83)
+	case *RgbLibErrorInvalidVanillaKeychain:
+		writeInt32(writer, 84)
+	case *RgbLibErrorInvalidWitnessVersion:
+		writeInt32(writer, 85)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.WitnessVersion)
 	case *RgbLibErrorInvoiceExpired:
-		writeInt32(writer, 84)
-	case *RgbLibErrorInvoiceNotReserved:
-		writeInt32(writer, 85)
-	case *RgbLibErrorInvoiceQuotaExceeded:
 		writeInt32(writer, 86)
-	case *RgbLibErrorLastMintRight:
+	case *RgbLibErrorInvoiceNotReserved:
 		writeInt32(writer, 87)
-	case *RgbLibErrorMaxFeeExceeded:
+	case *RgbLibErrorInvoiceQuotaExceeded:
 		writeInt32(writer, 88)
+	case *RgbLibErrorLastMintRight:
+		writeInt32(writer, 89)
+	case *RgbLibErrorMaxFeeExceeded:
+		writeInt32(writer, 90)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Txid)
 	case *RgbLibErrorMinFeeNotMet:
-		writeInt32(writer, 89)
+		writeInt32(writer, 91)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Txid)
-	case *RgbLibErrorMintEventExpired:
-		writeInt32(writer, 90)
+	case *RgbLibErrorMintLockExpired:
+		writeInt32(writer, 92)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Opid)
 		FfiConverterUint64INSTANCE.Write(writer, variantValue.BeforeBlock)
-	case *RgbLibErrorMintEventNotFound:
-		writeInt32(writer, 91)
+	case *RgbLibErrorMintLockNotFound:
+		writeInt32(writer, 93)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Opid)
 	case *RgbLibErrorMultisigCannotMarkOperationProcessed:
-		writeInt32(writer, 92)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorMultisigCannotRespondToOperation:
-		writeInt32(writer, 93)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorMultisigHubService:
 		writeInt32(writer, 94)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorMultisigLegacyOperation:
+	case *RgbLibErrorMultisigCannotRespondToOperation:
 		writeInt32(writer, 95)
-		FfiConverterInt32INSTANCE.Write(writer, variantValue.OperationIdx)
-	case *RgbLibErrorMultisigOperationInProgress:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorMultisigHubService:
 		writeInt32(writer, 96)
-	case *RgbLibErrorMultisigOperationNotFound:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorMultisigLegacyOperation:
 		writeInt32(writer, 97)
 		FfiConverterInt32INSTANCE.Write(writer, variantValue.OperationIdx)
-	case *RgbLibErrorMultisigTransferStatusMismatch:
+	case *RgbLibErrorMultisigOperationInProgress:
 		writeInt32(writer, 98)
-	case *RgbLibErrorMultisigUnexpectedData:
+	case *RgbLibErrorMultisigOperationNotFound:
 		writeInt32(writer, 99)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorMultisigUserNotCosigner:
+		FfiConverterInt32INSTANCE.Write(writer, variantValue.OperationIdx)
+	case *RgbLibErrorMultisigTransferStatusMismatch:
 		writeInt32(writer, 100)
-	case *RgbLibErrorNetwork:
+	case *RgbLibErrorMultisigUnexpectedData:
 		writeInt32(writer, 101)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorNoAnchorResolver:
+	case *RgbLibErrorMultisigUserNotCosigner:
 		writeInt32(writer, 102)
-	case *RgbLibErrorNoBurnAmount:
+	case *RgbLibErrorNetwork:
 		writeInt32(writer, 103)
-	case *RgbLibErrorNoConsignment:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorNoClaimResolver:
 		writeInt32(writer, 104)
-	case *RgbLibErrorNoCosignersSupplied:
+	case *RgbLibErrorNoBurnAmount:
 		writeInt32(writer, 105)
-	case *RgbLibErrorNoEvmRpcUrl:
+	case *RgbLibErrorNoConsignment:
 		writeInt32(writer, 106)
+	case *RgbLibErrorNoCosignersSupplied:
+		writeInt32(writer, 107)
+	case *RgbLibErrorNoEvmRpcUrl:
+		writeInt32(writer, 108)
 		FfiConverterUint64INSTANCE.Write(writer, variantValue.ChainId)
 	case *RgbLibErrorNoInflationAmounts:
-		writeInt32(writer, 107)
-	case *RgbLibErrorNoIssuanceAmounts:
-		writeInt32(writer, 108)
-	case *RgbLibErrorNoKeysSupplied:
 		writeInt32(writer, 109)
-	case *RgbLibErrorNoMaxAllocationsPerUtxo:
+	case *RgbLibErrorNoIssuanceAmounts:
 		writeInt32(writer, 110)
-	case *RgbLibErrorNoMedia:
+	case *RgbLibErrorNoKeysSupplied:
 		writeInt32(writer, 111)
-	case *RgbLibErrorNoMintRights:
+	case *RgbLibErrorNoMaxAllocationsPerUtxo:
 		writeInt32(writer, 112)
-	case *RgbLibErrorNoRejectListResolver:
+	case *RgbLibErrorNoMedia:
 		writeInt32(writer, 113)
-	case *RgbLibErrorNoSupportedSchemas:
+	case *RgbLibErrorNoMintRights:
 		writeInt32(writer, 114)
-	case *RgbLibErrorNoValidTransportEndpoint:
+	case *RgbLibErrorNoRejectListResolver:
 		writeInt32(writer, 115)
-	case *RgbLibErrorOffline:
+	case *RgbLibErrorNoSupportedSchemas:
 		writeInt32(writer, 116)
-	case *RgbLibErrorOffchainTxidNotFound:
+	case *RgbLibErrorNoValidTransportEndpoint:
 		writeInt32(writer, 117)
+	case *RgbLibErrorOffline:
+		writeInt32(writer, 118)
+	case *RgbLibErrorOffchainTxidNotFound:
+		writeInt32(writer, 119)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Txid)
 	case *RgbLibErrorOnlineNeeded:
-		writeInt32(writer, 118)
-	case *RgbLibErrorOperationExpired:
-		writeInt32(writer, 119)
-	case *RgbLibErrorOperationNotFound:
 		writeInt32(writer, 120)
-	case *RgbLibErrorOutputBelowDustLimit:
+	case *RgbLibErrorOperationExpired:
 		writeInt32(writer, 121)
-	case *RgbLibErrorProxy:
+	case *RgbLibErrorOperationNotFound:
 		writeInt32(writer, 122)
+	case *RgbLibErrorOutputBelowDustLimit:
+		writeInt32(writer, 123)
+	case *RgbLibErrorProxy:
+		writeInt32(writer, 124)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
 	case *RgbLibErrorProxyCannotChange:
-		writeInt32(writer, 123)
+		writeInt32(writer, 125)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
 	case *RgbLibErrorProxyDraining:
-		writeInt32(writer, 124)
-	case *RgbLibErrorProxyTooManyMedia:
-		writeInt32(writer, 125)
-	case *RgbLibErrorProxyTxAlreadyReleased:
 		writeInt32(writer, 126)
-	case *RgbLibErrorPsbtInspection:
+	case *RgbLibErrorProxyTooManyMedia:
 		writeInt32(writer, 127)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorPsbtTooLarge:
+	case *RgbLibErrorProxyTxAlreadyReleased:
 		writeInt32(writer, 128)
-	case *RgbLibErrorRecipientIdAlreadyUsed:
+	case *RgbLibErrorPsbtInspection:
 		writeInt32(writer, 129)
-	case *RgbLibErrorRecipientIdDuplicated:
-		writeInt32(writer, 130)
-	case *RgbLibErrorRejectListService:
-		writeInt32(writer, 131)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorRestClientBuild:
+	case *RgbLibErrorRecipientIdAlreadyUsed:
+		writeInt32(writer, 130)
+	case *RgbLibErrorRecipientIdDuplicated:
+		writeInt32(writer, 131)
+	case *RgbLibErrorRejectListService:
 		writeInt32(writer, 132)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorRgbInspection:
+	case *RgbLibErrorRestClientBuild:
 		writeInt32(writer, 133)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
-	case *RgbLibErrorSignedTxCleared:
+	case *RgbLibErrorRgbInspection:
 		writeInt32(writer, 134)
-	case *RgbLibErrorTooHighInflationAmounts:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Details)
+	case *RgbLibErrorSignedTxCleared:
 		writeInt32(writer, 135)
-	case *RgbLibErrorTooHighIssuanceAmounts:
+	case *RgbLibErrorTooHighInflationAmounts:
 		writeInt32(writer, 136)
-	case *RgbLibErrorTooManyCosigners:
+	case *RgbLibErrorTooHighIssuanceAmounts:
 		writeInt32(writer, 137)
-	case *RgbLibErrorTooManySignaturesInPsbt:
+	case *RgbLibErrorTooManyCosigners:
 		writeInt32(writer, 138)
-	case *RgbLibErrorTransferExpired:
+	case *RgbLibErrorTooManySignaturesInPsbt:
 		writeInt32(writer, 139)
-	case *RgbLibErrorTransferIdDeleted:
+	case *RgbLibErrorTransferExpired:
 		writeInt32(writer, 140)
-	case *RgbLibErrorTransferIdInUse:
+	case *RgbLibErrorTransferIdDeleted:
 		writeInt32(writer, 141)
-	case *RgbLibErrorUnknownRgbSchema:
+	case *RgbLibErrorTransferIdInUse:
 		writeInt32(writer, 142)
+	case *RgbLibErrorUnknownRgbSchema:
+		writeInt32(writer, 143)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.SchemaId)
 	case *RgbLibErrorUnknownTransfer:
-		writeInt32(writer, 143)
+		writeInt32(writer, 144)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Txid)
 	case *RgbLibErrorUnsupportedBackupVersion:
-		writeInt32(writer, 144)
+		writeInt32(writer, 145)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Version)
 	case *RgbLibErrorUnsupportedBurn:
-		writeInt32(writer, 145)
-		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
-	case *RgbLibErrorUnsupportedInflation:
 		writeInt32(writer, 146)
 		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
-	case *RgbLibErrorUnsupportedLayer1:
+	case *RgbLibErrorUnsupportedInflation:
 		writeInt32(writer, 147)
+		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
+	case *RgbLibErrorUnsupportedLayer1:
+		writeInt32(writer, 148)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Layer1)
 	case *RgbLibErrorUnsupportedLink:
-		writeInt32(writer, 148)
-		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
-	case *RgbLibErrorUnsupportedMint:
 		writeInt32(writer, 149)
 		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
-	case *RgbLibErrorUnsupportedSchema:
+	case *RgbLibErrorUnsupportedMint:
 		writeInt32(writer, 150)
 		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
-	case *RgbLibErrorUnsupportedTransportType:
+	case *RgbLibErrorUnsupportedSchema:
 		writeInt32(writer, 151)
-	case *RgbLibErrorUnsupportedWalletManifestVersion:
+		FfiConverterAssetSchemaINSTANCE.Write(writer, variantValue.AssetSchema)
+	case *RgbLibErrorUnsupportedTransportType:
 		writeInt32(writer, 152)
+	case *RgbLibErrorUnsupportedWalletManifestVersion:
+		writeInt32(writer, 153)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Version)
 	case *RgbLibErrorWalletDirAlreadyExists:
-		writeInt32(writer, 153)
+		writeInt32(writer, 154)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Path)
 	case *RgbLibErrorWalletSettingMismatch:
-		writeInt32(writer, 154)
+		writeInt32(writer, 155)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Setting)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Expected)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Provided)
 	case *RgbLibErrorWatchOnly:
-		writeInt32(writer, 155)
-	case *RgbLibErrorWrongOperation:
 		writeInt32(writer, 156)
+	case *RgbLibErrorWrongOperation:
+		writeInt32(writer, 157)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Txid)
 	case *RgbLibErrorWrongPassword:
-		writeInt32(writer, 157)
+		writeInt32(writer, 158)
 	default:
 		_ = variantValue
 		panic(fmt.Sprintf("invalid error value `%v` in FfiConverterRgbLibError.Write", value))
@@ -14059,6 +14155,8 @@ func (_ FfiDestroyerRgbLibError) Destroy(value *RgbLibError) {
 	case RgbLibErrorCannotFailBatchTransfer:
 		variantValue.destroy()
 	case RgbLibErrorCannotFinalizePsbt:
+		variantValue.destroy()
+	case RgbLibErrorCannotLinkToItself:
 		variantValue.destroy()
 	case RgbLibErrorCannotProvideOutOfBandAck:
 		variantValue.destroy()
@@ -14146,6 +14244,8 @@ func (_ FfiDestroyerRgbLibError) Destroy(value *RgbLibError) {
 		variantValue.destroy()
 	case RgbLibErrorInvalidEstimationBlocks:
 		variantValue.destroy()
+	case RgbLibErrorInvalidEvmChain:
+		variantValue.destroy()
 	case RgbLibErrorInvalidEvmContractAddress:
 		variantValue.destroy()
 	case RgbLibErrorInvalidEvmRpcUrl:
@@ -14214,9 +14314,9 @@ func (_ FfiDestroyerRgbLibError) Destroy(value *RgbLibError) {
 		variantValue.destroy()
 	case RgbLibErrorMinFeeNotMet:
 		variantValue.destroy()
-	case RgbLibErrorMintEventExpired:
+	case RgbLibErrorMintLockExpired:
 		variantValue.destroy()
-	case RgbLibErrorMintEventNotFound:
+	case RgbLibErrorMintLockNotFound:
 		variantValue.destroy()
 	case RgbLibErrorMultisigCannotMarkOperationProcessed:
 		variantValue.destroy()
@@ -14238,7 +14338,7 @@ func (_ FfiDestroyerRgbLibError) Destroy(value *RgbLibError) {
 		variantValue.destroy()
 	case RgbLibErrorNetwork:
 		variantValue.destroy()
-	case RgbLibErrorNoAnchorResolver:
+	case RgbLibErrorNoClaimResolver:
 		variantValue.destroy()
 	case RgbLibErrorNoBurnAmount:
 		variantValue.destroy()
@@ -14289,8 +14389,6 @@ func (_ FfiDestroyerRgbLibError) Destroy(value *RgbLibError) {
 	case RgbLibErrorProxyTxAlreadyReleased:
 		variantValue.destroy()
 	case RgbLibErrorPsbtInspection:
-		variantValue.destroy()
-	case RgbLibErrorPsbtTooLarge:
 		variantValue.destroy()
 	case RgbLibErrorRecipientIdAlreadyUsed:
 		variantValue.destroy()
@@ -14537,6 +14635,86 @@ func (FfiConverterTransferKind) Write(writer io.Writer, value TransferKind) {
 type FfiDestroyerTransferKind struct{}
 
 func (_ FfiDestroyerTransferKind) Destroy(value TransferKind) {
+}
+
+type TransferScope interface {
+	Destroy()
+}
+type TransferScopeAll struct {
+}
+
+func (e TransferScopeAll) Destroy() {
+}
+
+type TransferScopeTxid struct {
+	Txid string
+}
+
+func (e TransferScopeTxid) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Txid)
+}
+
+type TransferScopeBatchTransfer struct {
+	BatchTransferIdx int32
+}
+
+func (e TransferScopeBatchTransfer) Destroy() {
+	FfiDestroyerInt32{}.Destroy(e.BatchTransferIdx)
+}
+
+type FfiConverterTransferScope struct{}
+
+var FfiConverterTransferScopeINSTANCE = FfiConverterTransferScope{}
+
+func (c FfiConverterTransferScope) Lift(rb RustBufferI) TransferScope {
+	return LiftFromRustBuffer[TransferScope](c, rb)
+}
+
+func (c FfiConverterTransferScope) Lower(value TransferScope) C.RustBuffer {
+	return LowerIntoRustBuffer[TransferScope](c, value)
+}
+
+func (c FfiConverterTransferScope) LowerExternal(value TransferScope) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[TransferScope](c, value))
+}
+func (FfiConverterTransferScope) Read(reader io.Reader) TransferScope {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return TransferScopeAll{}
+	case 2:
+		return TransferScopeTxid{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	case 3:
+		return TransferScopeBatchTransfer{
+			FfiConverterInt32INSTANCE.Read(reader),
+		}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterTransferScope.Read()", id))
+	}
+}
+
+func (FfiConverterTransferScope) Write(writer io.Writer, value TransferScope) {
+	switch variant_value := value.(type) {
+	case TransferScopeAll:
+		writeInt32(writer, 1)
+	case TransferScopeTxid:
+		writeInt32(writer, 2)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Txid)
+	case TransferScopeBatchTransfer:
+		writeInt32(writer, 3)
+		FfiConverterInt32INSTANCE.Write(writer, variant_value.BatchTransferIdx)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterTransferScope.Write", value))
+	}
+}
+
+type FfiDestroyerTransferScope struct{}
+
+func (_ FfiDestroyerTransferScope) Destroy(value TransferScope) {
+	value.Destroy()
 }
 
 type TransferStatus uint
@@ -16741,6 +16919,53 @@ func (FfiDestroyerSequenceCosignerData) Destroy(sequence []CosignerData) {
 	}
 }
 
+type FfiConverterSequenceOutpoint struct{}
+
+var FfiConverterSequenceOutpointINSTANCE = FfiConverterSequenceOutpoint{}
+
+func (c FfiConverterSequenceOutpoint) Lift(rb RustBufferI) []Outpoint {
+	return LiftFromRustBuffer[[]Outpoint](c, rb)
+}
+
+func (c FfiConverterSequenceOutpoint) Read(reader io.Reader) []Outpoint {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]Outpoint, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterOutpointINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceOutpoint) Lower(value []Outpoint) C.RustBuffer {
+	return LowerIntoRustBuffer[[]Outpoint](c, value)
+}
+
+func (c FfiConverterSequenceOutpoint) LowerExternal(value []Outpoint) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]Outpoint](c, value))
+}
+
+func (c FfiConverterSequenceOutpoint) Write(writer io.Writer, value []Outpoint) {
+	if len(value) > math.MaxInt32 {
+		panic("[]Outpoint is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterOutpointINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceOutpoint struct{}
+
+func (FfiDestroyerSequenceOutpoint) Destroy(sequence []Outpoint) {
+	for _, value := range sequence {
+		FfiDestroyerOutpoint{}.Destroy(value)
+	}
+}
+
 type FfiConverterSequencePendingVanillaTx struct{}
 
 var FfiConverterSequencePendingVanillaTxINSTANCE = FfiConverterSequencePendingVanillaTx{}
@@ -17869,6 +18094,54 @@ func (_ FfiDestroyerMapUint64String) Destroy(mapValue map[uint64]string) {
 	for key, value := range mapValue {
 		FfiDestroyerUint64{}.Destroy(key)
 		FfiDestroyerString{}.Destroy(value)
+	}
+}
+
+type FfiConverterMapUint64EvmChain struct{}
+
+var FfiConverterMapUint64EvmChainINSTANCE = FfiConverterMapUint64EvmChain{}
+
+func (c FfiConverterMapUint64EvmChain) Lift(rb RustBufferI) map[uint64]EvmChain {
+	return LiftFromRustBuffer[map[uint64]EvmChain](c, rb)
+}
+
+func (_ FfiConverterMapUint64EvmChain) Read(reader io.Reader) map[uint64]EvmChain {
+	result := make(map[uint64]EvmChain)
+	length := readInt32(reader)
+	for i := int32(0); i < length; i++ {
+		key := FfiConverterUint64INSTANCE.Read(reader)
+		value := FfiConverterEvmChainINSTANCE.Read(reader)
+		result[key] = value
+	}
+	return result
+}
+
+func (c FfiConverterMapUint64EvmChain) Lower(value map[uint64]EvmChain) C.RustBuffer {
+	return LowerIntoRustBuffer[map[uint64]EvmChain](c, value)
+}
+
+func (c FfiConverterMapUint64EvmChain) LowerExternal(value map[uint64]EvmChain) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[map[uint64]EvmChain](c, value))
+}
+
+func (_ FfiConverterMapUint64EvmChain) Write(writer io.Writer, mapValue map[uint64]EvmChain) {
+	if len(mapValue) > math.MaxInt32 {
+		panic("map[uint64]EvmChain is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(mapValue)))
+	for key, value := range mapValue {
+		FfiConverterUint64INSTANCE.Write(writer, key)
+		FfiConverterEvmChainINSTANCE.Write(writer, value)
+	}
+}
+
+type FfiDestroyerMapUint64EvmChain struct{}
+
+func (_ FfiDestroyerMapUint64EvmChain) Destroy(mapValue map[uint64]EvmChain) {
+	for key, value := range mapValue {
+		FfiDestroyerUint64{}.Destroy(key)
+		FfiDestroyerEvmChain{}.Destroy(value)
 	}
 }
 
