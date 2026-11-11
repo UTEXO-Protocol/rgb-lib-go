@@ -887,7 +887,7 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inspect_rgb_transfer(uint64_t pt
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_BFA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_BFA
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_bfa(uint64_t ptr, RustBuffer ticker, RustBuffer name, uint8_t precision, uint8_t mint_rights, uint64_t chain_id, RustBuffer contract_address, RustBuffer reject_list_address, int8_t link_right, RustBuffer linked_from_contract, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_bfa(uint64_t ptr, RustBuffer ticker, RustBuffer name, uint8_t precision, uint8_t mint_rights, uint64_t chain_id, RustBuffer contract_address, RustBuffer reject_list_address, int8_t link_right, RustBuffer linked_from_contract, int8_t skip_contract_checks, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_CFA
@@ -897,7 +897,7 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_cfa(uint64_t ptr, Ru
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_IFA
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_IFA
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_ifa(uint64_t ptr, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustBuffer inflation_amounts, RustBuffer reject_list_url, int8_t link_right, RustBuffer linked_from_contract, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_ifa(uint64_t ptr, RustBuffer ticker, RustBuffer name, uint8_t precision, RustBuffer amounts, RustBuffer inflation_amounts, RustBuffer reject_list_url, int8_t link_right, RustBuffer linked_from_contract, int8_t skip_contract_checks, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_NIA
@@ -912,12 +912,12 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_issue_asset_uda(uint64_t ptr, Ru
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LINK
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LINK
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_link(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer linked_to_contract, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_link(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer linked_to_contract, uint64_t fee_rate, uint8_t min_confirmations, int8_t skip_contract_checks, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LINK_BEGIN
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LINK_BEGIN
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_link_begin(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer linked_to_contract, uint64_t fee_rate, uint8_t min_confirmations, int8_t dry_run, RustCallStatus *out_status
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_link_begin(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer linked_to_contract, uint64_t fee_rate, uint8_t min_confirmations, int8_t skip_contract_checks, int8_t dry_run, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_LINK_END
