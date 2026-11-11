@@ -419,6 +419,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_rgblibuniffi_checksum_func_script_hex_from_recipient_id()
+		})
+		if checksum != 19123 {
+			// If this happens try cleaning and rebuilding your project
+			panic("rgb_lib: uniffi_rgblibuniffi_checksum_func_script_hex_from_recipient_id: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_rgblibuniffi_checksum_func_validate_consignment()
 		})
 		if checksum != 4955 {
@@ -856,6 +865,15 @@ func uniffiCheckChecksums() {
 		if checksum != 13247 {
 			// If this happens try cleaning and rebuilding your project
 			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_abort_pending_vanilla_tx: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_rgblibuniffi_checksum_method_wallet_accept_transfer_consignment()
+		})
+		if checksum != 26011 {
+			// If this happens try cleaning and rebuilding your project
+			panic("rgb_lib: uniffi_rgblibuniffi_checksum_method_wallet_accept_transfer_consignment: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -3059,6 +3077,7 @@ func (_ FfiDestroyerTransportEndpoint) Destroy(value *TransportEndpoint) {
 
 type WalletInterface interface {
 	AbortPendingVanillaTx(txid string) error
+	AcceptTransferConsignment(online Online, consignmentPath string, txid string, vout uint32, blinding uint64) ([]Assignment, error)
 	Backup(backupPath string, password string) error
 	BackupInfo() (bool, error)
 	BlindReceive(online *Online, assetId *string, assignment Assignment, expirationTimestamp uint64, transportEndpoints []string, minConfirmations uint8, encryption *Encryption) (ReceiveData, error)
@@ -3163,6 +3182,23 @@ func (_self *Wallet) AbortPendingVanillaTx(txid string) error {
 		return false
 	})
 	return _uniffiErr.AsError()
+}
+
+func (_self *Wallet) AcceptTransferConsignment(online Online, consignmentPath string, txid string, vout uint32, blinding uint64) ([]Assignment, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Wallet")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_rgblibuniffi_fn_method_wallet_accept_transfer_consignment(
+				_pointer, FfiConverterOnlineINSTANCE.Lower(online), FfiConverterStringINSTANCE.Lower(consignmentPath), FfiConverterStringINSTANCE.Lower(txid), FfiConverterUint32INSTANCE.Lower(vout), FfiConverterUint64INSTANCE.Lower(blinding), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue []Assignment
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterSequenceAssignmentINSTANCE.Lift(_uniffiRV), nil
+	}
 }
 
 func (_self *Wallet) Backup(backupPath string, password string) error {
@@ -18886,6 +18922,20 @@ func RestoreKeys(bitcoinNetwork BitcoinNetwork, mnemonic string, witnessVersion 
 		return _uniffiDefaultValue, _uniffiErr
 	} else {
 		return FfiConverterKeysINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+func ScriptHexFromRecipientId(recipientId string) (*string, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[*RgbLibError](FfiConverterRgbLibError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_rgblibuniffi_fn_func_script_hex_from_recipient_id(FfiConverterStringINSTANCE.Lower(recipientId), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *string
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterOptionalStringINSTANCE.Lift(_uniffiRV), nil
 	}
 }
 
