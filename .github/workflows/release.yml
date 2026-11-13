@@ -470,13 +470,14 @@ jobs:
         shell: bash
 
       - name: Generate bindings
+        working-directory: rgb-lib/bindings/uniffi
         run: |
           CONFIG_FLAG=""
-          if [ -f rgb-lib/bindings/uniffi/uniffi.toml ]; then
-            CONFIG_FLAG="--config rgb-lib/bindings/uniffi/uniffi.toml"
+          if [ -f uniffi.toml ]; then
+            CONFIG_FLAG="--config uniffi.toml"
           fi
 
-          uniffi-bindgen-go rgb-lib/bindings/uniffi/src/rgb-lib.udl \
+          uniffi-bindgen-go src/rgb-lib.udl \
             --out-dir /tmp/go-bindings \
             $CONFIG_FLAG
 
@@ -488,8 +489,8 @@ jobs:
             exit 1
           fi
 
-          cp "$GO_FILE" rgb_lib.go
-          cp "$H_FILE" rgb_lib.h
+          cp "$GO_FILE" "$GITHUB_WORKSPACE/rgb_lib.go"
+          cp "$H_FILE" "$GITHUB_WORKSPACE/rgb_lib.h"
         shell: bash
 
       - name: Add CGo LDFLAGS to the preamble
