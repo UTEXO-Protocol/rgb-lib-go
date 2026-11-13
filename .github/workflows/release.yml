@@ -9,11 +9,11 @@ on:
   workflow_dispatch:
     inputs:
       rgb_lib_version:
-        description: 'rgb-lib version to use (e.g., v0.3.0-beta.4)'
-        required: true
+        description: 'rgb-lib version to use (e.g., v0.3.0-beta.4) — download mode only'
+        required: false
         type: string
       source_repo:
-        description: 'Source repository'
+        description: 'Source repository — download mode only'
         required: false
         default: 'rgb-lib'
         type: choice
@@ -22,6 +22,14 @@ on:
           - rgb-lib-bfa
       branch:
         description: 'Branch to commit bindings to (auto-selected if empty)'
+        required: false
+        type: string
+      source_sha:
+        description: 'Commit SHA in the rgb-lib submodule to build from — enables submodule build mode (builds from source instead of downloading a mirrored release)'
+        required: false
+        type: string
+      tag:
+        description: 'New git tag to create on the resulting commit — required in submodule build mode'
         required: false
         type: string
 
@@ -35,8 +43,25 @@ env:
   UNIFFI_BINDGEN_GO_REV: "4f79e52bd8f518e5fa4d7acff9e586aee21e12a0"
 
 jobs:
+  mode:
+    name: Resolve build mode
+    runs-on: ubuntu-latest
+    outputs:
+      value: ${{ steps.decide.outputs.mode }}
+    steps:
+      - id: decide
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ inputs.source_sha }}" ]; then
+            echo "mode=submodule" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=download" >> "$GITHUB_OUTPUT"
+          fi
+
   generate:
     name: Generate Go bindings
+    needs: mode
+    if: needs.mode.outputs.value == 'download'
     runs-on: warp-ubuntu-latest-x64-4x
     permissions:
       contents: write
@@ -265,7 +290,8 @@ jobs:
 
   build:
     name: Build (${{ matrix.goos }}-${{ matrix.goarch }})
-    needs: generate
+    needs: [mode, generate]
+    if: needs.mode.outputs.value == 'download'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -339,7 +365,8 @@ jobs:
 
   release:
     name: Create Release
-    needs: [generate, build]
+    needs: [mode, generate, build]
+    if: needs.mode.outputs.value == 'download'
     runs-on: warp-ubuntu-latest-x64-4x
     permissions:
       contents: write
@@ -389,3 +416,236 @@ jobs:
           files: release-assets/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Submodule build mode: builds Go bindings and native libraries directly from
+  # a commit in the rgb-lib submodule (e.g. an upstream PR branch not yet
+  # released), instead of downloading pre-built assets from a mirrored
+  # release. Commits bindings + all native libs in one commit and tags it.
+  sub-meta:
+    name: Resolve submodule build context
+    needs: mode
+    if: needs.mode.outputs.value == 'submodule'
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.ctx.outputs.branch }}
+      source_sha: ${{ steps.ctx.outputs.source_sha }}
+      tag: ${{ steps.ctx.outputs.tag }}
+    steps:
+      - id: ctx
+        shell: bash
+        run: |
+          BRANCH="${{ inputs.branch }}"
+          echo "branch=${BRANCH:-release/upstream}" >> "$GITHUB_OUTPUT"
+          echo "source_sha=${{ inputs.source_sha }}" >> "$GITHUB_OUTPUT"
+          if [ -z "${{ inputs.tag }}" ]; then
+            echo "::error::'tag' input is required in submodule build mode"
+            exit 1
+          fi
+          echo "tag=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+
+  sub-bindings:
+    name: Generate Go bindings (submodule)
+    needs: sub-meta
+    runs-on: warp-ubuntu-latest-x64-4x
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.sub-meta.outputs.branch }}
+          submodules: recursive
+
+      - name: Pin submodule to target commit
+        run: |
+          git -C rgb-lib fetch --depth 1 origin ${{ needs.sub-meta.outputs.source_sha }}
+          git -C rgb-lib checkout ${{ needs.sub-meta.outputs.source_sha }}
+        shell: bash
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install uniffi-bindgen-go
+        run: |
+          cargo install --git "${{ env.UNIFFI_BINDGEN_GO_GIT }}" \
+            --rev "${{ env.UNIFFI_BINDGEN_GO_REV }}" uniffi-bindgen-go
+        shell: bash
+
+      - name: Generate bindings
+        run: |
+          CONFIG_FLAG=""
+          if [ -f rgb-lib/bindings/uniffi/uniffi.toml ]; then
+            CONFIG_FLAG="--config rgb-lib/bindings/uniffi/uniffi.toml"
+          fi
+
+          uniffi-bindgen-go rgb-lib/bindings/uniffi/src/rgb-lib.udl \
+            --out-dir /tmp/go-bindings \
+            $CONFIG_FLAG
+
+          GO_FILE=$(find /tmp/go-bindings -name "rgb_lib.go" | head -1)
+          H_FILE=$(find /tmp/go-bindings -name "rgb_lib.h" | head -1)
+
+          if [ -z "$GO_FILE" ] || [ -z "$H_FILE" ]; then
+            echo "ERROR: Generated files not found"
+            exit 1
+          fi
+
+          cp "$GO_FILE" rgb_lib.go
+          cp "$H_FILE" rgb_lib.h
+        shell: bash
+
+      - name: Add CGo LDFLAGS to the preamble
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          p = pathlib.Path("rgb_lib.go"); s = p.read_text()
+          old = '// #include <rgb_lib.h>\nimport "C"'
+          new = ('/*\n#cgo LDFLAGS: -lrgblibuniffi -L${SRCDIR}/lib -Wl,-rpath,${SRCDIR}/lib\n'
+                 '#include <rgb_lib.h>\n*/\nimport "C"')
+          assert s.count(old) == 1, "unexpected cgo preamble in generated rgb_lib.go"
+          p.write_text(s.replace(old, new))
+          PY
+        shell: bash
+
+      - name: Upload bindings artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: go-bindings
+          path: |
+            rgb_lib.go
+            rgb_lib.h
+          retention-days: 1
+
+  sub-build-native:
+    name: Build native (${{ matrix.target }})
+    needs: sub-meta
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: warp-ubuntu-latest-x64-4x
+            lib_name: librgblibuniffi.so
+            dest_name: librgblibuniffi.so
+          - target: aarch64-unknown-linux-gnu
+            os: warp-ubuntu-latest-x64-4x
+            lib_name: librgblibuniffi.so
+            dest_name: librgblibuniffi_arm64.so
+            cross: true
+          - target: aarch64-apple-darwin
+            os: warp-macos-26-arm64-6x
+            lib_name: librgblibuniffi.dylib
+            dest_name: librgblibuniffi.dylib
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.sub-meta.outputs.branch }}
+          submodules: recursive
+
+      - name: Pin submodule to target commit
+        run: |
+          git -C rgb-lib fetch --depth 1 origin ${{ needs.sub-meta.outputs.source_sha }}
+          git -C rgb-lib checkout ${{ needs.sub-meta.outputs.source_sha }}
+        shell: bash
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Install cross-compilation tools (linux arm64)
+        if: matrix.cross
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+        shell: bash
+
+      - name: Build native library
+        working-directory: rgb-lib/bindings/uniffi
+        env:
+          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+        run: cargo build --release --target ${{ matrix.target }}
+        shell: bash
+
+      - name: Collect native library
+        run: |
+          mkdir -p out
+          SRC="rgb-lib/bindings/uniffi/target/${{ matrix.target }}/release/${{ matrix.lib_name }}"
+          cp "$SRC" "out/${{ matrix.dest_name }}"
+          if [ "${{ runner.os }}" = "macOS" ]; then
+            install_name_tool -id @rpath/librgblibuniffi.dylib "out/${{ matrix.dest_name }}"
+          fi
+          file "out/${{ matrix.dest_name }}"
+        shell: bash
+
+      - name: Upload native library artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-${{ matrix.target }}
+          path: out/${{ matrix.dest_name }}
+          retention-days: 1
+
+  sub-finalize:
+    name: Commit bindings, libraries and tag
+    needs: [sub-meta, sub-bindings, sub-build-native]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.sub-meta.outputs.branch }}
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Pin submodule to target commit
+        run: |
+          git -C rgb-lib fetch --depth 1 origin ${{ needs.sub-meta.outputs.source_sha }}
+          git -C rgb-lib checkout ${{ needs.sub-meta.outputs.source_sha }}
+          git add rgb-lib
+        shell: bash
+
+      - name: Download bindings artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: go-bindings
+          path: .
+
+      - name: Download native library artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: native-*
+          path: lib
+          merge-multiple: true
+
+      - name: Verify native libraries
+        run: |
+          ls -la lib/
+          file lib/librgblibuniffi.so | grep -q "x86-64" || { echo "ERROR: librgblibuniffi.so is not x86-64"; exit 1; }
+          file lib/librgblibuniffi_arm64.so | grep -q "aarch64\|ARM aarch64" || { echo "ERROR: librgblibuniffi_arm64.so is not aarch64"; exit 1; }
+          file lib/librgblibuniffi.dylib | grep -q "arm64\|aarch64" || { echo "ERROR: librgblibuniffi.dylib is not arm64"; exit 1; }
+        shell: bash
+
+      - name: Commit bindings, libraries and submodule pointer
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add rgb_lib.go rgb_lib.h lib/ rgb-lib
+          if git diff --cached --quiet; then
+            echo "No changes, skipping commit"
+          else
+            git commit -m "Build Go bindings and native libs from rgb-lib@${{ needs.sub-meta.outputs.source_sha }}"
+            git push origin HEAD:${{ needs.sub-meta.outputs.branch }}
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+        shell: bash
+
+      - name: Create and push tag
+        run: |
+          TAG="${{ needs.sub-meta.outputs.tag }}"
+          git tag "$TAG" ${{ steps.commit.outputs.sha }}
+          git push origin "refs/tags/$TAG"
+        shell: bash
