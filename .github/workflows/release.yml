@@ -593,6 +593,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      sha: ${{ steps.commit.outputs.sha }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -650,3 +652,72 @@ jobs:
           git tag "$TAG" ${{ steps.commit.outputs.sha }}
           git push origin "refs/tags/$TAG"
         shell: bash
+
+  sub-release:
+    name: Create Release
+    needs: [sub-meta, sub-finalize]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.sub-finalize.outputs.sha }}
+
+      - name: Package release assets
+        run: |
+          mkdir -p release-assets
+
+          mkdir -p dist/lib
+          cp rgb_lib.go rgb_lib.h go.mod README.md dist/
+          cp lib/librgblibuniffi.so dist/lib/librgblibuniffi.so
+          (cd dist && zip -r ../release-assets/rgb-lib-go-linux-amd64.zip .)
+          rm -rf dist
+
+          mkdir -p dist/lib
+          cp rgb_lib.go rgb_lib.h go.mod README.md dist/
+          cp lib/librgblibuniffi_arm64.so dist/lib/librgblibuniffi.so
+          (cd dist && zip -r ../release-assets/rgb-lib-go-linux-arm64.zip .)
+          rm -rf dist
+
+          mkdir -p dist/lib
+          cp rgb_lib.go rgb_lib.h go.mod README.md dist/
+          cp lib/librgblibuniffi.dylib dist/lib/librgblibuniffi.dylib
+          (cd dist && zip -r ../release-assets/rgb-lib-go-darwin-arm64.zip .)
+          rm -rf dist
+
+          ls -la release-assets/
+        shell: bash
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.sub-meta.outputs.tag }}
+          name: Release ${{ needs.sub-meta.outputs.tag }}
+          target_commitish: ${{ needs.sub-finalize.outputs.sha }}
+          body: |
+            ## Go bindings for rgb-lib
+
+            Built from source: rgb-lib@${{ needs.sub-meta.outputs.source_sha }} (submodule build — no mirrored release downloaded, no private deploy keys needed).
+
+            ### Installation
+
+            ```go
+            go get github.com/UTEXO-Protocol/rgb-lib-go@${{ needs.sub-meta.outputs.tag }}
+            ```
+
+            ### Platforms
+
+            - Linux x64 (`linux-amd64`)
+            - Linux ARM64 (`linux-arm64`)
+            - macOS ARM64 / Apple Silicon (`darwin-arm64`)
+
+            ### Changes
+
+            See [RGB-Tools/rgb-lib@${{ needs.sub-meta.outputs.source_sha }}](https://github.com/RGB-Tools/rgb-lib/commit/${{ needs.sub-meta.outputs.source_sha }})
+          draft: false
+          prerelease: true
+          files: release-assets/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
