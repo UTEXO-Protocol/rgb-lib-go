@@ -34,106 +34,44 @@ This mode **requires a release to already exist** in the mirror repo with the
 native library assets attached. It cannot build an arbitrary commit — for
 that, use submodule build mode below.
 
-### Submodule build mode — runbook: build a release from one commit
+### Submodule build mode — how to run it
 
-Use this whenever someone asks for Go bindings built from a specific
-upstream `rgb-lib` commit that has **no release yet** — e.g. "build from the
-head of PR #124" or "build from commit `<sha>`".
+**→ See [`RUNBOOK.md`](../../RUNBOOK.md) for the step-by-step guide** (how to
+get the commit SHA, pick a tag, run the workflow, verify the result,
+troubleshooting). The rest of this section documents the job graph itself,
+for whoever maintains the pipeline rather than just runs it.
 
-#### Before you start — two things to check
+It's triggered via `workflow_dispatch` with two inputs:
+`source_sha` (commit in `RGB-Tools/rgb-lib`) and `tag` (new tag to create).
+When `source_sha` is set, the `mode` job routes the whole run to this path
+and skips `generate`/`build`/`release` (the download-mode jobs):
 
-1. **The commit must be public**, i.e. it must exist in
-   [`RGB-Tools/rgb-lib`](https://github.com/RGB-Tools/rgb-lib) — that's where
-   this repo's `rgb-lib` submodule points (see `.gitmodules`). A commit that
-   only exists in someone's fork won't be fetchable.
-2. **No private patches.** This mode doesn't set up any SSH keys/deploy
-   keys, so the commit's dependencies must all resolve from crates.io on
-   their own. Run this — both commands must print nothing:
-   ```bash
-   gh api "repos/RGB-Tools/rgb-lib/contents/Cargo.toml?ref=<sha>" --jq '.content' | base64 -d | grep -A5 '\[patch'
-   gh api "repos/RGB-Tools/rgb-lib/contents/bindings/uniffi/Cargo.toml?ref=<sha>" --jq '.content' | base64 -d | grep -A5 '\[patch'
-   ```
-   If either prints a `[patch.crates-io]` block, stop — this mode will fail;
-   use the download-mode pipeline via rgb-lib-bfa instead.
+1. `sub-meta` resolves and validates the inputs (branch, source_sha, tag)
+2. `sub-bindings` checks out `release/upstream` with the submodule, pins
+   `rgb-lib` to `source_sha`, and generates `rgb_lib.go` / `rgb_lib.h` —
+   **note**: this must run with `working-directory:
+   rgb-lib/bindings/uniffi`, because `cargo metadata` (invoked internally by
+   `uniffi-bindgen-go`) resolves relative to the current directory, not the
+   path passed on the command line. Running it from the repo root fails with
+   `could not find Cargo.toml` (bug hit once already, now fixed — don't
+   reintroduce it)
+3. `sub-build-native` builds all three native libraries in parallel
+   (`x86_64-unknown-linux-gnu`, `aarch64-unknown-linux-gnu` via cross-gcc,
+   `aarch64-apple-darwin` on a macOS runner) — no caching, ~5-7 min per
+   target on a cold run
+4. `sub-finalize` downloads all four artifacts, updates the submodule
+   pointer, and pushes **one commit** to `release/upstream` containing
+   `rgb_lib.go`, `rgb_lib.h`, `lib/librgblibuniffi.so`,
+   `lib/librgblibuniffi_arm64.so`, `lib/librgblibuniffi.dylib`, and the
+   bumped submodule pointer — then creates and pushes the git tag on that
+   commit
+5. `sub-release` packages the same bindings + libraries into three
+   per-platform zips and publishes a prerelease GitHub Release on the tag
 
-#### Step by step
-
-1. **Copy the commit hash.** Open the commit (or the PR, then its latest
-   commit) on GitHub and copy the full 40-character SHA — the long hash from
-   the commit page URL or `git log`, not a shortened one.
-
-2. **Pick a tag name.** Convention so far: `v<rgb-lib-version>-upstream-dev-bfa.<n>`
-   — e.g. the previous one was `v0.3.0-beta.8-upstream-dev-bfa.1`, so the
-   next build against the same base version is
-   `v0.3.0-beta.8-upstream-dev-bfa.2`. Bump `<n>` for another build against
-   the same base version; bump the version part for a new one.
-
-   Make sure it's not already taken:
-   ```bash
-   gh api repos/UTEXO-Protocol/rgb-lib-go/git/refs/tags/<your-tag>
-   ```
-   This must print `Not Found` (404). If it prints a ref, pick another tag —
-   tags are never reused/moved.
-
-3. **Open the workflow page**: go to
-   https://github.com/UTEXO-Protocol/rgb-lib-go/actions/workflows/release.yml
-
-4. Click the **"Run workflow"** button (top right of the runs list, opens a
-   dropdown form).
-
-5. In the dropdown form, fill in exactly these fields:
-   - **Use workflow from**: select the branch `release/upstream`
-   - **rgb_lib_version**: leave **empty**
-   - **source_repo**: leave on the default (`rgb-lib`) — it's ignored in this mode
-   - **branch**: leave **empty** (defaults to `release/upstream`)
-   - **source_sha**: paste the commit hash you copied in step 1
-   - **tag**: type the tag name you picked in step 2
-
-6. Click the green **"Run workflow"** button to submit the form.
-
-7. A new run appears in the list within a few seconds — click it to watch
-   progress. It has these jobs: `Resolve build mode` → `Resolve submodule
-   build context` → `Generate Go bindings (submodule)` +
-   `Build native (×3, in parallel)` → `Commit bindings, libraries and tag` →
-   `Create Release`. (You'll also see `Generate Go bindings`, `Build`,
-   `Create Release` *without* "submodule" in grey/skipped — that's the
-   other mode's jobs, correctly not running. Not an error.)
-
-8. **Cold builds take ~8-10 minutes** (no Cargo cache) — the three
-   `Build native (...)` jobs run in parallel and are the slowest part.
-
-9. When it's green, your release is at:
-   `https://github.com/UTEXO-Protocol/rgb-lib-go/releases/tag/<your-tag>`
-   with three zips attached (`rgb-lib-go-linux-amd64.zip`,
-   `rgb-lib-go-linux-arm64.zip`, `rgb-lib-go-darwin-arm64.zip`), and the
-   commit it was built from is tagged on `release/upstream`.
-
-#### Same thing via `gh` CLI, if you prefer not to click through the UI
-
-```bash
-gh workflow run release.yml --repo UTEXO-Protocol/rgb-lib-go --ref release/upstream \
-  -f source_sha=<40-char commit sha from RGB-Tools/rgb-lib> \
-  -f tag=<new tag, e.g. v0.3.0-beta.8-upstream-dev-bfa.2> \
-  -f branch=release/upstream
-```
-
-#### Verifying it worked
-
-```bash
-gh run view --repo UTEXO-Protocol/rgb-lib-go <run-id>           # all jobs green
-gh release view <tag> --repo UTEXO-Protocol/rgb-lib-go          # release + 3 assets
-gh api repos/UTEXO-Protocol/rgb-lib-go/commits/<tag> --jq '.files[].filename'
-# → lib/librgblibuniffi.dylib, lib/librgblibuniffi.so, lib/librgblibuniffi_arm64.so, rgb-lib, rgb_lib.go, rgb_lib.h
-```
-
-#### Known pitfall (already fixed once, mentioning in case it regresses)
-
-The bindings-generation step must run with its working directory set to
-`rgb-lib/bindings/uniffi` (where that commit's `Cargo.toml` lives) — running
-`uniffi-bindgen-go` from the repo root fails with `could not find
-Cargo.toml`, because `cargo metadata` resolves relative to the current
-directory. If you see that error, check the `Generate bindings` step's
-`working-directory` in the `sub-bindings` job.
+This mode intentionally sets up no SSH keys or deploy keys — the target
+commit's dependencies must resolve from crates.io on their own, or the
+`sub-bindings`/`sub-build-native` jobs will fail. (`RUNBOOK.md` has the
+exact check to run before triggering a build.)
 
 #### Interaction with `watch-upstream.yml`
 

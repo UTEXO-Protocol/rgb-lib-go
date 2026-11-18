@@ -10,7 +10,9 @@ go get github.com/UTEXO-Protocol/rgb-lib-go@latest
 
 ## Automatic Releases
 
-This package is automatically rebuilt when a new version of [rgb-lib](https://github.com/UTEXO-Protocol/rgb-lib) is released. Pre-built binaries are available in the [Releases](https://github.com/UTEXO-Protocol/rgb-lib-go/releases) section.
+This package is automatically rebuilt when a new version of [rgb-lib](https://github.com/RGB-Tools/rgb-lib) is officially released upstream. Pre-built binaries are available in the [Releases](https://github.com/UTEXO-Protocol/rgb-lib-go/releases) section.
+
+Need a build from a specific upstream commit that has no release yet (e.g. an open PR)? See [`RUNBOOK.md`](RUNBOOK.md).
 
 ## Manual Build Instructions
 
