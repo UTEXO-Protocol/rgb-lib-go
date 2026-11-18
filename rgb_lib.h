@@ -570,14 +570,14 @@ RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_hub_info(uint64_t ptr, R
 RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_inflate_init(uint64_t ptr, RustBuffer online, RustBuffer asset_id, RustBuffer inflation_amounts, uint64_t fee_rate, uint8_t min_confirmations, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_FASCIA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_FASCIA
+RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_inspect_fascia(uint64_t ptr, RustBuffer psbt, RustBuffer fascia_path, RustBuffer entropy, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_PSBT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_PSBT
 RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_inspect_psbt(uint64_t ptr, RustBuffer psbt, RustCallStatus *out_status
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_RGB_TRANSFER
-#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_INSPECT_RGB_TRANSFER
-RustBuffer uniffi_rgblibuniffi_fn_method_multisigwallet_inspect_rgb_transfer(uint64_t ptr, RustBuffer psbt, RustBuffer fascia_path, uint64_t entropy, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_MULTISIGWALLET_ISSUE_ASSET_CFA
@@ -875,14 +875,14 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inflate_begin(uint64_t ptr, Rust
 RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inflate_end(uint64_t ptr, RustBuffer online, RustBuffer signed_psbt, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_FASCIA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_FASCIA
+RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inspect_fascia(uint64_t ptr, RustBuffer psbt, RustBuffer fascia_path, RustBuffer entropy, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_PSBT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_PSBT
 RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inspect_psbt(uint64_t ptr, RustBuffer psbt, RustCallStatus *out_status
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_RGB_TRANSFER
-#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_INSPECT_RGB_TRANSFER
-RustBuffer uniffi_rgblibuniffi_fn_method_wallet_inspect_rgb_transfer(uint64_t ptr, RustBuffer psbt, RustBuffer fascia_path, uint64_t entropy, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_METHOD_WALLET_ISSUE_ASSET_BFA
@@ -1025,6 +1025,11 @@ RustBuffer uniffi_rgblibuniffi_fn_method_wallet_witness_receive(uint64_t ptr, Ru
 RustBuffer uniffi_rgblibuniffi_fn_func_check_indexer_url(RustBuffer indexer_url, RustBuffer bitcoind_auth, RustBuffer bitcoin_network, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_FILL_SPV_PROOFS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_FILL_SPV_PROOFS
+RustBuffer uniffi_rgblibuniffi_fn_func_fill_spv_proofs(RustBuffer consignment_path, RustBuffer indexer_config, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_GENERATE_KEYS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_GENERATE_KEYS
 RustBuffer uniffi_rgblibuniffi_fn_func_generate_keys(RustBuffer bitcoin_network, RustBuffer witness_version, RustCallStatus *out_status
@@ -1033,6 +1038,11 @@ RustBuffer uniffi_rgblibuniffi_fn_func_generate_keys(RustBuffer bitcoin_network,
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_INSPECT_CONSIGNMENT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_INSPECT_CONSIGNMENT
 RustBuffer uniffi_rgblibuniffi_fn_func_inspect_consignment(RustBuffer consignment_path, RustBuffer bundle_filter, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_INSPECT_FASCIA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_INSPECT_FASCIA
+RustBuffer uniffi_rgblibuniffi_fn_func_inspect_fascia(RustBuffer psbt, RustBuffer fascia_path, RustBuffer entropy, RustBuffer bitcoin_network, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_FN_FUNC_RESTORE_BACKUP
@@ -1316,6 +1326,12 @@ uint16_t uniffi_rgblibuniffi_checksum_func_check_indexer_url(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_FILL_SPV_PROOFS
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_FILL_SPV_PROOFS
+uint16_t uniffi_rgblibuniffi_checksum_func_fill_spv_proofs(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_GENERATE_KEYS
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_GENERATE_KEYS
 uint16_t uniffi_rgblibuniffi_checksum_func_generate_keys(void
@@ -1325,6 +1341,12 @@ uint16_t uniffi_rgblibuniffi_checksum_func_generate_keys(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_INSPECT_CONSIGNMENT
 #define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_INSPECT_CONSIGNMENT
 uint16_t uniffi_rgblibuniffi_checksum_func_inspect_consignment(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_INSPECT_FASCIA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_FUNC_INSPECT_FASCIA
+uint16_t uniffi_rgblibuniffi_checksum_func_inspect_fascia(void
     
 );
 #endif
@@ -1508,15 +1530,15 @@ uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_inflate_init(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INSPECT_PSBT
-#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INSPECT_PSBT
-uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_inspect_psbt(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INSPECT_FASCIA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INSPECT_FASCIA
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_inspect_fascia(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INSPECT_RGB_TRANSFER
-#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INSPECT_RGB_TRANSFER
-uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_inspect_rgb_transfer(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INSPECT_PSBT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_MULTISIGWALLET_INSPECT_PSBT
+uint16_t uniffi_rgblibuniffi_checksum_method_multisigwallet_inspect_psbt(void
     
 );
 #endif
@@ -1814,15 +1836,15 @@ uint16_t uniffi_rgblibuniffi_checksum_method_wallet_inflate_end(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INSPECT_PSBT
-#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INSPECT_PSBT
-uint16_t uniffi_rgblibuniffi_checksum_method_wallet_inspect_psbt(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INSPECT_FASCIA
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INSPECT_FASCIA
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_inspect_fascia(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INSPECT_RGB_TRANSFER
-#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INSPECT_RGB_TRANSFER
-uint16_t uniffi_rgblibuniffi_checksum_method_wallet_inspect_rgb_transfer(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INSPECT_PSBT
+#define UNIFFI_FFIDEF_UNIFFI_RGBLIBUNIFFI_CHECKSUM_METHOD_WALLET_INSPECT_PSBT
+uint16_t uniffi_rgblibuniffi_checksum_method_wallet_inspect_psbt(void
     
 );
 #endif
